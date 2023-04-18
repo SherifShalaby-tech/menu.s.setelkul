@@ -1,0 +1,71 @@
+.toggle-bg:after {
+    border-color: #e63946;
+    background: #e63946;
+}
+input:checked + .toggle-bg:after {
+    border-color: #e63946;
+    background: #e63946;
+}
+
+input:checked + .toggle-bg {
+    background: #ffffff;
+    border-color: #ffffff;
+    border: 1px solid#E63946;
+}
+
+/* ************* */
+/* animation css */
+/* ************* */
+.rotate360 {
+    animation-name: rotate360;
+    animation-duration: 0.3s;
+}
+@keyframes rotate360 {
+    0% {
+        transform: rotate(-360deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+.slideup {
+    animation-name: slideup;
+    animation-duration: 0.5s;
+}
+@keyframes slideup {
+    0% {
+        transform: rotate(-360deg);
+        margin-bottom: 0px;
+        opacity: 0;
+    }
+    100% {
+        transform: rotate(0deg);
+        margin-bottom: 64px;
+        opacity: 1;
+    }
+}
+
+.strikethrough {
+    position: relative;
+}
+.strikethrough:before {
+    position: absolute;
+    content: "";
+    left: 0;
+    top: 50%;
+    right: 0;
+    border-top: 1px solid red;
+    -webkit-transform: rotate(10deg);
+    -moz-transform: rotate(10deg);
+    -ms-transform: rotate(10deg);
+    -o-transform: rotate(10deg);
+    transform: rotate(10deg);
+}
+[type="checkbox"],
+[type="radio"] {
+    color: #e63946;
+}
+.error{
+    color: #be0202;
+    font-size: 14px;
+}
