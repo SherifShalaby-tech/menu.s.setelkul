@@ -81,18 +81,19 @@ class OrderController extends Controller
             $cart_content = \Cart::session($user_id)->getContent();
             $text = '%20';
             foreach ($cart_content as $content) {
+                // return $content->attributes->size->pivot->product_id;
                 $discount_attr = $content->attributes->discount;
                 $discount =  !empty($discount_attr) ? $discount_attr : 0;
                 $order_details = [
                     'order_id' => $order->id,
-                    'product_id' => $content->id,
+                    'product_id' => $content->attributes->size->pivot->product_id,
                     'variation_id' => $content->attributes->variation_id,
                     'discount' => $discount,
                     'quantity' => $content->quantity,
                     'price' => $content->price,
                     'sub_total' => $content->price * $content->quantity,
                 ];
-                $product = Product::find($content->id);
+                $product = Product::find($content->attributes->size->pivot->product_id);
                 $text .= urlencode($product->name) . '+%3A+' . $order_details['quantity'] . "+%2A+" . $order_details['price'] . '+=+' . $order_details['sub_total'] . " " . session('currency')['code'] . " +%0D%0A+";
                 OrderDetails::create($order_details);
             }

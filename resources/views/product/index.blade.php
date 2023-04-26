@@ -28,9 +28,42 @@
     //         window.location.href = $(this).data('href');
     //     }
     // })
-    $(document).on('click', '.cart_button, .cart_icon', function(){
-        window.location.href = base_path + '/cart/add-to-cart/' + $(this).data('product_id');
+    $(document).on('click', '.cart_button', function(){
+        var sizeId=$(this).closest('.productCard').find('input[name=size]').val();
+        var product_id=$(this).data('product_id');
+        $.ajax({
+            type: "GET",
+            url: '/cart/add-to-cart/' + $(this).data('product_id')+'/'+sizeId,
+            // data: "data",
+            dataType: "json",
+            success: function (response) {
+                if (response.status.success) {
+                    swal.fire("", response.status.msg, "success");
+                }else{
+                    swal.fire("@lang('lang.error')!", response.status.msg, "error");
+                }
+            $('.cart_items').load(document.URL +  ' .cart_items');
+
+            }
+
+        });
+
+
+        // window.location.href = base_path + '/cart/add-to-cart/' + $(this).data('product_id')+'/'+sizeId;
     })
+    // })
+    $(document).on('click', '.changeSize', function(e){
+        e.preventDefault();
+        var price=$(this).data('price');
+        var size_id=$(this).data('size_id');
+        $(this).parent().parent().parent().siblings().find('.sell-price').text(price);
+        $(this).closest('.productCard').children('input[name=size]').val(size_id);
+        var size=$(this).data('size_name');
+        var s=$(this).parent().parent().parent().siblings().find('.size-menu').text(size);
+        // __write_number(size,)
+        console.log($('input[name=size]').val())
+        // var size_id=$(this).data('size_id');
+    });
 </script>
 
 @endsection

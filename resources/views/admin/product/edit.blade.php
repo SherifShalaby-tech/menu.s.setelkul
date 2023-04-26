@@ -327,51 +327,39 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
-                <div class="form-group">
-                    {!! Form::label('purchase_price', __('lang.cost') . ' *', []) !!}
-                    {!! Form::text('purchase_price', @num_format($product->purchase_price), ['class' => 'form-control', 'placeholder' => session('system_mode') == 'pos' || session('system_mode') == 'garments' || session('system_mode') == 'supermarket' ? __('lang.purchase_price') : __('lang.cost'), 'required']) !!}
+            <div class="col-md-12 ">
+                <table class="table" id="size_table">
+                    <thead>
+                        <tr>
+                            <th>@lang('lang.size')</th>
+                            <th>@lang('lang.cost')</th>
+                            <th>@lang('lang.sell_price')</th>
+                            <th>@lang('lang.discount_type')</th>
+                            <th>@lang('lang.discount')</th>
+                            <th>@lang('lang.discount_start_date')</th>
+                            <th>@lang('lang.discount_end_date')</th>
+                            <th><button type="button" class="btn btn-success btn-xs add_size_row mt-2"><i
+                                        class="fa fa-plus"></i></button></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($product->sizes as $item)
+                            @include(
+                                'admin.product.partial.edit_size_row',
+                                ['row_id' => $loop->index, 'item' => $item]
+                            )
+                        @endforeach
+                        </tbody>
+                    </table>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    {!! Form::label('sell_price', __('lang.sell_price') . ' *', []) !!}
-                    {!! Form::text('sell_price', @num_format($product->sell_price), ['class' => 'form-control', 'placeholder' => __('lang.sell_price'), 'required']) !!}
-                </div>
-            </div>
+                <input type="hidden" name="row_id" id="row_id" value="{{ $product->sizes->count() }}">
 
-            <div class="clearfix"></div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    {!! Form::label('discount_type', __('lang.discount_type'), []) !!}
-                    {!! Form::select('discount_type', ['fixed' => __('lang.fixed'), 'percentage' => __('lang.percentage')], $product->discount_type, ['class' => 'selectpicker form-control', 'style' => 'width: 80%', 'placeholder' => __('lang.please_select')]) !!}
+                <div class="col-md-4">
+                    <div class="form-group">
+                        {!! Form::label('active', __('lang.status'), []) !!} <br>
+                        {!! Form::checkbox('active', 1, true, ['class']) !!}
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    {!! Form::label('discount', __('lang.discount'), []) !!}
-                    {!! Form::text('discount', @num_format($product->discount), ['class' => 'form-control', 'placeholder' => __('lang.discount')]) !!}
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    {!! Form::label('discount_start_date', __('lang.discount_start_date'), []) !!}
-                    {!! Form::text('discount_start_date', !empty($product->discount_start_date) ? @format_date($product->discount_start_date) : null, ['class' => 'form-control datepicker', 'placeholder' => __('lang.discount_start_date')]) !!}
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    {!! Form::label('discount_end_date', __('lang.discount_end_date'), []) !!}
-                    {!! Form::text('discount_end_date', !empty($product->discount_end_date) ? @format_date($product->discount_end_date) : null, ['class' => 'form-control datepicker', 'placeholder' => __('lang.discount_end_date')]) !!}
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    {!! Form::label('active', __('lang.status'), []) !!} <br>
-                    {!! Form::checkbox('active', 1, $product->active ? true : false, ['class']) !!}
-                </div>
-            </div>
-
             <div class="col-md-12" style="margin-top: 10px">
                 <div class="i-checks">
                     <input id="this_product_have_variant" name="this_product_have_variant" type="checkbox"

@@ -47,17 +47,15 @@ class ProductClassController extends Controller
         if (!auth()->user()->can('category.view')) {
             abort(403, __('lang.not_authorized'));
         }
-
         if (request()->ajax()) {
+            $product_classes = ProductClass::leftJoin("products","products.product_class_id","=","product_classes.id")
+            ->groupBy('product_classes.id');
 
-            $product_classes = ProductClass::orderBy('sort', 'asc');
 
-
-            $product_classes = $product_classes->select(
-                'product_classes.*',
+            $product_classes = $product_classes->selectRaw(
+                'product_classes.*,count("products.id") as product_count'
 
             );
-
             return DataTables::of($product_classes)
                 ->addColumn('image', function ($row) {
                     $image = $row->getFirstMediaUrl('product_class');
@@ -66,6 +64,9 @@ class ProductClassController extends Controller
                     } else {
                         return '<img src="' . asset('/uploads/' . session('logo')) . '" height="50px" width="50px">';
                     }
+                })
+                ->addColumn('products_count', function ($row) {
+                    return $row->product_count;
                 })
                 ->editColumn('status', function ($row) {
                     if ($row->status == 1) {

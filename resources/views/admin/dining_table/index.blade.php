@@ -64,7 +64,7 @@
                 },
                 columnDefs: [{
                     "targets": [2],
-                    "orderable": false,
+                    "orderable": true,
                     "searchable": false
                 }],
                 columns: [{

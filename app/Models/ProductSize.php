@@ -4,56 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
-use PhpOffice\PhpSpreadsheet\Calculation\Category;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Product extends Model implements HasMedia
+class ProductSize extends Model
 {
-    use HasFactory, InteractsWithMedia;
+    use HasFactory;
+    protected $table='product_size';
+    protected $fillable=['product_id','size_id','sell_price','discount','purchase_price','discount_type','discount_start_date','discount_end_date'];
+    // protected $guarded = ['id'];
     protected $appends = ['discount_value'];
-    /**
-     * The attributes that aren't mass assignable.
-     *
-     * @var array
-     */
-    protected $guarded = ['id'];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'multiple_sizes' => 'array',
-        'translations' => 'array',
-
-    ];
-
-    public function getNameAttribute($name)
-    {
-        $translations = !empty($this->translations['name']) ? $this->translations['name'] : [];
-        if (!empty($translations)) {
-            $lang = LaravelLocalization::getCurrentLocale();
-            if (!empty($translations[$lang])) {
-                return $translations[$lang];
-            }
-        }
-        return $name;
-    }
-
-    public function category()
-    {
-        return $this->belongsTo(ProductClass::class, 'product_class_id');
-    }
-
-
-    public function variations()
-    {
-        return $this->hasMany(Variation::class)->with(['size']);
-    }
-
     public function getDiscountValueAttribute()
     {
         $discount_value = 0;
@@ -99,9 +57,5 @@ class Product extends Model implements HasMedia
         }
 
         return $discount_value;
-    }
-    public function sizes()
-    {
-        return $this->belongsToMany('App\Models\Size', 'product_size')->withPivot('purchase_price','sell_price','discount_type','discount','discount_start_date','discount_end_date');
     }
 }

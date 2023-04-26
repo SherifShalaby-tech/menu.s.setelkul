@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductClass;
+use App\Models\ProductSize;
 use App\Models\Size;
 use App\Models\Variation;
 use App\Utils\DatatableUtil;
@@ -51,7 +52,9 @@ class ProductController extends Controller
         }
         if (request()->ajax()) {
 
-            $products = Product::leftjoin('product_classes', 'products.product_class_id', 'product_classes.id');
+            $products = Product::
+            leftjoin('product_classes', 'products.product_class_id', 'product_classes.id');
+            // ->leftjoin('product_size', 'products.id', 'product_size.product_id');
 
             if (!empty(request()->product_class_id)) {
                 $products->where('products.product_class_id', request()->product_class_id);
@@ -59,7 +62,7 @@ class ProductController extends Controller
 
             $products = $products->select(
                 'products.*',
-                'product_classes.name as category'
+                'product_classes.name as category',
 
             );
 
@@ -74,13 +77,72 @@ class ProductController extends Controller
                 })
                 ->editColumn('discount_start_date', '@if(!empty($discount_start_date)){{@format_date($discount_start_date)}}@endif')
                 ->editColumn('discount_end_date', '@if(!empty($discount_end_date)){{@format_date($discount_end_date)}}@endif')
-                ->editColumn('discount', '{{@num_format($discount)}}')
+                // ->editColumn('discount', '{{@num_format($discount)}}')
                 ->editColumn('category', function ($row) {
                     $category = ProductClass::find($row->product_class_id);
                     return $category->name ?? '';
                 })
-                ->editColumn('sell_price', '@if(!empty($sell_price)){{@num_format($sell_price)}}@endif')
-                ->editColumn('purchase_price', '@if(!empty($purchase_price)){{@num_format($purchase_price)}}@endif')
+                ->editColumn('size',  function ($row) {
+                    $size_name='';
+                    $product_sizes = ProductSize::where('product_id',$row->id)->get();
+                    if(!empty($product_sizes)){
+                    foreach($product_sizes as $size){
+                        $size_name.=Size::find($size->size_id)->name.'<br>';
+                    }
+                }
+                    return $size_name;
+                })
+                ->editColumn('sell_price',  function ($row) {
+                    $sell='';
+                    $product_sizes = ProductSize::where('product_id',$row->id)->get();
+                    if(!empty($product_sizes)){
+                    foreach($product_sizes as $size){
+                        $sell.=$size->sell_price.'<br>';
+                    }
+                }
+                    return $sell;
+                })
+                ->editColumn('purchase_price', function ($row) {
+                    $purchase='';
+                    $product_sizes = ProductSize::where('product_id',$row->id)->get();
+                    if(!empty($product_sizes)){
+                    foreach($product_sizes as $size){
+                        $purchase.=$size->sell_price.'<br>';
+                    }
+                }
+                    return $purchase;
+                })
+                ->editColumn('discount', function ($row) {
+                    $discount='';
+                    $product_sizes = ProductSize::where('product_id',$row->id)->get();
+                    if(!empty($product_sizes)){
+                        foreach($product_sizes as $size){
+                            $discount.=$size->discount.'<br>';
+                        }
+                    }
+                    return $discount;
+                })
+                ->editColumn('discount_start_date', function ($row) {
+                    $discount_start_date='';
+                    $product_sizes = ProductSize::where('product_id',$row->id)->get();
+                    if(!empty($product_sizes)){
+                        foreach($product_sizes as $size){
+                            $discount_start_date.=$size->discount_start_date.'<br>';
+                        }
+                    }
+                    return $discount_start_date;
+                })
+                ->editColumn('discount_end_date', function ($row) {
+                    $discount_end_date='';
+                    $product_sizes = ProductSize::where('product_id',$row->id)->get();
+                    if(!empty($product_sizes)){
+                        foreach($product_sizes as $size){
+                            $discount_end_date.=$size->discount_end_date.'<br>';
+                        }
+                    }
+                    return $discount_end_date;
+                })
+                // ->editColumn('purchase_price', '@if(!empty($purchase_price)){{@num_format($purchase_price)}}@endif')
                 ->editColumn('active', function ($row) {
                     if ($row->active == 1) {
                         return '<span class="badge badge-success">' . __('lang.active') . '</span>';
@@ -135,9 +197,14 @@ class ProductController extends Controller
                 ->rawColumns([
                     'image',
                     'active',
+                    'size',
+                    'sell_price',
+                    'purchase_price',
+                    'discount',
                     'product_details',
                     'discount_start_date',
                     'discount_end_date',
+                    'active',
                     'action',
                 ])
                 ->make(true);
@@ -145,10 +212,10 @@ class ProductController extends Controller
 
 
         $categories = ProductClass::orderBy('name', 'asc')->pluck('name', 'id');
-
         return view('admin.product.index')->with(compact(
             'categories',
         ));
+        
     }
 
     /**
@@ -163,9 +230,10 @@ class ProductController extends Controller
         }
 
         $categories = ProductClass::orderBy('name', 'asc')->pluck('name', 'id');
+        $sizes = Size::orderBy('created_at', 'desc')->pluck('name', 'id');
 
         return view('admin.product.create')->with(compact(
-            'categories',
+            'categories','sizes'
         ));
     }
 
@@ -177,20 +245,19 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        // return $request->all();
         
             $data = $request->except('_token', 'image');
             $data['sku'] = $this->productUtil->generateProductSku($data['name']);
-            $data['discount_start_date'] = !empty($data['discount_start_date']) ? $this->commonUtil->uf_date($data['discount_start_date']) : null;
-            $data['discount_end_date'] = !empty($data['discount_end_date']) ? $this->commonUtil->uf_date($data['discount_end_date']) : null;
-            $data['active'] = !empty($data['active']) ? 1 : 0;
             $data['created_by'] = auth()->user()->id;
+            $data['active'] = !empty($data['active']) ? 1 : 0;
             $data['type'] = !empty($request->this_product_have_variant) ? 'variable' : 'single';
             $data['translations'] = !empty($data['translations']) ? $data['translations'] : [];
             DB::beginTransaction();
             $product = Product::create($data);
 
             $this->productUtil->createOrUpdateVariations($product, $request->variations);
-
+            $this->productUtil->createOrUpdateProductSizes($product, $request->sizes);
   
             if ($request->has('image')) {
                 if (!empty($request->input('image'))) {
@@ -249,7 +316,7 @@ class ProductController extends Controller
 
         $product = Product::find($id);
         $categories = ProductClass::orderBy('name', 'asc')->pluck('name', 'id');
-        $sizes = Size::orderBy('name', 'asc')->pluck('name', 'id');
+        $sizes = Size::orderBy('created_at', 'desc')->pluck('name', 'id');
 
         return view('admin.product.edit')->with(compact(
             'product',
@@ -269,9 +336,6 @@ class ProductController extends Controller
     {
         try {
             $data = $request->except('_token', '_method', 'image');
-            $data['discount_type'] = $data['discount_type'];
-            $data['discount_start_date'] = !empty($data['discount_start_date']) ? $this->commonUtil->uf_date($data['discount_start_date']) : null;
-            $data['discount_end_date'] = !empty($data['discount_end_date']) ? $this->commonUtil->uf_date($data['discount_end_date']) : null;
             $data['active'] = !empty($data['active']) ? 1 : 0;
             $data['created_by'] = auth()->user()->id;
             $data['type'] = !empty($request->this_product_have_variant) ? 'variable' : 'single';
@@ -281,6 +345,7 @@ class ProductController extends Controller
             DB::beginTransaction();
             $product->update($data);
             $this->productUtil->createOrUpdateVariations($product, $request->variations);
+            $this->productUtil->createOrUpdateProductSizes($product, $request->sizes);
 
            /* if ($request->has('uploaded_image_name')) {
                 if (!empty($request->input('uploaded_image_name'))) {
@@ -382,7 +447,7 @@ class ProductController extends Controller
     {
         $row_id = request()->row_id;
 
-        $sizes = Size::orderBy('name', 'asc')->pluck('name', 'id');
+        $sizes = Size::orderBy('created_at', 'desc')->pluck('name', 'id');
         $name = request()->name;
         $purchase_price = request()->purchase_price;
         $sell_price = request()->sell_price;
@@ -393,6 +458,16 @@ class ProductController extends Controller
             'name',
             'purchase_price',
             'sell_price'
+        ));
+    }
+    public function getSizeRow()
+    {
+        $row_id = request()->row_id;
+
+        $sizes = Size::orderBy('created_at', 'desc')->pluck('name', 'id');
+        return view('admin.product.partial.size_row')->with(compact(
+            'sizes',
+            'row_id'
         ));
     }
 }

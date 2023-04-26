@@ -10,6 +10,7 @@ use App\Models\Customer;
 use App\Models\EarningOfPoint;
 use App\Models\Product;
 use App\Models\ProductClass;
+use App\Models\ProductSize;
 use App\Models\ProductStore;
 use App\Models\PurchaseOrderLine;
 use App\Models\PurchaseReturnLine;
@@ -27,7 +28,11 @@ use Illuminate\Support\Facades\DB;
 
 class ProductUtil extends Util
 {
-
+    protected $commonUtil;
+    public function __construct(Util $commonUtil)
+    {
+        $this->commonUtil = $commonUtil;
+    }
     /**
      * Generates product sku
      *
@@ -158,6 +163,71 @@ class ProductUtil extends Util
         return true;
     }
 
+
+
+    public function createOrUpdateProductSizes($product, $sizes)
+    {
+        $key_sizes = [];
+        if (!empty($sizes)) {
+            foreach ($sizes as $s) {
+                $product_sizes = ProductSize::where('size_id',$s['size_id'])->where('product_id',$product->id)->first();
+
+                if (!empty($s['id']) && !empty($s['size_id'])) {
+                    if(!empty($product_sizes )){
+                    $product_sizes->size_id = $s['size_id'];
+                    $product_sizes->product_id = $product->id;
+                    $product_sizes->discount_type = !empty($s['discount_type'])?$s['discount_type'] : $product_sizes->discount_type;
+                    $product_sizes->sell_price = !empty($s['sell_price']) ? $this->num_uf($s['sell_price']) : $this->num_uf($product_sizes->sell_price);
+                    $product_sizes->purchase_price = !empty($s['purchase_price']) ? $this->num_uf($s['purchase_price']) : $this->num_uf($product_sizes->purchase_price);
+                    $product_sizes->discount = !empty($s['discount'])?$s['discount'] : $product_sizes->discount;
+                    $product_sizes->discount_start_date = !empty($s['discount_start_date'])?$s['discount_start_date'] : $product_sizes->discount_start_date;
+                    $product_sizes->discount_end_date = !empty($s['discount_end_date'])?$s['discount_end_date'] : $product_sizes->discount_end_date;
+                    // $product_sizes->active = !empty($s['active'])?$s['active'] : $product_sizes->active;
+                    
+                    $product_sizes->update();
+
+                    $key_sizes[] = $product_sizes->id;
+                    }else{
+                    $size_data['product_id'] = $product->id;
+                    $size_data['size_id'] = $s['size_id'];
+                    $size_data['discount'] = $s['discount'];
+                    $size_data['purchase_price'] = $s['purchase_price'];
+                    $size_data['sell_price'] = $s['sell_price'];
+                    $size_data['discount_type'] = $s['discount_type'];
+                    $size_data['discount_start_date'] = !empty($s['discount_start_date']) ? $this->commonUtil->uf_date($s['discount_start_date']) : null;
+                    $size_data['discount_end_date'] = !empty($s['discount_end_date']) ? $this->commonUtil->uf_date($s['discount_end_date']) : null;
+                    // $size_data['active'] = !empty($data['active']) ? 1 : 0;
+                
+                    $size = ProductSize::create($size_data);
+                    $key_sizes[] = $size->id;
+                    }
+
+                } else {
+            
+                    $size_data['product_id'] = $product->id;
+                    $size_data['size_id'] = $s['size_id'];
+                    $size_data['discount'] = $s['discount'];
+                    $size_data['purchase_price'] = $s['purchase_price'];
+                    $size_data['sell_price'] = $s['sell_price'];
+                    $size_data['discount_type'] = $s['discount_type'];
+                    $size_data['discount_start_date'] = !empty($s['discount_start_date']) ? $this->commonUtil->uf_date($s['discount_start_date']) : null;
+                    $size_data['discount_end_date'] = !empty($s['discount_end_date']) ? $this->commonUtil->uf_date($s['discount_end_date']) : null;
+                    // $size_data['active'] = !empty($data['active']) ? 1 : 0;
+                
+                    $size = ProductSize::create($size_data);
+                    $key_sizes[] = $size->id;
+                }
+            }
+        }
+   
+
+        if (!empty($key_sizes)) {
+            //delete the size product removed by user
+            ProductSize::where('product_id', $product->id)->whereNotIn('id', $key_sizes)->delete();
+        }
+
+        return true;
+    }
     /**
      * Get all details for a product from its variation id
      *

@@ -11,7 +11,7 @@ if (!empty($user_id)) {
 <div class="flex pb-8 mt-32">
     <div class="flex-1">
     </div>
-    <div class="flex-1 text-center mt-6">
+    <div class="flex-1 text-center mt-6 cart_items">
         <a href="{{ action('CartController@view') }}" class=" text-center">
             <button class="bg-red text-white font-semibold relative  rounded-full text-2xl"
                 style="height: 70px; width: 70px;">

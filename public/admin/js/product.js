@@ -57,7 +57,8 @@ $(document).on("submit", "form#quick_add_product_class_form", function (e) {
         },
     });
 });
-$("[name='active']").bootstrapSwitch();
+$(".activeSwitch").bootstrapSwitch();
+// $("[name='active']").bootstrapSwitch();
 
 $(document).on("click", ".delete-image", function () {
     let url = $(this).attr("data-href");
@@ -120,4 +121,41 @@ $(document).on("change", "#purchase_price", function () {
 $(document).on("change", "#sell_price", function () {
     let sell_price = __read_number($(this));
     __write_number($(".default_sell_price"), sell_price);
+});
+//////
+$('body').delegate('.add_size_row' , 'click', function() {
+// $(document).on('click', "", function (e) {
+    var row_size_id = parseInt($("#row_size_id").val());
+    $.ajax({
+        method: "get",
+        url: "/admin/product/get-size-row?row_id=" + row_size_id,
+        // data: {
+        //     name: $("#name").val(),
+        //     purchase_price: $("#purchase_price").val(),
+        //     sell_price: $("#sell_price").val(),
+        // },
+        contentType: "html",
+        success: function (result) {
+            console.log(result)
+            $("#size_table tbody").prepend(result);
+            $(".select2").select2();
+            $(".activeSwitch").bootstrapSwitch();
+            $(".datepicker").daterangepicker({
+                autoUpdateInput: false,
+                locale: {
+                    cancelLabel: "Clear",
+                },
+                singleDatePicker: true,
+            });
+        
+            $(".datepicker").on("apply.daterangepicker", function (ev, picker) {
+                $(this).val(picker.startDate.format("MM/DD/YYYY"));
+            });
+        
+            $(".datepicker").on("cancel.daterangepicker", function (ev, picker) {
+                $(this).val("");
+            });
+            $("#row_size_id").val(row_size_id + 1);
+        },
+    });
 });

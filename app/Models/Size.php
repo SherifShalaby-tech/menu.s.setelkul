@@ -15,4 +15,10 @@ class Size extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+
+    public function products()
+    {
+        return $this->belongsToMany('App\Models\Product', 'product_size')->withPivot('purchase_price','sell_price','discount_type','discount','discount_start_date','discount_end_date');
+    }
 }

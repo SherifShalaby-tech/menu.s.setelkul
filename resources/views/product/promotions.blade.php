@@ -18,9 +18,9 @@
 @endsection
 
 @section('javascript')
-    <script>
+    {{-- <script>
         $(document).on('click', '.cart_button, .cart_icon', function() {
             window.location.href = base_path + '/cart/add-to-cart/' + $(this).data('product_id');
         })
-    </script>
+    </script> --}}
 @endsection
