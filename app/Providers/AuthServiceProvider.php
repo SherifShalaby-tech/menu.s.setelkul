@@ -28,10 +28,10 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::before(function ($user, $ability) {
             $user = Auth::user();
-            if ($user->is_superadmin) {
+            // if ($user->is_superadmin) {
                 return true;
-            }
-            return false;
+            // }
+            // return false;
         });
     }
 }

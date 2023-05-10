@@ -208,7 +208,7 @@ $locale_direction = LaravelLocalization::getCurrentLocaleDirection();
                                 @if (!empty($variation->size))
                                     <div
                                         class="flex @if ($locale_direction == 'rtl') flex-row-reverse @else flex-row @endif ">
-                                        <div class="flex-1">
+                                        {{-- <div class="flex-1">
                                             <div
                                                 class="flex @if ($locale_direction == 'rtl') flex-row-reverse @else flex-row @endif items-center mb-4">
                                                 <input type="radio" data-id="{{ $item->id }}"
@@ -219,13 +219,13 @@ $locale_direction = LaravelLocalization::getCurrentLocaleDirection();
                                                 <label for="radio"
                                                     class="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300 px-2">
                                                     @if ($variation->name == 'Default')
-                                                        @lang('lang.default')
+                                                        {{$item->name}}
                                                     @else
                                                         {{ $variation->size->name ?? '' }}
                                                     @endif
                                                 </label>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <div
                                             class="flex-1 text-base @if ($locale_direction == 'rtl') text-left @else text-right @endif font-semibold">
                                             {{ @num_format($variation->default_sell_price - $item->attributes->size->pivot->discount) }}

@@ -83,14 +83,14 @@ class ProductController extends Controller
                     return $category->name ?? '';
                 })
                 ->editColumn('size',  function ($row) {
-                    $size_name='';
-                    $product_sizes = ProductSize::where('product_id',$row->id)->get();
-                    if(!empty($product_sizes)){
-                    foreach($product_sizes as $size){
-                        $size_name.=Size::find($size->size_id)->name.'<br>';
-                    }
-                }
-                    return $size_name;
+                //     $size_name='';
+                //     $product_sizes = ProductSize::where('product_id',$row->id)->get();
+                //     if(!empty($product_sizes)){
+                //     foreach($product_sizes as $size){
+                //         $size_name.=Size::find($size->size_id)->name.'<br>';
+                //     }
+                // }
+                    return 55;
                 })
                 ->editColumn('sell_price',  function ($row) {
                     $sell='';
@@ -259,6 +259,7 @@ class ProductController extends Controller
             $this->productUtil->createOrUpdateVariations($product, $request->variations);
             $this->productUtil->createOrUpdateProductSizes($product, $request->sizes);
   
+
             if ($request->has('image')) {
                 if (!empty($request->input('image'))) {
                     $extention = explode(";",explode("/",$request->image)[1])[0];
