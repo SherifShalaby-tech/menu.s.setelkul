@@ -3,6 +3,7 @@
     <input type="hidden" value="{{$size->id}}" name="size"/>
     @break
     @endforeach
+    {{-- {{$product->getFirstMediaUrl('product')}} --}}
     <div class="w-full  shadow-lg pb-full rounded-xl bg-center bg-no-repeat bg-cover relative border-2 border-dark product_card"
         style="background-image: url('{{ !empty($product->getFirstMediaUrl('product'))? $product->getFirstMediaUrl('product'): asset('uploads/' . session('logo')) }}')">
 
