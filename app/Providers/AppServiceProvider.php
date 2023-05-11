@@ -105,7 +105,9 @@ class AppServiceProvider extends ServiceProvider
         $new_app_url=System::getProperty('pos');
         $new_url='APP_URL='.$new_app_url;
         if(!empty($new_app_url)){
-            file_put_contents($path , str_replace('APP_URL=https://setelkul.sherifshalaby.tech/',$new_url , $test));
+
+            // file_put_contents($path , str_replace('APP_URL=https://setelkul.sherifshalaby.tech/',$new_url , $test));
+            file_put_contents($path , str_replace('APP_URL=http://localhost:8000',$new_url , $test));
         }
         // else{
         //     file_put_contents($path , str_replace( 'APP_URL=https://s.elhabib.sherifshalaby.tech','APP_URL=http://localhost:8000', $test));
