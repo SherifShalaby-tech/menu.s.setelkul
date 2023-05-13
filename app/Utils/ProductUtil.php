@@ -176,28 +176,18 @@ class ProductUtil extends Util
                     if(!empty($product_sizes )){
                     $product_sizes->size_id = $s['size_id'];
                     $product_sizes->product_id = $product->id;
-                    $product_sizes->discount_type = !empty($s['discount_type'])?$s['discount_type'] : $product_sizes->discount_type;
                     $product_sizes->sell_price = !empty($s['sell_price']) ? $this->num_uf($s['sell_price']) : $this->num_uf($product_sizes->sell_price);
                     $product_sizes->purchase_price = !empty($s['purchase_price']) ? $this->num_uf($s['purchase_price']) : $this->num_uf($product_sizes->purchase_price);
-                    $product_sizes->discount = !empty($s['discount'])?$s['discount'] : $product_sizes->discount;
-                    $product_sizes->discount_start_date = !empty($s['discount_start_date'])?$s['discount_start_date'] : $product_sizes->discount_start_date;
-                    $product_sizes->discount_end_date = !empty($s['discount_end_date'])?$s['discount_end_date'] : $product_sizes->discount_end_date;
-                    // $product_sizes->active = !empty($s['active'])?$s['active'] : $product_sizes->active;
-                    
+                
                     $product_sizes->update();
 
                     $key_sizes[] = $product_sizes->id;
                     }else{
                     $size_data['product_id'] = $product->id;
                     $size_data['size_id'] = $s['size_id'];
-                    $size_data['discount'] = $s['discount'];
                     $size_data['purchase_price'] = $s['purchase_price'];
                     $size_data['sell_price'] = $s['sell_price'];
-                    $size_data['discount_type'] = $s['discount_type'];
-                    $size_data['discount_start_date'] = !empty($s['discount_start_date']) ? $this->commonUtil->uf_date($s['discount_start_date']) : null;
-                    $size_data['discount_end_date'] = !empty($s['discount_end_date']) ? $this->commonUtil->uf_date($s['discount_end_date']) : null;
-                    // $size_data['active'] = !empty($data['active']) ? 1 : 0;
-                
+                 
                     $size = ProductSize::create($size_data);
                     $key_sizes[] = $size->id;
                     }
@@ -206,14 +196,8 @@ class ProductUtil extends Util
             
                     $size_data['product_id'] = $product->id;
                     $size_data['size_id'] = $s['size_id'];
-                    $size_data['discount'] = $s['discount'];
                     $size_data['purchase_price'] = $s['purchase_price'];
                     $size_data['sell_price'] = $s['sell_price'];
-                    $size_data['discount_type'] = $s['discount_type'];
-                    $size_data['discount_start_date'] = !empty($s['discount_start_date']) ? $this->commonUtil->uf_date($s['discount_start_date']) : null;
-                    $size_data['discount_end_date'] = !empty($s['discount_end_date']) ? $this->commonUtil->uf_date($s['discount_end_date']) : null;
-                    // $size_data['active'] = !empty($data['active']) ? 1 : 0;
-                
                     $size = ProductSize::create($size_data);
                     $key_sizes[] = $size->id;
                 }

@@ -86,14 +86,14 @@ class OrderController extends Controller
                 $discount =  !empty($discount_attr) ? $discount_attr : 0;
                 $order_details = [
                     'order_id' => $order->id,
-                    'product_id' => $content->attributes->size->pivot->product_id,
+                    'product_id' => $content->associatedModel->id,
                     'variation_id' => $content->attributes->variation_id,
                     'discount' => $discount,
                     'quantity' => $content->quantity,
                     'price' => $content->price,
                     'sub_total' => $content->price * $content->quantity,
                 ];
-                $product = Product::find($content->attributes->size->pivot->product_id);
+                $product = Product::find($content->associatedModel->id);
                 $text .= urlencode($product->name) . '+%3A+' . $order_details['quantity'] . "+%2A+" . $order_details['price'] . '+=+' . $order_details['sub_total'] . " " . session('currency')['code'] . " +%0D%0A+";
                 OrderDetails::create($order_details);
             }
@@ -137,7 +137,12 @@ class OrderController extends Controller
 
             if ($order->delivery_type == 'home_delivery') {
                 $text .= "%0D%0A+" . __('lang.home_delivery');
-            } else {
+                $text .= "%0D%0A+" . __('lang.address')." ".$order->address;
+            }else if($order->delivery_type == 'dining_in'){
+                $text .= "%0D%0A+" . __('lang.dinnig_in_restaurant');
+                $text .= "%0D%0A+" . __('lang.table_no')." ".$order->table_no;
+            }
+            else {
                 $text .= "%0D%0A+" . __('lang.i_will_pick_it_up_my_self');
             }
             if ($order->payment_type == 'cash_on_delivery') {

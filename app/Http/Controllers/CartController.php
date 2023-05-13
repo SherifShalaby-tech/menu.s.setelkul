@@ -123,23 +123,19 @@ class CartController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function addToCart($id,$sizeId)
+     public function addToCart($id)
      {
          try {
              $quantity = !empty(request()->quantity) ? request()->quantity : 1;
-             $product = Product::find($id);
-             $variation = Variation::where('product_id', $id)->first();
+             $variation = Variation::find( $id);
+             $product = Product::find($variation->product_id);
  
              $user_id = Session::get('user_id');
              $price = $variation->default_sell_price;
-             $product_size=$product->sizes->where('id',$sizeId)->first();
              $price = $price - $product->discount_value;
-             $rowId=$id.$product_size->name;
-             $item_exist = \Cart::session($user_id)->get($rowId);
- 
-            // return $item_exist;
+             $item_exist = \Cart::session($user_id)->get($variation->id);
              if (!empty($item_exist)) {
-                 \Cart::session($user_id)->update($rowId, array(
+                 \Cart::session($user_id)->update($variation->id, array(
                      'quantity' =>  array(
                          'relative' => false,
                          'value' => $item_exist->quantity + 1
@@ -147,7 +143,7 @@ class CartController extends Controller
                  ));
              } else {
                  \Cart::session($user_id)->add(array(
-                     'id' => $rowId,
+                     'id' => $variation->id,
                      'name' => $product->name,
                      'price' => $price,
                      'quantity' =>  $quantity,
@@ -155,7 +151,7 @@ class CartController extends Controller
                          'variation_id' => $variation->id,
                          'extra' => false,
                          'discount' => $product->discount_value,
-                         'size'=>$product_size,
+                         'size'=>$variation->size->name,
                      ],
                      'associatedModel' => $product
                  ));
@@ -177,7 +173,6 @@ class CartController extends Controller
  
          return response()->json(['status'=> $output]);
      }
-
     // public function addToCart($id,$sizeId)
     // {
     //     try {

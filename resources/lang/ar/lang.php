@@ -246,5 +246,9 @@ return [
     'dining_room' => 'غرفة العشاء',
     'dining_table' => 'طاولة الطعام',
     'default'=>'مقاس عادى',
-    'products_count'=>'عدد المنتجات'
+    'products_count'=>'عدد المنتجات',
+    'dinnig_in_restaurant'=>'داخل المطعم',
+    'table_no'=>'طاولة رقم',
+    'dinnig_in_restaurant'=>'In The Restaurant ',
+    'table_no'=>'Table No',
 ];

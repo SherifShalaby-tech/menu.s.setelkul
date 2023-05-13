@@ -294,105 +294,41 @@
             </div>
 
 
-            <div class="col-md-12 ">
-                <table class="table" id="size_table">
-                    <thead>
-                        <tr>
-                            <th style = 'width: 15%'>@lang('lang.size')</th>
-                            <th style = 'width: 10%'>@lang('lang.cost')</th>
-                            <th style = 'width: 10%'>@lang('lang.sell_price')</th>
-                            <th style = 'width: 10%'>@lang('lang.discount_type')</th>
-                            <th style = 'width: 10%'>@lang('lang.discount')</th>
-                            <th>@lang('lang.discount_start_date')</th>
-                            <th>@lang('lang.discount_end_date')</th>
-                            <th>@lang('lang.status')</th>
-                            <th><button type="button" class="btn btn-success btn-xs add_size_row mt-2"><i
-                                        class="fa fa-plus"></i></button></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <td style = 'width: 15%'>
-                            <div class="input-group my-group ">
-                                {!! Form::select('sizes[0][size_id]', $sizes, null,['class' => 'form-control select2','style' => 'width: 60%','data-live-search' => 'true', 'placeholder' => __('lang.size')]) !!}
-                                <span class="input-group-btn">
-                                    @can('settings.size.create')
-                                        <button class="btn-modal btn btn-default bg-white btn-flat"
-                                            data-href="{{ action('Admin\SizeController@create') }}"
-                                            data-container=".view_modal"><i class="fa fa-plus-circle text-primary fa-lg"></i></button>
-                                    @endcan
-                                </span>
-                            </div>
-                        </td>
-                        <td style = 'width: 10%'>
-                            {!! Form::text('sizes[0][purchase_price]', null, ['class' => 'form-control', 'placeholder' => session('system_mode') == 'pos' || session('system_mode') == 'garments' || session('system_mode') == 'supermarket' ? __('lang.purchase_price') : __('lang.cost')]) !!}
-                        </td>
-                        <td style = 'width: 10%'>
-                            {!! Form::text('sizes[0][sell_price]', null, ['class' => 'form-control', 'placeholder' => __('lang.sell_price'), 'required']) !!}
-                        </td>
-                        <td style = 'width: 10%'>
-                            {!! Form::select('sizes[0][discount_type]', ['fixed' => __('lang.fixed'), 'percentage' => __('lang.percentage')], 'fixed', ['class' => 'form-control', 'style' => 'width: 80%', 'placeholder' => __('lang.please_select')]) !!}
-                        </td>
-                        <td style = 'width: 10%'>
-                            {!! Form::text('sizes[0][discount]', null, ['class' => 'form-control', 'placeholder' => __('lang.discount')]) !!}
-                        </td>
-                        <td>
-                            {!! Form::text('sizes[0][discount_start_date]', null, ['class' => 'form-control datepicker', 'placeholder' => __('lang.discount_start_date')]) !!}
-                        </td>
-                        <td>
-                            {!! Form::text('sizes[0][discount_end_date]', null, ['class' => 'form-control datepicker', 'placeholder' => __('lang.discount_end_date')]) !!}
-                        </td>
-                        <td> <button type="button" class="btn btn-danger btn-xs remove_row mt-2"><i class="fa fa-times"></i></button>
-
-                    </tbody>
-                </table>
-                <input type="hidden" name="row_size_id" id="row_size_id" value="1">
-            </div>
             <div class="col-md-4">
                 <div class="form-group">
-                    {!! Form::label('active', __('lang.status'), []) !!} <br>
-                    {!! Form::checkbox('active', 1, true, ['class']) !!}
-                </div>
-            </div>
-
-
-
-
-            {{-- <div class="col-md-1">
-                <div class="form-group">
-                    {!! Form::label('purchase_price', __('lang.cost') . ' *', []) !!}
+                    {!! Form::label('purchase_price', __('lang.cost'), []) !!}
                     {!! Form::text('purchase_price', null, ['class' => 'form-control', 'placeholder' => session('system_mode') == 'pos' || session('system_mode') == 'garments' || session('system_mode') == 'supermarket' ? __('lang.purchase_price') : __('lang.cost')]) !!}
                 </div>
             </div>
-            <div class="col-md-1">
+            <div class="col-md-4">
                 <div class="form-group">
-                    {!! Form::label('sell_price', __('lang.sell_price') . ' *', []) !!}
+                    {!! Form::label('sell_price', __('lang.sell_price'), []) !!}
                     {!! Form::text('sell_price', null, ['class' => 'form-control', 'placeholder' => __('lang.sell_price'), 'required']) !!}
                 </div>
             </div>
-
-            {{-- <div class="clearfix"></div> --}}
-            {{--<div class="col-md-2">
+            <div class="clearfix"></div>
+           <div class="col-md-4">
                 <div class="form-group">
                     {!! Form::label('discount_type', __('lang.discount_type'), []) !!}
-                    {!! Form::select('discount_type', ['fixed' => __('lang.fixed'), 'percentage' => __('lang.percentage')], 'fixed', ['class' => 'form-control', 'style' => 'width: 80%', 'placeholder' => __('lang.please_select')]) !!}
+                    {!! Form::select('discount_type', ['fixed' => __('lang.fixed'), 'percentage' => __('lang.percentage')], null, ['class' => 'form-control', 'style' => 'width: 80%', 'placeholder' => __('lang.please_select')]) !!}
                 </div>
             </div>
-            <div class="col-md-1">
+            <div class="col-md-4">
                 <div class="form-group">
                     {!! Form::label('discount', __('lang.discount'), []) !!}
                     {!! Form::text('discount', null, ['class' => 'form-control', 'placeholder' => __('lang.discount')]) !!}
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <div class="form-group">
                     {!! Form::label('discount_start_date', __('lang.discount_start_date'), []) !!}
                     {!! Form::text('discount_start_date', null, ['class' => 'form-control datepicker', 'placeholder' => __('lang.discount_start_date')]) !!}
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <div class="form-group">
                     {!! Form::label('discount_end_date', __('lang.discount_end_date'), []) !!}
-                    {!! Form::text('discount_end_date', null, ['class' => 'form-control datepicker', 'placeholder' => __('lang.discount_end_date')]) !!}
+                    {!! Form::text('discount_end_date', null, ['class' => 'form-control datepicker', 'placeholder' => __('lang.discount_end_date'), 'style' => 'width: 80%']) !!}
                 </div>
             </div>
             <div class="col-md-2">
@@ -400,10 +336,10 @@
                     {!! Form::label('active', __('lang.status'), []) !!} <br>
                     {!! Form::checkbox('active', 1, true, ['class']) !!}
                 </div>
-            </div> --}}
+            </div>
             <div class="col-md-12" style="margin-top: 10px">
                 <div class="custom-control custom-checkbox">
-                    <input class="custom-control-input" type="checkbox" id="this_product_have_variant">
+                    <input class="custom-control-input" type="checkbox" name="this_product_have_variant" id="this_product_have_variant">
                     <label for="this_product_have_variant"
                         class="custom-control-label">@lang('lang.this_product_have_variant')</label>
                 </div>

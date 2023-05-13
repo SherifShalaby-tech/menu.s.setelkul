@@ -4,7 +4,7 @@ $("form#product_form").validate();
 
 $(function () {
     $(".datepicker").daterangepicker({
-        autoUpdateInput: false,
+        autoUpdateInput: true,
         locale: {
             cancelLabel: "Clear",
         },
@@ -93,6 +93,8 @@ $(document).on("change", "#this_product_have_variant", function () {
 
 $(document).on("click", ".add_row", function () {
     var row_id = parseInt($("#row_id").val());
+    $("#row_id").val(row_id + 1);
+
     $.ajax({
         method: "get",
         url: "/admin/product/get-variation-row?row_id=" + row_id,
@@ -106,7 +108,6 @@ $(document).on("click", ".add_row", function () {
             $("#variation_table tbody").prepend(result);
             $(".select2").select2();
 
-            $("#row_id").val(row_id + 1);
         },
     });
 });
@@ -114,14 +115,15 @@ $(document).on("click", ".remove_row", function () {
     row_id = $(this).closest("tr").data("row_id");
     $(this).closest("tr").remove();
 });
-$(document).on("change", "#purchase_price", function () {
-    let purchase_price = __read_number($(this));
-    __write_number($(".default_purchase_price"), purchase_price);
-});
-$(document).on("change", "#sell_price", function () {
-    let sell_price = __read_number($(this));
-    __write_number($(".default_sell_price"), sell_price);
-});
+// $(document).on("change", "#purchase_price", function () {
+//     let purchase_price = __read_number($(this));
+//     __write_number($(".default_purchase_price"), purchase_price);
+// });
+// $(document).on("change", "#sell_price", function () {
+//     var row=$(this).parent('td').parent('tr').data('row_id');
+//     let sell_price = __read_number($(this));
+//     __write_number($(".default_sell_price"), sell_price);
+// });
 //////
 $('body').delegate('.add_size_row' , 'click', function() {
 // $(document).on('click', "", function (e) {
@@ -140,21 +142,6 @@ $('body').delegate('.add_size_row' , 'click', function() {
             $("#size_table tbody").prepend(result);
             $(".select2").select2();
             $(".activeSwitch").bootstrapSwitch();
-            $(".datepicker").daterangepicker({
-                autoUpdateInput: false,
-                locale: {
-                    cancelLabel: "Clear",
-                },
-                singleDatePicker: true,
-            });
-        
-            $(".datepicker").on("apply.daterangepicker", function (ev, picker) {
-                $(this).val(picker.startDate.format("MM/DD/YYYY"));
-            });
-        
-            $(".datepicker").on("cancel.daterangepicker", function (ev, picker) {
-                $(this).val("");
-            });
             $("#row_size_id").val(row_size_id + 1);
         },
     });

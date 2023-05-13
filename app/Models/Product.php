@@ -104,4 +104,8 @@ class Product extends Model implements HasMedia
     {
         return $this->belongsToMany('App\Models\Size', 'product_size')->withPivot('purchase_price','sell_price','discount_type','discount','discount_start_date','discount_end_date');
     }
+    public function product_sizes()
+    {
+        return $this->hasMany('App\Models\ProductSize', 'product_id');
+    }
 }

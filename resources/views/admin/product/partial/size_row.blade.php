@@ -4,7 +4,7 @@
     @endif
     <td style = 'width: 15%'>
         <div class="input-group my-group ">
-            {!! Form::select('sizes[' . $row_id . '][size_id]', $sizes,null,['class' => 'form-control select2','style' => 'width: 60%','data-live-search' => 'true', 'placeholder' => __('lang.size')]) !!}
+            {!! Form::select('sizes[' . $row_id . '][size_id]', $sizes,null,['class' => 'form-control select2','data-live-search' => 'true', 'placeholder' => __('lang.size')]) !!}
             <span class="input-group-btn">
                 @can('settings.size.create')
                     <button class="btn-modal btn btn-default bg-white btn-flat"
@@ -19,18 +19,6 @@
     </td>
     <td>
         {!! Form::text('sizes[' . $row_id . '][sell_price]', null, ['class' => 'form-control', 'placeholder' => __('lang.sell_price'), 'required']) !!}
-    </td>
-    <td>
-        {!! Form::select('sizes[' . $row_id . '][discount_type]', ['fixed' => __('lang.fixed'), 'percentage' => __('lang.percentage')], 'fixed', ['class' => 'form-control', 'style' => 'width: 80%', 'placeholder' => __('lang.please_select')]) !!}
-    </td>
-    <td>
-        {!! Form::text('sizes[' . $row_id . '][discount]', null, ['class' => 'form-control', 'placeholder' => __('lang.discount')]) !!}
-    </td>
-    <td>
-        {!! Form::text('sizes[' . $row_id . '][discount_start_date]', null, ['class' => 'form-control datepicker', 'placeholder' => __('lang.discount_start_date')]) !!}
-    </td>
-    <td>
-        {!! Form::text('sizes[' . $row_id . '][discount_end_date]', null, ['class' => 'form-control datepicker', 'placeholder' => __('lang.discount_end_date')]) !!}
     </td>
     <td> <button type="button" class="btn btn-danger btn-xs remove_row mt-2"><i class="fa fa-times"></i></button>
 </tr>
