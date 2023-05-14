@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\System;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -97,15 +98,22 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('replace_space', function ($string) {
             return "str_replace(' ', '_', $string)";
         });
-
         $path = base_path('.env');
         $test = file_get_contents($path);
-        $new_app_url=System::getProperty('pos');
-        $current_url=config('app.url');
-        if(!empty($new_app_url)){
-            $new_url='APP_URL='.$new_app_url;
-            $old_url='APP_URL='.$current_url;
-            file_put_contents($path , str_replace($old_url,$new_url , $test));
+        if(session('system_mode') == 'pos' || session('system_mode') == 'garments' || session('system_mode') == 'supermarket')
+        {   
+            if (Schema::hasTable('systems'))
+            {
+                $new_app_url=System::getProperty('pos');
+                $current_url=config('app.url');
+                if(!empty($new_app_url) ){
+                    $new_url='APP_URL='.$new_app_url;
+                    $old_url='APP_URL='.$current_url;
+                    if($new_url !==$old_url){
+                    file_put_contents($path , str_replace($old_url,$new_url , $test));
+                    }
+                }
+            }
         }
         
         // $path = base_path('.env');
