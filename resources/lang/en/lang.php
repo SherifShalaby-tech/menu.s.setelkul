@@ -257,4 +257,6 @@ return [
     'use_tags_info' => 'Use tags in text like {store_name} to display data automatically.',
 
     'language' => 'Language',
+    'default'=>'Default',
+    'products_count'=>'Products Count',
 ];

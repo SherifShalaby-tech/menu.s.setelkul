@@ -6,6 +6,8 @@ use App\Models\Cart;
 use App\Models\DiningTable;
 use App\Models\Offer;
 use App\Models\Product;
+use App\Models\ProductSize;
+use App\Models\Size;
 use App\Models\Store;
 use App\Models\Variation;
 use App\Utils\CartUtil;
@@ -56,7 +58,6 @@ class CartController extends Controller
         $month_array = $this->commonUtil->getMonthsArray();
         $stores = Store::pluck('name', 'id');
         $dining_tables = DiningTable::pluck('name', 'id');
-
         return view('cart.view')->with(compact(
             'stores',
             'extras',
@@ -121,69 +122,167 @@ class CartController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function addToCart($id)
-    {
-        try {
-            $quantity = !empty(request()->quantity) ? request()->quantity : 1;
-            $product = Product::find($id);
-            $variation = Variation::where('product_id', $id)->first();
 
-            $user_id = Session::get('user_id');
-            $price = $variation->default_sell_price;
+     public function addToCart($id)
+     {
+         try {
+             $quantity = !empty(request()->quantity) ? request()->quantity : 1;
+             $variation = Variation::find( $id);
+             $product = Product::find($variation->product_id);
+ 
+             $user_id = Session::get('user_id');
+             $price = $variation->default_sell_price;
+             $price = $price - $product->discount_value;
+             $item_exist = \Cart::session($user_id)->get($variation->id);
+             if (!empty($item_exist)) {
+                 \Cart::session($user_id)->update($variation->id, array(
+                     'quantity' =>  array(
+                         'relative' => false,
+                         'value' => $item_exist->quantity + 1
+                     ),
+                 ));
+             } else {
+                 \Cart::session($user_id)->add(array(
+                     'id' => $variation->id,
+                     'name' => $product->name,
+                     'price' => $price,
+                     'quantity' =>  $quantity,
+                     'attributes' => [
+                         'variation_id' => $variation->id,
+                         'extra' => false,
+                         'discount' => $product->discount_value,
+                         'size'=>$variation->size->name,
+                     ],
+                     'associatedModel' => $product
+                 ));
+             }
+ 
+             $this->cartUtil->createOrUpdateCart($user_id);
+ 
+             $output = [
+                 'success' => 1,
+                 'msg' => __('lang.added_to_the_cart_successfully')
+             ];
+         } catch (\Exception $e) {
+             Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+             $output = [
+                 'success' => false,
+                 'msg' => __('lang.something_went_wrong')
+             ];
+         }
+ 
+         return response()->json(['status'=> $output]);
+     }
+    // public function addToCart($id,$sizeId)
+    // {
+    //     try {
+            
+    //         // return $sizeId;
+    //         $quantity = !empty(request()->quantity) ? request()->quantity : 1;
+    //         $product = Product::find($id);
+    //         $variation = Variation::where('product_id', $id)->first();
 
-            $price = $price - $product->discount_value;
-            $item_exist = \Cart::session($user_id)->get($product->id);
+    //         $user_id = Session::get('user_id');
+    //         if(!empty($variation)){
+    //             $price = $variation->default_sell_price;
+    //         }else{
+    //             $price = 0;
+    //         }
 
+    //         $product_size=$product->sizes->where('id',$sizeId)->first();
+    //         $price = $price - $product_size->discount_value;
+    //         $item_exist = \Cart::session($user_id)->get($product->id);
+    //         // return $item_exist;
+            
+    //         if (!empty($item_exist)) {
+    //             $newArray=$item_exist->attributes->sizes;
+    //             $count = count($newArray);
+    //             $is_added=false;
+    //             for($i = 0; $i < $count; $i++){
+    //                 $size=$newArray[$i]->size ;
+    //                 if($size===$product_size->id){
+    //                     // $iobcount = count($newArray);
+    //                     // for($iob = 0; $iob < $iobcount; $iob++){
+    //                     $newArray[$i]->qty = $newArray[$i]->qty+1;
+    //                 // }
+    //                     \Cart::session($user_id)->update($product->id, array(
+    //                         'quantity' =>  array(
+    //                             'relative' => false,
+    //                             'value' => $item_exist->quantity + 1
+    //                         ),
+    //                         'attributes' => [
+    //                             'variation_id' => !empty($variation)?$variation->id:null,
+    //                             'extra' => false,
+    //                             'discount' => $product->discount_value,
+    //                             'sizes' => $newArray
+    //                         ]
+    //                     ));
+    //                     $is_added=true;
+    //                      break 1;
+    //                 }
+    //             }
+    //             if(!$is_added){
+    //                     array_push($newArray,(object) array('size' => $product_size->id, 'qty' => 1));
+    //                     \Cart::session($user_id)->update($product->id, array(
+    //                             'quantity' =>  array(
+    //                                 'relative' => false,
+    //                                 'value' => $item_exist->quantity + 1
+    //                             ),
+    //                             'attributes' => [
+    //                                 'variation_id' => !empty($variation)?$variation->id:null,
+    //                                 'extra' => false,
+    //                                 'discount' => $product->discount_value,
+    //                                 'sizes' =>$newArray
+    //                             ]
+    //                         ));
+    //             }
+    //          }
+    //         else {
+    //             $sizes_array[] = (object) array('size' => $product_size->id, 'qty' => 1);
+    //             // return 'qwe';
+    //             \Cart::session($user_id)->add(array(
+    //                 'id' => $product->id,
+    //                 'name' => $product->name,
+    //                 'price' => $price,
+    //                 'quantity' =>  $quantity,
+    //                 'attributes' => [
+    //                     'variation_id' => !empty($variation)?$variation->id:null,
+    //                     'extra' => false,
+    //                     'discount' => $product->discount_value,
+    //                     'sizes'=>$sizes_array
+    //                 ],
+    //                 'associatedModel' => $product
+    //             ));
+    //         }
 
-            if (!empty($item_exist)) {
-                \Cart::session($user_id)->update($product->id, array(
-                    'quantity' =>  array(
-                        'relative' => false,
-                        'value' => $item_exist->quantity + 1
-                    ),
-                ));
-            } else {
-                \Cart::session($user_id)->add(array(
-                    'id' => $product->id,
-                    'name' => $product->name,
-                    'price' => $price,
-                    'quantity' =>  $quantity,
-                    'attributes' => [
-                        'variation_id' => $variation->id,
-                        'extra' => false,
-                        'discount' => $product->discount_value
-                    ],
-                    'associatedModel' => $product
-                ));
-            }
+    //         $this->cartUtil->createOrUpdateCart($user_id);
 
-            $this->cartUtil->createOrUpdateCart($user_id);
+    //         $output = [
+    //             'success' => 1,
+    //             'msg' => __('lang.added_to_the_cart_successfully')
+    //         ];
+    //     } catch (\Exception $e) {
+    //         Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+    //         $output = [
+    //             'success' => false,
+    //             'msg' => __('lang.something_went_wrong')
+    //         ];
+    //     }
 
-            $output = [
-                'success' => 1,
-                'msg' => __('lang.added_to_the_cart_successfully')
-            ];
-        } catch (\Exception $e) {
-            Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
-            $output = [
-                'success' => false,
-                'msg' => __('lang.something_went_wrong')
-            ];
-        }
-
-        return redirect()->back()->with('status', $output);
-    }
+    //     return response()->json(['status', $output]);
+    //     // return redirect()->back()->with('status', $output);
+    // }
     /**
      * remove product from cart
      *
      * @param int $product_id
      * @return void
      */
-    public function removeProduct($product_id)
+    public function removeProduct($cart_id)
     {
         try {
             $user_id = Session::get('user_id');
-            \Cart::session($user_id)->remove($product_id);
+            \Cart::session($user_id)->remove($cart_id);
 
             $this->cartUtil->createOrUpdateCart($user_id);
 

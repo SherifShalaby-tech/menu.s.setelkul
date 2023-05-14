@@ -38,6 +38,7 @@
                     <th>@lang('lang.name')</th>
                     <th>@lang('lang.category')</th>
                     <th>@lang('lang.description')</th>
+                    <th>@lang('lang.size')</th>
                     <th>@lang('lang.cost')</th>
                     <th>@lang('lang.sell_price')</th>
                     <th>@lang('lang.discount')</th>
@@ -78,7 +79,7 @@
             buttons: buttons,
             processing: true,
             serverSide: true,
-            aaSorting: [[2, 'asc']],
+            // aaSorting: [[2, 'asc']],
              "ajax": {
                 "url": "/admin/product",
                 "data": function ( d ) {
@@ -87,7 +88,7 @@
             },
             columnDefs: [ {
                 "targets": [0, 10],
-                "orderable": false,
+                "orderable": true,
                 "searchable": false
             } ],
             columns: [
@@ -95,6 +96,7 @@
                 { data: 'name', name: 'products.name'  },
                 { data: 'category', name: 'product_classes.name'  },
                 { data: 'product_details', name: 'product_details'  },
+                { data: 'size', name: 'size'  },
                 { data: 'purchase_price', name: 'purchase_price'  },
                 { data: 'sell_price', name: 'sell_price'  },
                 { data: 'discount', name: 'discount'  },
