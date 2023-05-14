@@ -227,7 +227,7 @@ $locale_direction = LaravelLocalization::getCurrentLocaleDirection();
                                         </div> --}}
                                         <div
                                             class="flex-1 text-base @if ($locale_direction == 'rtl') text-left @else text-right @endif font-semibold">
-                                            {{ @num_format($variation->default_sell_price - $item->associatedModel->discount) }}
+                                            {{ @num_format($variation->default_sell_price - $item->attributes->discount) }}
                                             <span
                                                 class="font-bold">
                                             {{ session('currency')['code'] }}</span>

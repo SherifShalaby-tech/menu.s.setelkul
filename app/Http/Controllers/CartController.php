@@ -125,20 +125,26 @@ class CartController extends Controller
 
      public function addToCart($id)
      {
+         // return request()->quantity;
          try {
              $quantity = !empty(request()->quantity) ? request()->quantity : 1;
              $variation = Variation::find( $id);
              $product = Product::find($variation->product_id);
- 
+             $IsproductHasDiscount = Product::where('id',$variation->product_id)
+             ->whereDate('discount_start_date', '<=', date('Y-m-d'))->whereDate('discount_end_date', '>=', date('Y-m-d'))->first();
+             $product_discount= !empty($IsproductHasDiscount)?$product->discount_value:0;
+            
              $user_id = Session::get('user_id');
              $price = $variation->default_sell_price;
-             $price = $price - $product->discount_value;
+             $price = $price - $product_discount;
              $item_exist = \Cart::session($user_id)->get($variation->id);
+             // return $item_exist->quantity+$quantity;
              if (!empty($item_exist)) {
                  \Cart::session($user_id)->update($variation->id, array(
+                     // 'quantity' =>  $item_exist->quantity+$quantity
                      'quantity' =>  array(
-                         'relative' => false,
-                         'value' => $item_exist->quantity + 1
+                         'relative' => true,
+                         'value' => $item_exist->quantity+$quantity
                      ),
                  ));
              } else {
@@ -150,7 +156,7 @@ class CartController extends Controller
                      'attributes' => [
                          'variation_id' => $variation->id,
                          'extra' => false,
-                         'discount' => $product->discount_value,
+                         'discount' => $product_discount,
                          'size'=>$variation->size->name,
                      ],
                      'associatedModel' => $product

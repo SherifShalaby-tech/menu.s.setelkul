@@ -98,16 +98,24 @@ class AppServiceProvider extends ServiceProvider
             return "str_replace(' ', '_', $string)";
         });
 
-
-        
         $path = base_path('.env');
         $test = file_get_contents($path);
         $new_app_url=System::getProperty('pos');
+        $current_url=config('app.url');
         if(!empty($new_app_url)){
             $new_url='APP_URL='.$new_app_url;
-            // file_put_contents($path , str_replace('APP_URL=https://setelkul.sherifshalaby.tech/',$new_url , $test));
-            file_put_contents($path , str_replace('APP_URL=http://localhost:8000',$new_url , $test));
+            $old_url='APP_URL='.$current_url;
+            file_put_contents($path , str_replace($old_url,$new_url , $test));
         }
+        
+        // $path = base_path('.env');
+        // $test = file_get_contents($path);
+        // $new_app_url=System::getProperty('pos');
+        // if(!empty($new_app_url)){
+        //     $new_url='APP_URL='.$new_app_url;
+        //     // file_put_contents($path , str_replace('APP_URL=https://setelkul.sherifshalaby.tech/',$new_url , $test));
+        //     file_put_contents($path , str_replace('APP_URL=http://localhost:8000',$new_url , $test));
+        // }
         // else{
         //     file_put_contents($path , str_replace( 'APP_URL=https://s.elhabib.sherifshalaby.tech','APP_URL=http://localhost:8000', $test));
         // }
