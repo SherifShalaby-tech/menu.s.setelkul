@@ -143,7 +143,7 @@ class CartController extends Controller
                  \Cart::session($user_id)->update($variation->id, array(
                      // 'quantity' =>  $item_exist->quantity+$quantity
                      'quantity' =>  array(
-                         'relative' => true,
+                         'relative' => false,
                          'value' => $item_exist->quantity+$quantity
                      ),
                  ));
