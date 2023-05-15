@@ -66,6 +66,7 @@
                                     <button
                                         class="plus border-2 rounded-full text-lg text-center border-dark text-dark h-8 w-8">+</button>
                                 </div>
+                                
                                 <div class="flex">
                                     <a href="{{ action('CartController@addToCart', $product->id) }}"
                                         class="add_to_cart_btn bg-red text-white font-semibold rounded-lg px-4 py-2 mt-4 ">@lang('lang.add_to_cart')</a>
