@@ -251,4 +251,5 @@ return [
     'table_no'=>'طاولة رقم',
     'dinnig_in_restaurant'=>'In The Restaurant ',
     'table_no'=>'Table No',
+    'enter_restaurant_store'=>'ادخل اسم المطعم',
 ];
