@@ -14,7 +14,7 @@ class SystemSeeder extends Seeder
      */
     public function run()
     {
-        if(env('ENABLE_POS_SYNC')){
+        if(env('ENABLE_POS_SYNC')==false || env('ENABLE_POS_SYNC')==null){
             DB::table('systems')->insert([
                 'key' => 'language',
                 'value' => 'ar', 'date_and_time' => Carbon::now(), 'created_by' => 1
