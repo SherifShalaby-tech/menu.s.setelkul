@@ -280,12 +280,15 @@ class ProductClassController extends Controller
                             $media->delete();
                         }
                     }
-
+                    if(preg_match('/^data:image/', $request->cropImages[0]))
+                    {
+                    $class->clearMediaCollection('class');
                     $extention = explode(";",explode("/",$img)[1])[0];
                     $image = rand(1,1500)."_image.".$extention;
                     $filePath = public_path($image);
                     $fp = file_put_contents($filePath,base64_decode(explode(",",$img)[1]));
                     $class->addMedia($filePath)->toMediaCollection('product_class');
+                    }
                 
                 }
             } 
