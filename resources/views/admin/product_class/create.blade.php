@@ -220,7 +220,7 @@
 
         <div class="modal-body">
             <div class="form-group">
-                <x-adminlte-input name="name" label="{{ __('lang.name') }}" placeholder="{{ __('lang.name') }}"
+                <x-adminlte-input name="name" label="{{ __('lang.name') }}" required placeholder="{{ __('lang.name') }}"
                     enable-old-support>
                     <x-slot name="appendSlot">
                         <div class="input-group-text text-primary translation_btn"  data-type="product_class">
@@ -233,6 +233,7 @@
                 'attribute' => 'name',
                 'translations' => [],
                 'type' => 'product_class',
+                
             ])
             <input type="hidden" name="quick_add" value="{{ $quick_add }}">
             <div class="form-group">
@@ -318,12 +319,12 @@
 
 
 <script>
-  const fileInput = document.querySelector('#file-input');
-    const previewContainer = document.querySelector('.preview-container');
-    const croppieModal = document.querySelector('#croppie-modal');
-    const croppieContainer = document.querySelector('#croppie-container');
-    const croppieCancelBtn = document.querySelector('#croppie-cancel-btn');
-    const croppieSubmitBtn = document.querySelector('#croppie-submit-btn');
+  var fileInput = document.querySelector('#file-input');
+    var previewContainer = document.querySelector('.preview-container');
+    var croppieModal = document.querySelector('#croppie-modal');
+    var croppieContainer = document.querySelector('#croppie-container');
+    var croppieCancelBtn = document.querySelector('#croppie-cancel-btn');
+    var croppieSubmitBtn = document.querySelector('#croppie-submit-btn');
 
 
     fileInput.addEventListener('change', () => {
