@@ -78,7 +78,7 @@ return [
     'filter' => 'منقي',
     'active' => 'نشيط',
     'deactivated' => 'معطل',
-    'sort' => 'نوع',
+    'sort' => 'الترتيب',
     'create_offer' => 'إنشاء عرض',
     'products' => 'منتجات',
     'start_date' => 'تاريخ البدء',

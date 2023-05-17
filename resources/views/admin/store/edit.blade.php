@@ -21,7 +21,7 @@
             </div>
             <div class="form-group">
                 {!! Form::label('phone_number', __('lang.phone_number'). ':*') !!}
-                {!! Form::text('phone_number', $store->phone_number, ['class' => 'form-control', 'placeholder' => __('lang.phone_number'), 'required']) !!}
+                {!! Form::text('phone_number', $store->phone_number, ['class' => 'form-control', 'placeholder' => __('lang.phone_number')]) !!}
             </div>
             <div class="form-group">
                 {!! Form::label('email', __('lang.email')) !!}

@@ -322,7 +322,7 @@
                 <div class="col-md-4">
                     @include('admin.partial.translation_textarea', [
                         'attribute' => 'product_details',
-                        'translations' => $product->translations,
+                        'translations' => $product->details_translations,
                     ])
                 </div>
             </div>
@@ -365,6 +365,10 @@
                         {!! Form::label('discount_end_date', __('lang.discount_end_date'), []) !!}
                         {!! Form::text('discount_end_date', !empty($product->discount_end_date) ? @format_date($product->discount_end_date) : null, ['class' => 'form-control datepicker', 'placeholder' => __('lang.discount_end_date')]) !!}
                     </div>
+                </div>
+                <div class="form-group">
+                    {!! Form::label('sort', __('lang.sort') . ':*') !!}
+                    {!! Form::number('sort',$product->sort , ['class' => 'form-control', 'placeholder' => __('lang.sort'), 'required']) !!}
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">

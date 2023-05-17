@@ -37,6 +37,7 @@
                     <th>@lang('lang.image')</th>
                     <th>@lang('lang.name')</th>
                     <th>@lang('lang.category')</th>
+                    <th>@lang('lang.sort')</th>
                     <th>@lang('lang.description')</th>
                     <th>@lang('lang.size')</th>
                     <th>@lang('lang.cost')</th>
@@ -95,6 +96,7 @@
                 { data: 'image', name: 'image'  },
                 { data: 'name', name: 'products.name'  },
                 { data: 'category', name: 'product_classes.name'  },
+                { data: 'sort', name: 'products.sort'  },
                 { data: 'product_details', name: 'product_details'  },
                 { data: 'size',"searchable": false , name: 'size'  },
                 { data: 'purchase_price', name: 'purchase_price'  },

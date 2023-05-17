@@ -331,6 +331,10 @@
                     {!! Form::text('discount_end_date', null, ['class' => 'form-control datepicker', 'placeholder' => __('lang.discount_end_date'), 'style' => 'width: 80%']) !!}
                 </div>
             </div>
+            <div class="form-group">
+                {!! Form::label('sort', __('lang.sort') . ':*') !!}
+                {!! Form::number('sort', 1, ['class' => 'form-control', 'placeholder' => __('lang.sort'), 'required']) !!}
+            </div>
             <div class="col-md-2">
                 <div class="form-group">
                     {!! Form::label('active', __('lang.status'), []) !!} <br>
