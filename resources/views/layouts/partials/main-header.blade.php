@@ -1,5 +1,5 @@
 <div class="w-full flex flex-row bg-center bg-no-repeat  text-center items-center"
-    style="height: 542px; background-size: 90% 100%; background-image: url('@if (!empty(session('home_background_image'))) {{ asset('uploads/' . session('home_background_image')) }}@else{{ asset('images/default-home-bg.png') }} @endif')">
+    style="height: 542px; background-size: 100% 100%; background-image: url('@if (!empty(session('home_background_image'))) {{ asset('uploads/' . session('home_background_image')) }}@else{{ asset('images/default-home-bg.png') }} @endif')">
     <div class="w-full">
         <div class="flex flex-row">
             <div class="flex-3 text-white text-4xl font-bold text-left w-48">
