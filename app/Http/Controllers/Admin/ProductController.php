@@ -231,6 +231,7 @@ class ProductController extends Controller
             $data['active'] = !empty($data['active']) ? 1 : 0;
             $data['type'] = !empty($request->this_product_have_variant) ? 'variable' : 'single';
             $data['translations'] = !empty($data['translations']) ? $data['translations'] : [];
+            $data['details_translations'] = !empty($data['details_translations']) ? $data['details_translations'] : [];
             DB::beginTransaction();
             $product = Product::create($data);
 
@@ -239,11 +240,14 @@ class ProductController extends Controller
 
             if ($request->has('image')) {
                 if (!empty($request->input('image'))) {
-                    $extention = explode(";",explode("/",$request->image)[1])[0];
-                    $image = rand(1,1500)."_image.".$extention;
-                    $filePath = public_path($image);
-                    $fp = file_put_contents($filePath,base64_decode(explode(",",$request->image)[1]));
-                    $product->addMedia($filePath)->toMediaCollection('product');
+                    if(preg_match('/^data:image/', $request->input('image')))
+                    {
+                        $extention = explode(";",explode("/",$request->image)[1])[0];
+                        $image = rand(1,1500)."_image.".$extention;
+                        $filePath = public_path($image);
+                        $fp = file_put_contents($filePath,base64_decode(explode(",",$request->image)[1]));
+                        $product->addMedia($filePath)->toMediaCollection('product');
+                    }
                 }
             }
 
@@ -338,11 +342,15 @@ class ProductController extends Controller
             } */
             if ($request->has('image')) {
                 if (!empty($request->input('image'))) {
+                    if(preg_match('/^data:image/', $request->input('image')))
+                    {
+                    $product->clearMediaCollection('product');
                     $extention = explode(";",explode("/",$request->image)[1])[0];
                     $image = rand(1,1500)."_image.".$extention;
                     $filePath = public_path($image);
                     $fp = file_put_contents($filePath,base64_decode(explode(",",$request->image)[1]));
                     $product->addMedia($filePath)->toMediaCollection('product');
+                    }
                 }
             }
 

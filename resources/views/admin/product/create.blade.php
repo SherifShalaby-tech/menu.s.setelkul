@@ -18,7 +18,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
 
 <style>
-    .preview-product-container{
+    .previewp-container {
         /* display: flex;
         flex-wrap: wrap;
         gap: 10px;
@@ -260,16 +260,16 @@
                         <div class="form-group">
                             <div class="variants">
                                 <div class='file file--upload w-100'>
-                                    <label for='file-product-input' class="w-100">
+                                    <label for='filep-input' class="w-100">
                                         <i class="fas fa-cloud-upload-alt"></i>Upload
                                     </label>
                                     <!-- <input  id="file-input" multiple type='file' /> -->
-                                    <input type="file" id="file-product-input" >
+                                    <input type="file" id="filep-input" >
                                 </div>
                             </div>
                         </div>
                         <div class="col-10 offset-1">
-                            <div class="preview-product-container"></div>
+                            <div class="previewp-container"></div>
                         </div>
             </div>
     
@@ -387,11 +387,11 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <div id="croppie-product-modal" style="display:none">
-                                <div id="croppie-product-container"></div>
-                                <button data-dismiss="modal" id="croppie-product-cancel-btn" type="button" class="btn btn-secondary"><i
+                            <div id="croppiep-modal" style="display:none">
+                                <div id="croppiep-container"></div>
+                                <button data-dismiss="modal" id="croppiep-cancel-btn" type="button" class="btn btn-secondary"><i
                                         class="fas fa-times"></i></button>
-                                <button id="croppie-product-submit-btn" type="button" class="btn btn-primary"><i
+                                <button id="croppie-submit-btn" type="button" class="btn btn-primary"><i
                                         class="fas fa-crop"></i></button>
                             </div>
                         </div>
@@ -409,12 +409,13 @@
 
 
 <script>
-  var fileInput = document.querySelector('#file-product-input');
-    var previewContainer = document.querySelector('.preview-product-container');
-    var croppieModal = document.querySelector('#croppie-product-modal');
-    var croppieContainer = document.querySelector('#croppie-product-container');
-    var croppieCancelBtn = document.querySelector('#croppie-product-cancel-btn');
-    var croppieSubmitBtn = document.querySelector('#croppie-product-submit-btn');
+ 
+  var fileInput = document.querySelector('#filep-input');
+    var previewContainer = document.querySelector('.previewp-container');
+    var croppieModal = document.querySelector('#croppiep-modal');
+    var croppieContainer = document.querySelector('#croppiep-container');
+    var croppieCancelBtn = document.querySelector('#croppiep-cancel-btn');
+    var croppieSubmitBtn = document.querySelector('#croppiep-submit-btn');
 
 
     fileInput.addEventListener('change', () => {
@@ -444,7 +445,7 @@
                         if (window.confirm('Are you sure you want to delete this image?')) {
                             files.splice(file, 1)
                             preview.remove();
-                            getImages()
+                            getpImages()
                         }
                     });
 
@@ -466,8 +467,8 @@
                 reader.readAsDataURL(file);
             }
         }
-
-        getImages()
+        console.log(getpImages())
+        getpImages()
     });
     function launchCropTool(img) {
         // Set up Croppie options
@@ -510,22 +511,24 @@
                 croppieModal.style.display = 'none';
                 $('#exampleModal').modal('hide');
                 croppie.destroy();
-                getImages()
+                getpImages()
             });
         });
     }
-    function getImages() {
+    function getpImages() {
+        let images = [];
         setTimeout(() => {
-            const container = document.querySelectorAll('.preview-product-container');
-            let images = [];
+            const container = document.querySelectorAll('.previewp-container');
             $("#cropped_images").empty();
             for (let i = 0; i < container[0].children.length; i++) {
                 images.push(container[0].children[i].children[0].src)
                 var newInput = $("<input>").attr("type", "hidden").attr("name", "image").val(container[0].children[i].children[0].src);
                 $("#cropped_images").append(newInput);
             }
-            return images
+            console.log(images)
+            
         }, 500);
+        return images
     }
 
 </script>
