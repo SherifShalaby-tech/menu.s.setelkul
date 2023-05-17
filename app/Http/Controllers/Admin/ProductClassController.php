@@ -49,7 +49,7 @@ class ProductClassController extends Controller
         }
         if (request()->ajax()) {
             $product_classes = ProductClass::leftJoin("products","products.product_class_id","=","product_classes.id")
-            ->groupBy('product_classes.id');
+            ->groupBy('product_classes.id')->orderBy('product_classes.sort')->orderBy('product_classes.created_at','desc');
 
 
             $product_classes = $product_classes->selectRaw(

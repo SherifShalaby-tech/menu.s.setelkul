@@ -53,7 +53,8 @@ class ProductController extends Controller
         if (request()->ajax()) {
 
             $products = Product::
-            leftjoin('product_classes', 'products.product_class_id', 'product_classes.id');
+            leftjoin('product_classes', 'products.product_class_id', 'product_classes.id')
+            ->orderBy('products.sort')->orderBy('products.created_at','desc');
             // ->leftjoin('product_size', 'products.id', 'product_size.product_id');
 
             if (!empty(request()->product_class_id)) {
@@ -232,6 +233,7 @@ class ProductController extends Controller
             $data['type'] = !empty($request->this_product_have_variant) ? 'variable' : 'single';
             $data['translations'] = !empty($data['translations']) ? $data['translations'] : [];
             $data['details_translations'] = !empty($data['details_translations']) ? $data['details_translations'] : [];
+            $data['sort'] = !empty($data['sort']) ? $data['sort'] : 1;
             DB::beginTransaction();
             $product = Product::create($data);
 
@@ -328,6 +330,8 @@ class ProductController extends Controller
             $data['created_by'] = auth()->user()->id;
             $data['type'] = !empty($request->this_product_have_variant) ? 'variable' : 'single';
             $data['translations'] = !empty($data['translations']) ? $data['translations'] : [];
+            $data['details_translations'] = !empty($data['details_translations']) ? $data['details_translations'] : [];
+            $data['sort'] = !empty($data['sort']) ? $data['sort'] :1;
             $product = Product::where('id', $id)->first();
 
             DB::beginTransaction();

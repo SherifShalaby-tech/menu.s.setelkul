@@ -44,7 +44,7 @@ class Product extends Model implements HasMedia
     }
     public function getProductDetailsAttribute($product_details)
     {
-        $translations = !empty($this->details_translations['name']) ? $this->details_translations['name'] : [];
+        $translations = !empty($this->details_translations['product_details']) ? $this->details_translations['product_details'] : [];
         if (!empty($translations)) {
             $lang = LaravelLocalization::getCurrentLocale();
             if (!empty($translations[$lang])) {

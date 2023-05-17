@@ -17,7 +17,7 @@ class HomeController extends Controller
     public function index()
     {
         $homepage_category_carousel = System::getProperty('homepage_category_carousel');
-        $categories = ProductClass::orderBy('sort', 'asc')->where('status', 1)->where('name', '!=', 'Extras')->get();
+        $categories = ProductClass::orderBy('product_classes.sort')->orderBy('product_classes.created_at','desc')->where('status', 1)->where('name', '!=', 'Extras')->get();
 
         $offers_array = [];
 

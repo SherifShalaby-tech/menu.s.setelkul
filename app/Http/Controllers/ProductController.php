@@ -17,7 +17,7 @@ class ProductController extends Controller
     public function getProductListByCategory($category_id)
     {
         $category = ProductClass::find($category_id);
-        $products = Product::where('product_class_id', $category_id)->where('active', 1)->get();
+        $products = Product::where('product_class_id', $category_id)->where('active', 1)->orderBy('products.sort')->orderBy('products.created_at','desc')->get();
 
         return view('product.index')->with(compact(
             'category',
