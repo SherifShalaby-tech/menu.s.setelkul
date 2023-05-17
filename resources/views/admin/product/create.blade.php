@@ -18,7 +18,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
 
 <style>
-    .preview-container {
+    .preview-product-container{
         /* display: flex;
         flex-wrap: wrap;
         gap: 10px;
@@ -260,16 +260,16 @@
                         <div class="form-group">
                             <div class="variants">
                                 <div class='file file--upload w-100'>
-                                    <label for='file-input' class="w-100">
+                                    <label for='file-product-input' class="w-100">
                                         <i class="fas fa-cloud-upload-alt"></i>Upload
                                     </label>
                                     <!-- <input  id="file-input" multiple type='file' /> -->
-                                    <input type="file" id="file-input" >
+                                    <input type="file" id="file-product-input" >
                                 </div>
                             </div>
                         </div>
                         <div class="col-10 offset-1">
-                            <div class="preview-container"></div>
+                            <div class="preview-product-container"></div>
                         </div>
             </div>
     
@@ -387,11 +387,11 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <div id="croppie-modal" style="display:none">
-                                <div id="croppie-container"></div>
-                                <button data-dismiss="modal" id="croppie-cancel-btn" type="button" class="btn btn-secondary"><i
+                            <div id="croppie-product-modal" style="display:none">
+                                <div id="croppie-product-container"></div>
+                                <button data-dismiss="modal" id="croppie-product-cancel-btn" type="button" class="btn btn-secondary"><i
                                         class="fas fa-times"></i></button>
-                                <button id="croppie-submit-btn" type="button" class="btn btn-primary"><i
+                                <button id="croppie-product-submit-btn" type="button" class="btn btn-primary"><i
                                         class="fas fa-crop"></i></button>
                             </div>
                         </div>
@@ -409,12 +409,12 @@
 
 
 <script>
-  const fileInput = document.querySelector('#file-input');
-    const previewContainer = document.querySelector('.preview-container');
-    const croppieModal = document.querySelector('#croppie-modal');
-    const croppieContainer = document.querySelector('#croppie-container');
-    const croppieCancelBtn = document.querySelector('#croppie-cancel-btn');
-    const croppieSubmitBtn = document.querySelector('#croppie-submit-btn');
+  var fileInput = document.querySelector('#file-product-input');
+    var previewContainer = document.querySelector('.preview-product-container');
+    var croppieModal = document.querySelector('#croppie-product-modal');
+    var croppieContainer = document.querySelector('#croppie-product-container');
+    var croppieCancelBtn = document.querySelector('#croppie-product-cancel-btn');
+    var croppieSubmitBtn = document.querySelector('#croppie-product-submit-btn');
 
 
     fileInput.addEventListener('change', () => {
@@ -516,7 +516,7 @@
     }
     function getImages() {
         setTimeout(() => {
-            const container = document.querySelectorAll('.preview-container');
+            const container = document.querySelectorAll('.preview-product-container');
             let images = [];
             $("#cropped_images").empty();
             for (let i = 0; i < container[0].children.length; i++) {
