@@ -282,17 +282,20 @@ class ProductClassController extends Controller
                     }
                     if(preg_match('/^data:image/', $request->cropImages[0]))
                     {
-                    $class->clearMediaCollection('class');
+                    $class->clearMediaCollection('product_class');
                     $extention = explode(";",explode("/",$img)[1])[0];
                     $image = rand(1,1500)."_image.".$extention;
                     $filePath = public_path($image);
                     $fp = file_put_contents($filePath,base64_decode(explode(",",$img)[1]));
                     $class->addMedia($filePath)->toMediaCollection('product_class');
                     }
-                
+                    // return $request->cropImages[0];
+                    
                 }
             } 
-
+            if(!isset($request->cropImages[0]) || strlen($request->cropImages[0])==0){
+                $class->clearMediaCollection('product_class');
+            }
 
 
 
@@ -363,5 +366,26 @@ class ProductClassController extends Controller
         $product_classes_dp = $this->commonUtil->createDropdownHtml($product_classes, __('lang.please_select'));
 
         return $product_classes_dp;
+    }
+
+    public function deleteProductClassImage($id)
+    {
+        // try {
+            // $class = ProductClass::find($id);
+            // $class->clearMediaCollection('product_class');
+            // return $class;
+            $output = [
+                'success' => true,
+                'msg' => __('lang.success')
+            ];
+        // } catch (\Exception $e) {
+        //     Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+        //     $output = [
+        //         'success' => false,
+        //         'msg' => __('lang.something_went_wrong')
+        //     ];
+        // }
+
+        return $output;
     }
 }
