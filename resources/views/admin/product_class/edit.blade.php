@@ -278,7 +278,6 @@
                     </div>
                     <div class="col-10 offset-1">
                         <div class="preview-container">
-                            {{$product_class->getFirstMediaUrl('product_class')}}
                             @if(!empty($product_class->getFirstMediaUrl('product_class')))
                                     <div id="preview{{ $product_class->id }}" class="preview">
                                           <img src="{{ !empty($product_class->getFirstMediaUrl('product_class')) ? $product_class->getFirstMediaUrl('product_class') : asset('uploads/' . session('logo')) }}"
@@ -360,6 +359,8 @@
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
+
+@section('javascript')
 <script>
 @if($product_class)
 
@@ -537,3 +538,4 @@ document.getElementById("deleteBtn{{ $product_class->id }}").addEventListener('c
 <script>
     $("[name='status']").bootstrapSwitch();
 </script>
+@endsection
