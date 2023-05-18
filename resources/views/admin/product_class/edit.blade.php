@@ -292,14 +292,14 @@
                                             id="deleteBtn{{ $product_class->id }}"
                                             class="fas fa-trash"></i>
                                     </button>
-                                        {{-- <button type="button"
+                                        <button type="button"
                                                 data-toggle="modal"
                                                 id="cropBtn{{ $product_class->id }}"
-                                                data-target="#imagesModal"
+                                                data-target="#exampleModal"
                                                 class="crop-btn"><i
                                                 style="font-size: 20px;"
                                                 class="fas fa-crop"></i>
-                                        </button> --}}
+                                        </button>
                                     </div>
                             @endif
 
@@ -360,7 +360,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
 
-@section('javascript')
+
 <script>
 @if($product_class)
 
@@ -538,4 +538,3 @@ document.getElementById("deleteBtn{{ $product_class->id }}").addEventListener('c
 <script>
     $("[name='status']").bootstrapSwitch();
 </script>
-@endsection
