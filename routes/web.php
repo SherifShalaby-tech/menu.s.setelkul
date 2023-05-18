@@ -48,6 +48,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
         Route::get('/dashboard', 'Admin\DashboardController@index')->name('dashboard');
         Route::get('/category/get-dropdown', 'Admin\ProductClassController@getDropdown');
         Route::resource('/category', Admin\ProductClassController::class)->name('index', 'categories.index');
+        Route::get('/category/delete-product-class-image/{id}', 'Admin\ProductClassController@deleteProductClassImage');
         Route::get('product/delete-product-image/{id}', 'Admin\ProductController@deleteProductImage');
         Route::get('product/get-variation-row', 'Admin\ProductController@getVariationRow');
         Route::get('product/get-size-row', 'Admin\ProductController@getSizeRow');

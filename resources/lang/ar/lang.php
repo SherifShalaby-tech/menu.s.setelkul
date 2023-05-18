@@ -252,4 +252,6 @@ return [
     'dinnig_in_restaurant'=>'In The Restaurant ',
     'table_no'=>'Table No',
     'enter_restaurant_store'=>'ادخل اسم المطعم',
+    'Are you sure?'=>'هل متأكد من حذف الصورة',
+    'Your Image has been deleted.'=>'تم حذف الصورة',
 ];

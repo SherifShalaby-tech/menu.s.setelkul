@@ -257,20 +257,20 @@
 
             <div class="col-md-4">
                 {!! Form::label('image', __('lang.image'), []) !!}
-                        <div class="form-group">
-                            <div class="variants">
-                                <div class='file file--upload w-100'>
-                                    <label for='filep-input' class="w-100">
-                                        <i class="fas fa-cloud-upload-alt"></i>Upload
-                                    </label>
-                                    <!-- <input  id="file-input" multiple type='file' /> -->
-                                    <input type="file" id="filep-input" >
-                                </div>
-                            </div>
+                <div class="form-group">
+                    <div class="variants">
+                        <div class='file file--upload w-100'>
+                            <label for='file-input' class="w-100">
+                                <i class="fas fa-cloud-upload-alt"></i>Upload
+                            </label>
+                            <!-- <input  id="file-input" multiple type='file' /> -->
+                            <input type="file" id="file-input">
                         </div>
-                        <div class="col-10 offset-1">
-                            <div class="previewp-container"></div>
-                        </div>
+                    </div>
+                </div>
+                <div class="col-10 offset-1">
+                    <div class="preview-container"></div>
+                </div>
             </div>
     
 
@@ -379,163 +379,162 @@
     {!! Form::close() !!}
 
 
-                <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div id="croppiep-modal" style="display:none">
-                                <div id="croppiep-container"></div>
-                                <button data-dismiss="modal" id="croppiep-cancel-btn" type="button" class="btn btn-secondary"><i
-                                        class="fas fa-times"></i></button>
-                                <button id="croppie-submit-btn" type="button" class="btn btn-primary"><i
-                                        class="fas fa-crop"></i></button>
-                            </div>
-                        </div>
-        
-                    </div>
+           <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="croppie-modal" style="display:none">
+                    <div id="croppie-container"></div>
+                    <button data-dismiss="modal" id="croppie-cancel-btn" type="button" class="btn btn-secondary"><i
+                            class="fas fa-times"></i></button>
+                    <button id="croppie-submit-btn" type="button" class="btn btn-primary"><i
+                            class="fas fa-crop"></i></button>
                 </div>
             </div>
+
+        </div>
+    </div>
+</div>
 @endsection
 
 
 
 @section('javascript')
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
 
 
-<script>
- 
-  var fileInput = document.querySelector('#filep-input');
-    var previewContainer = document.querySelector('.previewp-container');
-    var croppieModal = document.querySelector('#croppiep-modal');
-    var croppieContainer = document.querySelector('#croppiep-container');
-    var croppieCancelBtn = document.querySelector('#croppiep-cancel-btn');
-    var croppieSubmitBtn = document.querySelector('#croppiep-submit-btn');
+    <script>
+        var fileInput = document.querySelector('#file-input');
+        var previewContainer = document.querySelector('.preview-container');
+        var croppieModal = document.querySelector('#croppie-modal');
+        var croppieContainer = document.querySelector('#croppie-container');
+        var croppieCancelBtn = document.querySelector('#croppie-cancel-btn');
+        var croppieSubmitBtn = document.querySelector('#croppie-submit-btn');
 
 
-    fileInput.addEventListener('change', () => {
-        previewContainer.innerHTML = '';
-        let files = Array.from(fileInput.files)
+        fileInput.addEventListener('change', () => {
+            previewContainer.innerHTML = '';
+            let files = Array.from(fileInput.files)
 
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            if (file.type.match('image.*')) {
-                const reader = new FileReader();
-                reader.addEventListener('load', () => {
-                    const preview = document.createElement('div');
-                    preview.classList.add('preview');
-                    const img = document.createElement('img');
-                    const actions = document.createElement('div');
-                    actions.classList.add('action_div');
-                    img.src = reader.result;
-                    preview.appendChild(img);
-                    preview.appendChild(actions);
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (file.type.match('image.*')) {
+                    const reader = new FileReader();
+                    reader.addEventListener('load', () => {
+                        const preview = document.createElement('div');
+                        preview.classList.add('preview');
+                        const img = document.createElement('img');
+                        const actions = document.createElement('div');
+                        actions.classList.add('action_div');
+                        img.src = reader.result;
+                        preview.appendChild(img);
+                        preview.appendChild(actions);
 
-                    const container = document.createElement('div');
-                    const deleteBtn = document.createElement('span');
-                    deleteBtn.classList.add('delete-btn');
-                    deleteBtn.innerHTML = '<i style="font-size: 20px;" class="fas fa-trash"></i>';
-                    deleteBtn.addEventListener('click', () => {
-                    
-                        if (window.confirm('Are you sure you want to delete this image?')) {
-                            files.splice(file, 1)
-                            preview.remove();
-                            getpImages()
-                        }
+                        const container = document.createElement('div');
+                        const deleteBtn = document.createElement('span');
+                        deleteBtn.classList.add('delete-btn');
+                        deleteBtn.innerHTML = '<i style="font-size: 20px;" class="fas fa-trash"></i>';
+                        deleteBtn.addEventListener('click', () => {
+
+                            if (window.confirm('Are you sure you want to delete this image?')) {
+                                files.splice(file, 1)
+                                preview.remove();
+                                getImages()
+                            }
+                        });
+
+                        preview.appendChild(deleteBtn);
+                        const cropBtn = document.createElement('span');
+                        cropBtn.setAttribute("data-toggle", "modal")
+                        cropBtn.setAttribute("data-target", "#exampleModal")
+                        cropBtn.classList.add('crop-btn');
+                        cropBtn.innerHTML = '<i style="font-size: 20px;" class="fas fa-crop"></i>';
+                        cropBtn.addEventListener('click', () => {
+
+                            setTimeout(() => {
+                                launchCropTool(img);
+                            }, 500);
+                        });
+                        preview.appendChild(cropBtn);
+                        previewContainer.appendChild(preview);
                     });
-
-                    preview.appendChild(deleteBtn);
-                    const cropBtn = document.createElement('span');
-                    cropBtn.setAttribute("data-toggle", "modal")
-                    cropBtn.setAttribute("data-target", "#exampleModal")
-                    cropBtn.classList.add('crop-btn');
-                    cropBtn.innerHTML = '<i style="font-size: 20px;" class="fas fa-crop"></i>';
-                    cropBtn.addEventListener('click', () => {
-                      
-                        setTimeout(() => {
-                            launchCropTool(img);
-                        }, 500);
-                    });
-                    preview.appendChild(cropBtn);
-                    previewContainer.appendChild(preview);
-                });
-                reader.readAsDataURL(file);
+                    reader.readAsDataURL(file);
+                }
             }
-        }
-        console.log(getpImages())
-        getpImages()
-    });
-    function launchCropTool(img) {
-        // Set up Croppie options
-        const croppieOptions = {
-            viewport: {
-                width: 200,
-                height: 200,
-                type: 'square' // or 'square'
-            },
-            boundary: {
-                width: 300,
-                height: 300,
-            },
-            enableOrientation: true
-        };
 
-        // Create a new Croppie instance with the selected image and options
-        const croppie = new Croppie(croppieContainer, croppieOptions);
-        croppie.bind({
-            url: img.src,
-            orientation: 1,
+            getImages()
         });
 
-        // Show the Croppie modal
-        croppieModal.style.display = 'block';
+        function launchCropTool(img) {
+            // Set up Croppie options
+            const croppieOptions = {
+                viewport: {
+                    width: 200,
+                    height: 200,
+                    type: 'square' // or 'square'
+                },
+                boundary: {
+                    width: 300,
+                    height: 300,
+                },
+                enableOrientation: true
+            };
 
-        // When the user clicks the "Cancel" button, hide the modal
-        croppieCancelBtn.addEventListener('click', () => {
-    
-            croppieModal.style.display = 'none';
-            $('#exampleModal').modal('hide');
-            croppie.destroy();
-        });
+            // Create a new Croppie instance with the selected image and options
+            const croppie = new Croppie(croppieContainer, croppieOptions);
+            croppie.bind({
+                url: img.src,
+                orientation: 1,
+            });
 
-        // When the user clicks the "Crop" button, get the cropped image and replace the original image in the preview
-        croppieSubmitBtn.addEventListener('click', () => {
-        
-            croppie.result('base64').then((croppedImg) => {
-                img.src = croppedImg;
+            // Show the Croppie modal
+            croppieModal.style.display = 'block';
+
+            // When the user clicks the "Cancel" button, hide the modal
+            croppieCancelBtn.addEventListener('click', () => {
+
                 croppieModal.style.display = 'none';
                 $('#exampleModal').modal('hide');
                 croppie.destroy();
-                getpImages()
             });
-        });
-    }
-    function getpImages() {
-        let images = [];
-        setTimeout(() => {
-            const container = document.querySelectorAll('.previewp-container');
-            $("#cropped_images").empty();
-            for (let i = 0; i < container[0].children.length; i++) {
-                images.push(container[0].children[i].children[0].src)
-                var newInput = $("<input>").attr("type", "hidden").attr("name", "image").val(container[0].children[i].children[0].src);
-                $("#cropped_images").append(newInput);
-            }
-            console.log(images)
-            
-        }, 500);
-        return images
-    }
 
-</script>
+            // When the user clicks the "Crop" button, get the cropped image and replace the original image in the preview
+            croppieSubmitBtn.addEventListener('click', () => {
+
+                croppie.result('base64').then((croppedImg) => {
+                    img.src = croppedImg;
+                    croppieModal.style.display = 'none';
+                    $('#exampleModal').modal('hide');
+                    croppie.destroy();
+                    getImages()
+                });
+            });
+        }
+
+        function getImages() {
+            setTimeout(() => {
+                const container = document.querySelectorAll('.preview-container');
+                let images = [];
+                $("#cropped_images").empty();
+                for (let i = 0; i < container[0].children.length; i++) {
+                    images.push(container[0].children[i].children[0].src)
+                    var newInput = $("<input>").attr("type", "hidden").attr("name", "image").val(container[0]
+                        .children[i].children[0].src);
+                    $("#cropped_images").append(newInput);
+                }
+                return images
+            }, 500);
+        }
+    </script>
 
 
 

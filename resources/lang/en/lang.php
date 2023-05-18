@@ -262,4 +262,6 @@ return [
     'dinnig_in_restaurant'=>'In The Restaurant ',
     'table_no'=>'Table No',
     'enter_restaurant_store'=>'Enter Restaurant Name',
+    'Are you sure?'=>'Are you sure?',
+    'Your Image has been deleted.'=>'Your Image has been deleted',
 ];
