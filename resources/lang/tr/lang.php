@@ -77,7 +77,7 @@ return [
     'filter' => 'filtre',
     'active' => 'Aktif',
     'deactivated' => 'devre dışı',
-    'sort' => 'Çeşit',
+    'sort' => ' Sıralama',
     'create_offer' => 'Teklif Oluştur',
     'products' => 'Ürün:% s',
     'start_date' => 'Başlangıç ​​tarihi',

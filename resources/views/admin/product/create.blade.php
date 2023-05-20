@@ -333,7 +333,7 @@
             </div>
             <div class="form-group">
                 {!! Form::label('sort', __('lang.sort') . ':*') !!}
-                {!! Form::number('sort', 1, ['class' => 'form-control', 'placeholder' => __('lang.sort'), 'required']) !!}
+                {!! Form::number('sort', 500, ['class' => 'form-control', 'placeholder' => __('lang.sort'), 'required']) !!}
             </div>
             <div class="col-md-2">
                 <div class="form-group">

@@ -283,11 +283,35 @@
                             </div>
                         </div>
                         <div class="col-10 offset-1">
-                            <div class="preview-container"></div>
+                            <div class="preview-container">
+                                @if(!empty($product->getFirstMediaUrl('product')))
+                                    <div id="preview{{ $product->id }}" class="preview">
+                                          <img src="{{ !empty($product->getFirstMediaUrl('product')) ? $product->getFirstMediaUrl('product') : asset('uploads/' . session('logo')) }}"
+                                               id="img{{  $product->id }}"   alt="">
+                              
+                                        <div class="action_div"></div>
+                                      
+                                        <button type="button"
+                                            class="delete-btn"><i
+                                            style="font-size: 20px;"
+                                            id="deleteBtn{{ $product->id }}"
+                                            class="fas fa-trash"></i>
+                                    </button>
+                                        <button type="button"
+                                                data-toggle="modal"
+                                                id="cropBtn{{ $product->id }}"
+                                                data-target="#exampleModal"
+                                                class="crop-btn"><i
+                                                style="font-size: 20px;"
+                                                class="fas fa-crop"></i>
+                                        </button>
+                                    </div>
+                            @endif
+                            </div>
                         </div>
             </div>
 
-            <div class="col-md-12 mt-3">
+            {{-- <div class="col-md-12 mt-3">
                 <div class="row">
                     @if (!empty($product->getMedia('product')))
                         @foreach ($product->getMedia('product') as $image)
@@ -303,7 +327,7 @@
                         @endforeach
                     @endif
                 </div>
-            </div>
+            </div> --}}
 
 
             <div class="col-md-12">
@@ -452,7 +476,32 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
 
-
+<script>
+    @if($product)
+    
+    document.getElementById("deleteBtn{{ $product->id }}").addEventListener('click', () => {
+        swal({
+            title: '{{ __("lang.Are you sure?") }}',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            console.log(result)
+            if (result) {
+                swal(
+                    'Deleted!',
+                    '{{ __("lang.Your Image has been deleted.") }}',
+                    'success'
+                )
+                $("#preview{{ $product->id }}").remove();
+            }
+        });
+    });
+    
+    @endif
+</script>
 <script>
   var fileInput = document.querySelector('#file-input');
     var previewContainer = document.querySelector('.preview-container');
@@ -559,6 +608,20 @@
             });
         });
     }
+    // edit Case
+    @if($product)
+                document.getElementById("cropBtn{{ $product->id }}").addEventListener('click', () => {
+                    console.log(("#exampleModal"))
+                    setTimeout(() => {
+                        launchCropTool(document.getElementById("img{{ $product->id }}"));
+                    }, 500);
+                });
+                document.getElementById("deleteBtn{{ $product->id }}").addEventListener('click', () => {
+                    if (window.confirm('Are you sure you want to delete this image?')) {
+                        $("#preview{{ $product->id }}").remove();
+                    }
+                });
+        @endif
     function getImages() {
         setTimeout(() => {
             const container = document.querySelectorAll('.preview-container');
