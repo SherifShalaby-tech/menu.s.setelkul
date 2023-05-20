@@ -361,7 +361,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     {!! Form::label('sell_price', __('lang.sell_price'), []) !!}
-                    {!! Form::text('sell_price', @num_format($product->sell_price), ['class' => 'form-control','id'=>'sell_price', 'placeholder' => __('lang.sell_price'), 'required']) !!}
+                    {!! Form::text('sell_price', @num_format($product->sell_price), ['class' => 'form-control','id'=>'sell_price', 'placeholder' => __('lang.sell_price')]) !!}
                 </div>
             </div>
 
