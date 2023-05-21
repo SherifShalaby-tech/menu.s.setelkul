@@ -53,7 +53,7 @@
     <div class="flex w-full">
         <div class="flex-1 mt-10" style="padding-bottom: 5px;font-size: small;">
             <p class="text-white text-center">@lang('lang.footer_copyright')</p>
-             <p class="text-white text-center">Tel : 00201003836917 - 00905386531059 - 0097433231457</p>
+             <p class="text-white text-center">Tel :00905386531059 - 0097433231457</p>
         </div>
     </div>
 </div>
