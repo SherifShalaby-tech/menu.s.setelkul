@@ -234,7 +234,7 @@ $product_selected = !empty($pci_data['product_selected']) ? $pci_data['product_s
                                                     pci_product_checkbox">
                                                 </div>
                                                 <div class="col-md-5">
-                                                    <img src="@if(!empty($product->getFirstMediaUrl('product'))){{$product->getFirstMediaUrl('product')}}@else{{asset('/uploads/'.session('logo'))}}@endif"
+                                                    <img src="@if(!empty($product->getFirstMediaUrl('product'))){{images_asset($product->getFirstMediaUrl('product'))}}@else{{images_asset(asset('/uploads/'.session('logo')))}}@endif"
                                                         alt="photo" width="50" height="50">
                                                     <a href="">{{$product->name}}</a>
                                                 </div>

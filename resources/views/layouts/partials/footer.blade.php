@@ -45,7 +45,7 @@
             </div>
 
             <div class="w-1/4 text-left">
-                <img src="{{ asset('uploads/' . session('logo')) }}" alt="logo" class="mt-8 w-24 h-24">
+                <img src="{{ images_asset(asset('uploads/' . session('logo'))) }}" alt="logo" class="mt-8 w-24 h-24">
             </div>
 
         </div>
