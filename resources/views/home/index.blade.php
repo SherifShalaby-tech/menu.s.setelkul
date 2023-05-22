@@ -28,7 +28,7 @@
                                     class="">
                                     <div class="flex-col mx-auto">
                                         <div class="">
-                                            <img src="{{ !empty($category->getFirstMediaUrl('product_class')) ? $category->getFirstMediaUrl('product_class') : asset('uploads/' . session('logo')) }}"
+                                            <img src="{{ !empty($category->getFirstMediaUrl('product_class')) ? images_asset($category->getFirstMediaUrl('product_class')) : images_asset(asset('uploads/' . session('logo'))) }}"
                                                 class="border-2 border-dark mx-auto w-full aspect-square rounded-lg"
                                                 alt="category-1">
                                         </div>

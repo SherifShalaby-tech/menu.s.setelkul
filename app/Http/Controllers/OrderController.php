@@ -56,7 +56,7 @@ class OrderController extends Controller
         try {
 
             $data['sales_note'] = $request->sales_note;
-            $data['store_id'] = $request->store_id;
+            $data['store_id'] =env('ENABLE_POS_SYNC')?$request->store_id:10;
             $data['customer_name'] = $request->customer_name;
             $data['phone_number'] = $request->phone_number;
             $data['address'] = !empty($request->address) ? $request->address : null;
@@ -94,7 +94,7 @@ class OrderController extends Controller
                     'sub_total' => $content->price * $content->quantity,
                 ];
                 $product = Product::find($content->associatedModel->id);
-                $text .= urlencode($product->name) . '+%3A+' . $order_details['quantity'] . "+%2A+" . $order_details['price'] . '+=+' . $order_details['sub_total'] . " " . session('currency')['code'] . " +%0D%0A+";
+                $text .= urlencode($product->name) .'+  +'.$content->attributes->size.'+%3A+' . $order_details['quantity'] . "+%2A+" . $order_details['price'] . '+=+' . $order_details['sub_total'] . " " . session('currency')['code'] . " +%0D%0A+";
                 OrderDetails::create($order_details);
             }
             $order->discount_amount = $order->order_details->sum('discount') ?? 0;

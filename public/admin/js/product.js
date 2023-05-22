@@ -85,9 +85,11 @@ $(document).on("change", "#this_product_have_variant", function () {
     if ($(this).prop("checked")) {
         $(".select2").select2();
         $(".this_product_have_variant_div").slideDown();
+        $('input[name=sell_price]').prop('required',false);
     } else {
         $(".select2").select2();
         $(".this_product_have_variant_div").slideUp();
+        $('input[name=sell_price]').prop('required',true);
     }
 });
 

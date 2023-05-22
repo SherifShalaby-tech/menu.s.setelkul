@@ -110,7 +110,7 @@ class ProductUtil extends Util
                 }
 
                 if (!empty($v['id']) || !empty($v['pos_model_id'])) {
-                    $v['default_purchase_price'] = (float)$v['default_purchase_price'];
+                    $v['default_purchase_price'] = isset($v['default_purchase_price'])? (float)$v['default_purchase_price']:0;
                     $v['default_sell_price'] = (float)$v['default_sell_price'];
                     if (!empty($v['pos_model_id'])) {
                         $variation = Variation::where('pos_model_id', $v['pos_model_id'])->first();
@@ -149,7 +149,7 @@ class ProductUtil extends Util
             $variation_data['sub_sku'] = $product->sku;
             $variation_data['size_id'] = !empty($product->multiple_sizes) ? $product->multiple_sizes[0] : null;
             $variation_data['is_dummy'] = 1;
-            $variation_data['default_purchase_price'] = $this->num_uf($product->purchase_price);
+            $variation_data['default_purchase_price'] = isset($product->purchase_price)?$this->num_uf($product->purchase_price):0;
             $variation_data['default_sell_price'] = $this->num_uf($product->sell_price);
             $variation = Variation::create($variation_data);
             $keey_variations[] = $variation->id;

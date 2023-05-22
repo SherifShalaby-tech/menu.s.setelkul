@@ -303,7 +303,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     {!! Form::label('sell_price', __('lang.sell_price'), []) !!}
-                    {!! Form::text('sell_price', null, ['class' => 'form-control', 'placeholder' => __('lang.sell_price'), 'required']) !!}
+                    {!! Form::text('sell_price', null, ['class' => 'form-control', 'placeholder' => __('lang.sell_price')]) !!}
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -333,7 +333,7 @@
             </div>
             <div class="form-group">
                 {!! Form::label('sort', __('lang.sort') . ':*') !!}
-                {!! Form::number('sort', 1, ['class' => 'form-control', 'placeholder' => __('lang.sort'), 'required']) !!}
+                {!! Form::number('sort', 500, ['class' => 'form-control', 'placeholder' => __('lang.sort'), 'required']) !!}
             </div>
             <div class="col-md-2">
                 <div class="form-group">

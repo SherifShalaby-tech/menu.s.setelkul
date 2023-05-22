@@ -1,5 +1,5 @@
-<div class="w-full flex flex-row bg-no-repeat bg-center bg-cover text-center items-center"
-    style="height: 200px; background-image: url('@if(!empty(session('breadcrumb_background_image'))){{ asset('uploads/' . session('breadcrumb_background_image')) }}@else{{ asset('images/default-breadcrumb-bg.png') }}@endif')">
+<div class="w-full flex flex-row bg-no-repeat bg-center text-center items-center"
+    style="background-size:100% 100%; height: 200px; background-image: url('@if(!empty(session('breadcrumb_background_image'))){{ images_asset(asset('uploads/' . session('breadcrumb_background_image'))) }}@else{{ asset('images/default-breadcrumb-bg.png') }}@endif')">
     <div class="w-full">
         <div class="flex flex-row">
             <div class="flex-3 text-white text-4xl font-bold text-left">

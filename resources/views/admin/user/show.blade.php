@@ -13,7 +13,7 @@
                 <div class="card-header">Profile Picture</div>
                 <div class="card-body text-center">
                     <img class="img-account-profile rounded-circle mb-2" style="width: 250px; height: 250px;"
-                        src=" @if (!empty($user->getFirstMediaUrl('profile'))) {{ $user->getFirstMediaUrl('profile') }}@else{{ asset('/uploads/' . session('logo')) }} @endif"
+                        src=" @if (!empty($user->getFirstMediaUrl('profile'))) {{ images_asset($user->getFirstMediaUrl('profile')) }}@else{{ images_asset(asset('/uploads/' . session('logo'))) }} @endif"
                         alt="">
                 </div>
             </div>
