@@ -18,7 +18,9 @@ class ProductController extends Controller
     {
         $category = ProductClass::find($category_id);
         $products = Product::where('product_class_id', $category_id)->where('active', 1)->orderBy('products.sort')->orderBy('products.created_at','desc')->get();
-
+        if(env('ENABLE_POS_SYNC')){
+            $products->where('is_raw_material', 0);
+            }
         return view('product.index')->with(compact(
             'category',
             'products'

@@ -7,13 +7,14 @@ use App\Models\Cart;
 use App\Models\Message;
 use App\Models\Order;
 use App\Models\OrderDetails;
+use App\Models\DiningTable;
 use App\Models\Product;
 use App\Models\System;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-
+use Pusher\Pusher;
 class OrderController extends Controller
 {
     /**
@@ -105,7 +106,27 @@ class OrderController extends Controller
 
             DB::commit();
 
-
+            $options = array(
+                'cluster' =>  env('PUSHER_APP_CLUSTER'),
+                'useTLS' => true
+            );
+    
+    
+            $pusher = new Pusher(
+                env('PUSHER_APP_KEY'),
+                env('PUSHER_APP_SECRET'),
+                env('PUSHER_APP_ID'),
+                $options
+            );
+    
+            $table=DiningTable::find($order->table_no);
+            $data = [
+                'order_id'=>$order->id,
+                'table_no'=>$order->table_no,
+                'room_no'=>$table->dining_room_id,
+                'orders_count'=>$order->order_details()->count()
+            ];
+            $pusher->trigger('order-channel', 'new-order', $data);
             //send email for order
 
             $email = System::getProperty('system_email'); //system email
