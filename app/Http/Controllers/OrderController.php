@@ -90,9 +90,9 @@ class OrderController extends Controller
                     'product_id' => $content->associatedModel->id,
                     'variation_id' => $content->attributes->variation_id,
                     'discount' => $discount,
-                    'quantity' => $content->quantity,
+                    'quantity' => $content->attributes->quantity,
                     'price' => $content->price,
-                    'sub_total' => $content->price * $content->quantity,
+                    'sub_total' => $content->price * $content->attributes->quantity,
                 ];
                 $product = Product::find($content->associatedModel->id);
                 $text .= urlencode($product->name) .'+  +'.$content->attributes->size.'+%3A+' . $order_details['quantity'] . "+%2A+" . $order_details['price'] . '+=+' . $order_details['sub_total'] . " " . session('currency')['code'] . " +%0D%0A+";
@@ -105,28 +105,29 @@ class OrderController extends Controller
             Cart::where('user_id', $user_id)->delete();
 
             DB::commit();
-
-            $options = array(
-                'cluster' =>  env('PUSHER_APP_CLUSTER'),
-                'useTLS' => true
-            );
-    
-    
-            $pusher = new Pusher(
-                env('PUSHER_APP_KEY'),
-                env('PUSHER_APP_SECRET'),
-                env('PUSHER_APP_ID'),
-                $options
-            );
-    
-            $table=DiningTable::find($order->table_no);
-            $data = [
-                'order_id'=>$order->id,
-                'table_no'=>$order->table_no,
-                'room_no'=>$table->dining_room_id,
-                'orders_count'=>$order->order_details()->count()
-            ];
-            $pusher->trigger('order-channel', 'new-order', $data);
+            if(env('ENABLE_POS_SYNC')){
+                $options = array(
+                    'cluster' =>  env('PUSHER_APP_CLUSTER'),
+                    'useTLS' => true
+                );
+        
+        
+                $pusher = new Pusher(
+                    env('PUSHER_APP_KEY'),
+                    env('PUSHER_APP_SECRET'),
+                    env('PUSHER_APP_ID'),
+                    $options
+                );
+        
+                $table=DiningTable::find($order->table_no);
+                $data = [
+                    'order_id'=>$order->id,
+                    'table_no'=>$order->table_no,
+                    'room_no'=>$table->dining_room_id,
+                    'orders_count'=>$order->order_details()->count()
+                ];
+                $pusher->trigger('order-channel', 'new-order', $data);
+            }
             //send email for order
 
             $email = System::getProperty('system_email'); //system email

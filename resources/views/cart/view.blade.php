@@ -195,8 +195,8 @@ $locale_direction = LaravelLocalization::getCurrentLocaleDirection();
                                             class="minus border-2 rounded-full text-lg text-center border-dark text-dark h-8 w-8">-</button>
                                         {{-- <input type="text" data-id="{{ $item->id }}" value="{{ $item->quantity }}"
                                             class="quantity text-center text-dark w-16 line leading-none border-transparent bg-transparent focus:border-transparent focus:ring-0 "> --}}
-                                            <input type="text" data-id="{{ $item->id }}" value="{{ $item->quantity }}"
-                                            class="quantity text-center text-dark w-16 line leading-none border-transparent bg-transparent focus:border-transparent focus:ring-0 ">
+                                            <input type="text" data-id="{{ $item->id }}" value="{{ $item->attributes->quantity }}"
+                                            class="quantity text-center text-dark w-24 line leading-none border-transparent bg-transparent focus:border-transparent focus:ring-0 ">
                                         <button type="button"
                                             class="plus border-2 rounded-full text-lg text-center border-dark text-dark h-8 w-8">+</button>
                                     </div>
@@ -280,7 +280,7 @@ $locale_direction = LaravelLocalization::getCurrentLocaleDirection();
         <div class="flex justify-center">
             <button type="button" class="lg:w-1/4 md:w-1/2 xs:w-full h-10 mt-4 rounded-lg  bg-red text-white relative"
                 id="send_the_order">@lang('lang.send_the_order')
-                <span class="text-white text-base absolute right-2">{{ @num_format($total) }}
+                <span class="text-white text-base absolute right-2 order-total-price">{{ @num_format($total) }}
                     {{ session('currency')['code'] }}</span></button>
         </div>
 
@@ -321,8 +321,13 @@ $locale_direction = LaravelLocalization::getCurrentLocaleDirection();
             let product_id = $(this).data('id');
             let quantity = $(this).val();
 
-            window.location.href = base_path + "/cart/update-product-quantity/" + product_id + "/" +
-                quantity;
+            $.ajax({
+                type: "GET",
+                url: "/cart/update-product-quantity/" + product_id + "/" +quantity,
+                success: function (response) {
+                    $('.order-total-price').text(response.total);
+                }
+            });
 
         })
 

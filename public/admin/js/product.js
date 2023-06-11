@@ -117,15 +117,24 @@ $(document).on("click", ".remove_row", function () {
     row_id = $(this).closest("tr").data("row_id");
     $(this).closest("tr").remove();
 });
-// $(document).on("change", "#purchase_price", function () {
-//     let purchase_price = __read_number($(this));
-//     __write_number($(".default_purchase_price"), purchase_price);
-// });
-// $(document).on("change", "#sell_price", function () {
-//     var row=$(this).parent('td').parent('tr').data('row_id');
-//     let sell_price = __read_number($(this));
-//     __write_number($(".default_sell_price"), sell_price);
-// });
+$(document).on("change", "#purchase_price", function () {
+    // var row=$(this).parent('td').parent('tr').data('row_id');
+    if($('table .variation_row').length==1){
+        if($('.variation_name').val()=="Default"){
+            let purchase_price = __read_number($(this));
+            __write_number($(".default_purchase_price"), purchase_price);
+        }
+    } 
+});
+$(document).on("change", "#sell_price", function () {
+    // var row=$(this).parent('td').parent('tr').data('row_id');
+    if($('table .variation_row').length==1){
+        if($('.variation_name').val()=="Default"){
+        let sell_price = __read_number($(this));
+        __write_number($(".default_sell_price"), sell_price);
+        }
+    }
+});
 //////
 $('body').delegate('.add_size_row' , 'click', function() {
 // $(document).on('click', "", function (e) {

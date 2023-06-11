@@ -145,7 +145,7 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://fastly.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script src="{{ asset('js/accounting.min.js') }}"></script>
 
 @section('js')
