@@ -128,7 +128,7 @@ class CartController extends Controller
      {
          // return request()->quantity;
          try {
-             $quantity = !empty(request()->quantity) ? request()->quantity : 1;
+             $quantity = !empty(request()->quantity) ? abs(request()->quantity) : 1;
              $variation = Variation::find( $id);
              $product = Product::find($variation->product_id);
              $IsproductHasDiscount = Product::where('id',$variation->product_id)
@@ -329,6 +329,7 @@ class CartController extends Controller
             if(strpos($quantity,',')!==false){
                 $quantity=str_replace(',','.',$quantity);
             }
+            $quantity=abs($quantity);
             $user_id = Session::get('user_id');
             $item_exist = \Cart::session($user_id)->get($product_id);
             $attributes=$item_exist->attributes;
