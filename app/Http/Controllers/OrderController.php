@@ -105,7 +105,7 @@ class OrderController extends Controller
             Cart::where('user_id', $user_id)->delete();
 
             DB::commit();
-            if(env('ENABLE_POS_SYNC')){
+            if(env('ENABLE_POS_SYNC') && !empty($request->table_no)){
                 $options = array(
                     'cluster' =>  env('PUSHER_APP_CLUSTER'),
                     'useTLS' => true
