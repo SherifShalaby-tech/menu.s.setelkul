@@ -413,6 +413,7 @@
 
 
     <script>
+     
         var fileInput = document.querySelector('#file-input');
         var previewContainer = document.querySelector('.preview-container');
         var croppieModal = document.querySelector('#croppie-modal');
