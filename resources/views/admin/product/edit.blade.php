@@ -420,7 +420,7 @@
                                         class="fa fa-plus"></i></button></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="variation_row">
                         @foreach ($product->variations as $item)
                             @include(
                                 'admin.product.partial.edit_variation_row',
