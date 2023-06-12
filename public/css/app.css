@@ -854,6 +854,15 @@ input:checked + .toggle-bg {
 .container {
   width: 100%;
 }
+@media (max-width: 639.5px){
+    .times-left{
+        margin-left: 10px;
+    }
+    .times-right{
+        margin-right: 10px;
+    }
+
+}
 @media (min-width: 360px) {
 
   .container {
