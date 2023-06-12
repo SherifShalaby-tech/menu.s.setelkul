@@ -4,18 +4,18 @@ $locale_direction = LaravelLocalization::getCurrentLocaleDirection();
 @endphp
 @section('content')
     @include('layouts.partials.cart-header')
-    <div class="container mx-auto mt-14">
-        <div class="flex mt-40 bg-red">
-            <div class="relative overflow-hidden w-full h-48 ">
-                <img src="{{ asset('images/cart-top.png') }}" class="mx-auto w-full h-full object-cover " alt="cart-top">
-                <div
-                    class="absolute w-full py-2.5 px-5 bottom-0 inset-x-0 text-white text-xs text-center leading-4 bg-gradient-to-t from-black">
-                    <p class="text-tiny font-semibold text-white py-10"></p>
-                </div>
+{{--    <div class="container mx-auto mt-14">--}}
+{{--        <div class="flex mt-40 bg-red">--}}
+{{--            <div class="relative overflow-hidden w-full h-48 ">--}}
+{{--                <img src="{{ asset('images/cart-top.png') }}" class="mx-auto w-full h-full object-cover " alt="cart-top">--}}
+{{--                <div--}}
+{{--                    class="absolute w-full py-2.5 px-5 bottom-0 inset-x-0 text-white text-xs text-center leading-4 bg-gradient-to-t from-black">--}}
+{{--                    <p class="text-tiny font-semibold text-white py-10"></p>--}}
+{{--                </div>--}}
 
-            </div>
-        </div>
-    </div>
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
 
     <div class="container mx-auto py-4">
         {!! Form::open(['url' => action('OrderController@store'), 'method' => 'pos', 'id' => 'cart_form']) !!}
@@ -176,11 +176,11 @@ $locale_direction = LaravelLocalization::getCurrentLocaleDirection();
                 @endif
 
             </div>
-            
+
             <div class="flex-1 xl:px-16 lg:px-2 md:px-4 xs:px-4 xs:mt-8 xs:border-t-2">
                 @foreach ($cart_content as $item)
                     @if ($item->attributes->extra != 1)
-                    
+
                       <div class="flex-col justify-center py-4">
                             <div class="flex @if ($locale_direction == 'rtl') flex-row-reverse @else flex-row @endif ">
                                 <div class="w-1/2 @if ($locale_direction == 'rtl') text-right @else text-left @endif">
@@ -202,7 +202,7 @@ $locale_direction = LaravelLocalization::getCurrentLocaleDirection();
                                     </div>
                                 </div>
                                 <div
-                                    class="md:w-1/6 xs:w-1/12  @if ($locale_direction == 'rtl') text-left @else text-right @endif ">
+                                    class="md:w-1/6 xs:w-1/12  @if ($locale_direction == 'rtl') text-left times-right @else text-right times-left @endif ">
                                     <a href="{{ action('CartController@removeProduct', $item->id) }}"
                                         class="mt-2 rounded-full text-lg text-center border-lightgrey text-rose-700 h-8 w-8">
                                         <i class="fa fa-times"></i>
@@ -294,7 +294,7 @@ $locale_direction = LaravelLocalization::getCurrentLocaleDirection();
             e.preventDefault();
             $('input[type=text]').blur();
             if ($('#cart_form').valid()) {
-                $('#cart_form').submit();   
+                $('#cart_form').submit();
             }
         });
         $(document).on('change', '.extra_checkbox', function() {
