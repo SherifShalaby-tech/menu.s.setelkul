@@ -277,7 +277,7 @@ $locale_direction = LaravelLocalization::getCurrentLocaleDirection();
             </div>
         </div>
 
-        <div class="flex justify-center">
+        <div class="flex justify-center" id="button_xs">
             <button type="button" class="lg:w-1/4 md:w-1/2 xs:w-full h-10 mt-4 rounded-lg  bg-red text-white relative"
                 id="send_the_order">@lang('lang.send_the_order')
                 <span class="text-white text-base absolute right-2 order-total-price">{{ @num_format($total) }}

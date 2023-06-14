@@ -1,15 +1,17 @@
 <div x-data="{ iconOpen: false }" class="relative">
     <button @click="iconOpen = !iconOpen" x-show="!iconOpen"
-        class="absolute right-0 border border-dark rounded-tl-full rounded-bl-full">
+        class="absolute right-0 border border-dark rounded-tl-full rounded-bl-full" id="chatIcon">
         <img src="{{ asset('images/chat-icon.png') }}" alt="chat-icon" class=" w-10 h-10 ">
     </button>
     {{-- <div x-show="iconOpen" @click="iconOpen = false" class="fixed inset-0 h-full w-full z-10">
         </div> --}}
     <div x-show="iconOpen" x-transition x-transition.duration.500ms x-transition:leave.duration.400ms
         x-transition.scale.origin.right
-        class="flex flex-row bg-red py-2 pl-4 rounded-tl-full rounded-bl-full border border-dark">
+        class="flex flex-row bg-red py-2 pl-4 rounded-tl-full rounded-bl-full border border-dark" id="socialIcons">
 
-
+        <button id="close" style="margin-right: 10px">
+            <i class="fa fa-times text-base text-white" ></i>
+        </button>
         <a target="_blank" href="{{ App\Models\System::getProperty('instagram') }}"
             class="">
             <img src="{{ asset('images/instagram.png') }}" alt="instagram" class=" w-6 h-6 mr-2 ">
@@ -42,3 +44,8 @@
 
     </div>
 </div>
+@section('javascript')
+<script>
+
+</script>
+@endsection()
