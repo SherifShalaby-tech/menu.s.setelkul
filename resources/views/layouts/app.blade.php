@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
 
 
-<meta name="description" content="{{ App\Models\System::getProperty('about_us_content') }}">
+<meta name="description" content="{{ App\Models\System::getProperty('about_us_footer') }}">
 <meta name="google-site-verification" content="qxW5PqYjtpOQSI6WJoytZMUkKkuD7iU0bo5v8wR_uHg" />
 
 <meta name="robots" content="index, follow">
