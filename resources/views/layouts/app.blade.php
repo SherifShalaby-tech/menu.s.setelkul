@@ -3,19 +3,19 @@
 
 <head>
     <meta charset="UTF-8">
-    
-   
-<meta name="description" content="This is an menu of restaurants linked to the cashier program as the requests reaches you on the program directly, Category: Foods">
+
+
+<meta name="description" content="{{ App\Models\System::getProperty('about_us_footer') }}">
 <meta name="google-site-verification" content="qxW5PqYjtpOQSI6WJoytZMUkKkuD7iU0bo5v8wR_uHg" />
 
 <meta name="robots" content="index, follow">
 <meta name="googlebot" content="translate">
-<meta name="google" content="sitelinkssearchbox">    
+<meta name="google" content="sitelinkssearchbox">
 
-    
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    
+
     <title>{{ App\Models\System::getProperty('site_title') }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
