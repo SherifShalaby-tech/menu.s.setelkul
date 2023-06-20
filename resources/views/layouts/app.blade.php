@@ -67,8 +67,8 @@
         });
     </script>
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="https://unpkg.com/flowbite@1.3.4/dist/flowbite.js"></script>
-    <script src="https://unpkg.com/flowbite@1.3.4/dist/datepicker.js"></script>
+    <script src="{{ asset('js/flowbite.js') }}"></script>
+    <script src="{{ asset('js/datepicker.js') }}"></script>
     @yield('javascript')
 </body>
 

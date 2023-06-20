@@ -146,12 +146,12 @@ class DiningTableController extends Controller
 
             DB::beginTransaction();
             $dining_table = DiningTable::create($data);
-            if(env('ENABLE_POS_SYNC')){
-                $dining_table_reservation=TableReservation::create([
-                    'dining_table_id'=>$dining_table->id,
-                    'status'=>'available'
-                ]);
-            }
+            // if(env('ENABLE_POS_SYNC')){
+            //     $dining_table_reservation=TableReservation::create([
+            //         'dining_table_id'=>$dining_table->id,
+            //         'status'=>'available'
+            //     ]);
+            // }
             $dining_table_id = $dining_table->id;
 
             $dining_room = DiningRoom::find($data['dining_room_id']);

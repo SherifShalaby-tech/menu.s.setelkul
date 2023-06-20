@@ -468,7 +468,7 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/chart.js',
+                    'location' => '//fastly.jsdelivr.net/npm/chart.js',
                 ],
             ],
         ],
