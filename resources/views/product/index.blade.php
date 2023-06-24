@@ -23,12 +23,16 @@
 
 @section('javascript')
 <script>
+    $(document).ready(function(){
+        alert(6666)
+    });
     // $(document).on('click', '.product_card', function(e){
     //     if(!$(e.target).is('i.cart_icon') && !$(e.target).is('button.cart_button *')){
     //         window.location.href = $(this).data('href');
     //     }
     // })
     $(document).on('click', '.cart_button', function(){
+        alert(77)
         var variationId=$(this).closest('.productCard').find('input[name=variation]').val();
         $.ajax({
             type: "GET",
@@ -52,6 +56,7 @@
     })
     // })
     $(document).on('click', '.changeSize', function(e){
+        alert(33)
         e.preventDefault();
         var price=$(this).data('price');
         var size_id=$(this).data('size_id');
