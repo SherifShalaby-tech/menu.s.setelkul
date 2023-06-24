@@ -194,9 +194,10 @@ class OrderController extends Controller
                 'success' => false,
                 'msg' => __('lang.something_went_wrong')
             ];
+            return redirect()->back()->with('status', $output);
         }
 
-        return redirect()->back()->with('status', $output);
+        
     }
 
     /**
