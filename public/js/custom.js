@@ -15,7 +15,7 @@ $(document).on("mouseleave", ".product_card", function () {
     $(this).find(".cart_button").css("opacity", "0");
 });
 $(document).on('click', '.cart_button', function(){
-    alert(77)
+
     var variationId=$(this).closest('.productCard').find('input[name=variation]').val();
     $.ajax({
         type: "GET",
