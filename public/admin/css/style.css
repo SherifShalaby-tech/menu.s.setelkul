@@ -1,0 +1,78 @@
+.dataTables_length {
+    width: 25%;
+    margin: 0;
+    float: left;
+}
+.dataTables_length label {
+    display: inline-flex;
+}
+.dt-buttons {
+    float: left;
+}
+.dataTables_filter {
+    width: 25%;
+    margin: 0;
+    float: right;
+}
+.error {
+    color: red !important;
+}
+.dataTables_empty {
+    text-align: center;
+}
+.hide {
+    display: none;
+}
+.select2-container--default
+    .select2-selection--multiple
+    .select2-selection__choice__remove {
+    color: black;
+}
+.select2-container--default
+    .select2-selection--multiple
+    .select2-selection__choice__remove:hover {
+    color: #000;
+}
+
+.image_area {
+    position: relative;
+}
+
+.image_area img {
+    display: block;
+    max-width: 100%;
+}
+
+.preview_div,
+.product_preview_div {
+    overflow: hidden;
+    width: 160px;
+    height: 160px;
+    margin: 10px;
+    border: 1px solid red;
+}
+
+.modal-lg {
+    max-width: 1000px !important;
+}
+
+.overlay {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.5);
+    overflow: hidden;
+    height: 0;
+    /* transition: 0.5s ease; */
+    width: 100%;
+}
+
+.image_area:hover .overlay {
+    height: 50%;
+    cursor: pointer;
+}
+
+.img-container img {
+    width: 100%;
+}
