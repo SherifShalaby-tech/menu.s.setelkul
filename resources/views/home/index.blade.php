@@ -1,7 +1,6 @@
 @extends('layouts.app')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.css">
 @section('content')
-<div style="display:none;">@lang('lang.categories')</div>
     <div class="container mx-auto">
         <div class="flex">
             <div class="flex-1">
@@ -15,11 +14,11 @@
         @if (!empty($homepage_category_carousel))
             <div class="flex flex-row items-center">
                 <div class="flex-3 w-48 md:block xs:hidden ">
-                    <div class="owl-nav">
+                    {{-- <div class="owl-nav">
                         <div class="prev-nav">
                             <img src="{{ asset('images/slider-arrow-left.png') }}" alt="" class="m-auto">
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="flex-1 w-80">
                     <div class="category-slider">
@@ -46,11 +45,11 @@
                     </div>
                 </div>
                 <div class="flex-3 w-48 md:block xs:hidden ">
-                    <div class="owl-nav">
+                    {{-- <div class="owl-nav">
                         <div class="next-nav">
                             <img src="{{ asset('images/slider-arrow-right.png') }}" alt="" class="m-auto">
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         @else
