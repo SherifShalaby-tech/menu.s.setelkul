@@ -27,11 +27,11 @@ if($product->variations->where('name','!=','Default')->count()>0){
     </div>
     <div class="flex">
         <div
-            class=" w-full text-white text-s text-center bg-black opacity-70 rounded-xl py-4 mt-2">
+            class=" w-full text-white text-sm text-center bg-black opacity-70 rounded-xl py-4 mt-2">
             <a href="{{ action('ProductController@show', $product->id) }}">
                 <p class="md:text-sm xs:text-tiny font-semibold text-white py-0">{{ Str::limit($product->name, 15) }}</p>
             </a>
-            <p class="product-details md:text-sm xs:text-tiny font-semibold text-white py-0 px-2 h-4 sm:flex sm:justify-between">
+            <p class="product-details md:text-sm xs:text-tiny font-semibold text-white py-0 px-2  sm:flex sm:justify-between">
                
                     @foreach($variation_products as $s)
                         <span>

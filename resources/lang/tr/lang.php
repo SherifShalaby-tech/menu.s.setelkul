@@ -1,4 +1,4 @@
-footer_copyright<?php
+<?php
 
 return [
 
