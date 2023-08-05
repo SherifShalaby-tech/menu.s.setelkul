@@ -1,7 +1,7 @@
 
 <div class="footer w-full bg-dark">
     <div class=" mx-auto">
-        <div class="flex flex-row">
+        <div class="flex flex-row xs:text-sm">
              <div class="w-1/4 text-center md:block xs:hidden">
                
             </div>
@@ -46,7 +46,7 @@
 
         </div>
         <div class="flex flex-row">
-            <div class="w-3/4 text-right xs:w-full">
+            <div class="w-3/4 text-right xs:w-full text-sm">
                 <div class="pr-2 pt-2 mt-8">
                     <a href="{{ action('AboutUsController@index') }}"
                         class="bg-red text-white md:text-base xs:text-sm font-bold px-4 py-2 border-2 border-white rounded-lg">@lang('lang.show_more')
