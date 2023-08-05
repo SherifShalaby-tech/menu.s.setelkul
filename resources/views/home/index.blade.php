@@ -1,6 +1,7 @@
 @extends('layouts.app')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.css">
 @section('content')
+<div style="display:none;">@lang('lang.categories')</div>
     <div class="container mx-auto">
         <div class="flex">
             <div class="flex-1">
