@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use PhpOffice\PhpSpreadsheet\Calculation\Category;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -27,7 +28,7 @@ class Product extends Model implements HasMedia
     protected $casts = [
         'multiple_sizes' => 'array',
         'translations' => 'array',
-
+        'details_translations'=>'array'
     ];
 
     public function getNameAttribute($name)
@@ -41,7 +42,17 @@ class Product extends Model implements HasMedia
         }
         return $name;
     }
-
+    public function getProductDetailsAttribute($product_details)
+    {
+        $translations = !empty($this->details_translations['product_details']) ? $this->details_translations['product_details'] : [];
+        if (!empty($translations)) {
+            $lang = LaravelLocalization::getCurrentLocale();
+            if (!empty($translations[$lang])) {
+                return $translations[$lang];
+            }
+        }
+        return $product_details;
+    }
     public function category()
     {
         return $this->belongsTo(ProductClass::class, 'product_class_id');
@@ -98,5 +109,13 @@ class Product extends Model implements HasMedia
         }
 
         return $discount_value;
+    }
+    public function sizes()
+    {
+        return $this->belongsToMany('App\Models\Size', 'product_size')->withPivot('purchase_price','sell_price','discount_type','discount','discount_start_date','discount_end_date');
+    }
+    public function product_sizes()
+    {
+        return $this->hasMany('App\Models\ProductSize', 'product_id');
     }
 }

@@ -20,7 +20,7 @@
                 {!! Form::text('location', null, ['class' => 'form-control', 'placeholder' => __('lang.location')]) !!}
             </div>
             <div class="form-group">
-                {!! Form::label('phone_number', __('lang.phone_number')) !!}
+                {!! Form::label('phone_number', __('lang.phone_number'). ':*') !!}
                 {!! Form::text('phone_number', null, ['class' => 'form-control', 'placeholder' => __('lang.phone_number')]) !!}
             </div>
             <div class="form-group">

@@ -4,18 +4,18 @@ $locale_direction = LaravelLocalization::getCurrentLocaleDirection();
 @endphp
 @section('content')
     @include('layouts.partials.cart-header')
-    <div class="container mx-auto mt-14">
-        <div class="flex mt-40 bg-red">
-            <div class="relative overflow-hidden w-full h-48 ">
-                <img src="{{ asset('images/cart-top.png') }}" class="mx-auto w-full h-full object-cover " alt="cart-top">
-                <div
-                    class="absolute w-full py-2.5 px-5 bottom-0 inset-x-0 text-white text-xs text-center leading-4 bg-gradient-to-t from-black">
-                    <p class="text-tiny font-semibold text-white py-10"></p>
-                </div>
+{{--    <div class="container mx-auto mt-14">--}}
+{{--        <div class="flex mt-40 bg-red">--}}
+{{--            <div class="relative overflow-hidden w-full h-48 ">--}}
+{{--                <img src="{{ asset('images/cart-top.png') }}" class="mx-auto w-full h-full object-cover " alt="cart-top">--}}
+{{--                <div--}}
+{{--                    class="absolute w-full py-2.5 px-5 bottom-0 inset-x-0 text-white text-xs text-center leading-4 bg-gradient-to-t from-black">--}}
+{{--                    <p class="text-tiny font-semibold text-white py-10"></p>--}}
+{{--                </div>--}}
 
-            </div>
-        </div>
-    </div>
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
 
     <div class="container mx-auto py-4">
         {!! Form::open(['url' => action('OrderController@store'), 'method' => 'pos', 'id' => 'cart_form']) !!}
@@ -51,7 +51,6 @@ $locale_direction = LaravelLocalization::getCurrentLocaleDirection();
                         class="border-b border-dark rounded-lg w-full px-4 w-3/5 @if ($locale_direction == 'rtl') float-left @else float-right @endif "
                         value="">
                 </div>
-
 
                 <div class="flex py-2 justify-center">
                     <div class="flex-1">
@@ -157,37 +156,53 @@ $locale_direction = LaravelLocalization::getCurrentLocaleDirection();
                         @endforeach
                     </select>
                 </div>
+                @if(env('ENABLE_POS_SYNC'))
                 <div class="flex flex-row justify-center mt-4">
                     <select id="store_id" name="store_id" required
                         class="w-1/2 mx-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                           @if(count($stores)==1)
                         @foreach ($stores as $id => $store)
                             <option value="{{ $id }}">{{ $store }}</option>
                         @endforeach
+                        @else
+                        <option selected value="">@lang('lang.enter_restaurant_store')</option>
+                        @foreach ($stores as $id => $store)
+                            <option value="{{ $id }}">{{ $store }}</option>
+                        @endforeach
+                        @endif
                     </select>
 
                 </div>
+                @endif
 
             </div>
+
             <div class="flex-1 xl:px-16 lg:px-2 md:px-4 xs:px-4 xs:mt-8 xs:border-t-2">
                 @foreach ($cart_content as $item)
                     @if ($item->attributes->extra != 1)
-                        <div class="flex-col justify-center py-4">
+
+                      <div class="flex-col justify-center py-4">
                             <div class="flex @if ($locale_direction == 'rtl') flex-row-reverse @else flex-row @endif ">
                                 <div class="w-1/2 @if ($locale_direction == 'rtl') text-right @else text-left @endif">
                                     <h3 class="font-semibold text-lg text-dark">{{ $item->name }}</h3>
+                                </div>
+                                <div class="w-1/2 @if ($locale_direction == 'rtl') text-right @else text-left @endif">
+                                    <h3 class="font-semibold text-lg text-dark">{{$item->attributes->size?$item->attributes->size:'' }}</h3>
                                 </div>
                                 <div class="md:w-1/3 xs:w-5/12">
                                     <div class="flex flex-row qty_row justify-center w-full">
                                         <button type="button"
                                             class="minus border-2 rounded-full text-lg text-center border-dark text-dark h-8 w-8">-</button>
-                                        <input type="text" data-id="{{ $item->id }}" value="{{ $item->quantity }}"
-                                            class="quantity text-center text-dark w-16 line leading-none border-transparent bg-transparent focus:border-transparent focus:ring-0 ">
+                                        {{-- <input type="text" data-id="{{ $item->id }}" value="{{ $item->quantity }}"
+                                            class="quantity text-center text-dark w-16 line leading-none border-transparent bg-transparent focus:border-transparent focus:ring-0 "> --}}
+                                            <input type="text" data-id="{{ $item->id }}" value="{{ $item->attributes->quantity }}"
+                                            class="quantity text-center text-dark w-24 line leading-none border-transparent bg-transparent focus:border-transparent focus:ring-0 ">
                                         <button type="button"
                                             class="plus border-2 rounded-full text-lg text-center border-dark text-dark h-8 w-8">+</button>
                                     </div>
                                 </div>
                                 <div
-                                    class="md:w-1/6 xs:w-1/12  @if ($locale_direction == 'rtl') text-left @else text-right @endif ">
+                                    class="md:w-1/6 xs:w-1/12  @if ($locale_direction == 'rtl') text-left times-right @else text-right times-left @endif ">
                                     <a href="{{ action('CartController@removeProduct', $item->id) }}"
                                         class="mt-2 rounded-full text-lg text-center border-lightgrey text-rose-700 h-8 w-8">
                                         <i class="fa fa-times"></i>
@@ -196,13 +211,12 @@ $locale_direction = LaravelLocalization::getCurrentLocaleDirection();
                             </div>
                             <p class="text-xs text-dark font-semibold">{!! $item->associatedModel->product_details !!}</p>
                             <h3
-                                class="font-semibold text-base text-dark py-2 @if ($item->associatedModel->variations->first()->name == 'Default') hidden @endif">
-                                @lang('lang.select_size')</h3>
-                            @foreach ($item->associatedModel->variations as $variation)
-                                @if (!empty($variation->size))
+                                class="font-semibold text-base text-dark py-2 @if ($item->associatedModel->variations->first()!=null) @if ($item->associatedModel->variations->first()->name == 'Default') hidden @endif @endif"></h3>
+                                @foreach ($item->associatedModel->variations as $variation)
+                                @if ( $variation->id==$item->attributes->variation_id)
                                     <div
                                         class="flex @if ($locale_direction == 'rtl') flex-row-reverse @else flex-row @endif ">
-                                        <div class="flex-1">
+                                        {{-- <div class="flex-1">
                                             <div
                                                 class="flex @if ($locale_direction == 'rtl') flex-row-reverse @else flex-row @endif items-center mb-4">
                                                 <input type="radio" data-id="{{ $item->id }}"
@@ -219,17 +233,19 @@ $locale_direction = LaravelLocalization::getCurrentLocaleDirection();
                                                     @endif
                                                 </label>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <div
                                             class="flex-1 text-base @if ($locale_direction == 'rtl') text-left @else text-right @endif font-semibold">
-                                            {{ @num_format($variation->default_sell_price - $item->attributes->discount) }}<span
+                                            {{ @num_format($variation->default_sell_price - $item->attributes->discount) }}
+                                            <span
                                                 class="font-bold">
-                                                {{ session('currency')['code'] }}</span>
+                                            {{ session('currency')['code'] }}</span>
                                         </div>
                                     </div>
                                 @endif
                             @endforeach
                         </div>
+                    {{-- @endfor --}}
                     @endif
                 @endforeach
 
@@ -261,10 +277,10 @@ $locale_direction = LaravelLocalization::getCurrentLocaleDirection();
             </div>
         </div>
 
-        <div class="flex justify-center">
+        <div class="flex justify-center" id="button_xs">
             <button type="button" class="lg:w-1/4 md:w-1/2 xs:w-full h-10 mt-4 rounded-lg  bg-red text-white relative"
                 id="send_the_order">@lang('lang.send_the_order')
-                <span class="text-white text-base absolute right-2">{{ @num_format($total) }}
+                <span class="text-white text-base absolute right-2 order-total-price">{{ @num_format($total) }}
                     {{ session('currency')['code'] }}</span></button>
         </div>
 
@@ -273,117 +289,5 @@ $locale_direction = LaravelLocalization::getCurrentLocaleDirection();
 @endsection
 
 @section('javascript')
-    <script>
-        $(document).on('click', '#send_the_order', function(e) {
-            e.preventDefault();
-            $('input[type=text]').blur();
-            if ($('#cart_form').valid()) {
-                $('#cart_form').submit();
-            }
-        });
-        $(document).on('change', '.extra_checkbox', function() {
-            let product_id = $(this).val();
-            if ($(this).prop('checked') == true) {
-                window.location.href = base_path + "/cart/add-to-cart-extra/" + product_id;
-            } else {
-                window.location.href = base_path + "/cart/remove-product/" + product_id;
-            }
-        })
-
-        $(document).on('change', '.variation_radio', function() {
-
-            if ($(this).prop('checked') == true) {
-                let product_id = $(this).data('id');
-                let variation_id = $(this).val();
-
-                window.location.href = base_path + "/cart/update-product-variation/" + product_id + "/" +
-                    variation_id;
-            }
-        })
-        $(document).on('change', '.quantity', function() {
-
-            let product_id = $(this).data('id');
-            let quantity = $(this).val();
-
-            window.location.href = base_path + "/cart/update-product-quantity/" + product_id + "/" +
-                quantity;
-
-        })
-
-
-        $(document).on('click', '.plus', function() {
-            let qty_row = $(this).closest('.qty_row')
-            let quantity = __read_number($(qty_row).find('.quantity'));
-            $(qty_row).find('.quantity').val(quantity + 1);
-            $(qty_row).find('.quantity').change();
-        })
-        $(document).on('click', '.minus', function() {
-            let qty_row = $(this).closest('.qty_row')
-            let quantity = __read_number($(qty_row).find('.quantity'));
-            if (quantity > 1) {
-                $(qty_row).find('.quantity').val(quantity - 1);
-                $(qty_row).find('.quantity').change();
-            }
-        })
-
-        $(document).on('change', '#order', function() {
-            if ($(this).prop('checked') == true) {
-                $('.order_now').removeClass('text-dark');
-              //  $('.order_now').addClass('text-lightgrey');
-
-                $('.order_later').addClass('text-dark');
-             //   $('.order_later').removeClass('text-lightgrey');
-                $('.order_later_div').removeClass('hidden');
-            } else {
-                $('.order_now').addClass('text-dark');
-              //  $('.order_now').removeClass('text-lightgrey');
-
-                $('.order_later').removeClass('text-dark');
-             //   $('.order_later').addClass('text-lightgrey');
-                $('.order_later_div').addClass('hidden');
-            }
-        })
-
-        $(document).on('change', 'input[name="delivery_type"]', function() {
-            if ($(this).val() == 'dining_in') {
-                $('.inside_restaurant_div').removeClass('hidden');
-                $('#table_no').attr('required', true);
-            } else {
-                $('.inside_restaurant_div').addClass('hidden');
-                $('#table_no').attr('required', false);
-            }
-        })
-
-        $(document).on('change', '#delivery', function() {
-            if ($(this).prop('checked') == true) {
-                $('.i_will_pick').removeClass('text-dark');
-               // $('.i_will_pick').addClass('text-lightgrey');
-
-                $('.home_delivery').addClass('text-dark');
-               // $('.home_delivery').removeClass('text-lightgrey');
-            } else {
-                $('.i_will_pick').addClass('text-dark');
-              //  $('.i_will_pick').removeClass('text-lightgrey');
-
-                $('.home_delivery').removeClass('text-dark');
-               // $('.home_delivery').addClass('text-lightgrey');
-            }
-        })
-
-        $(document).on('change', '#payment_type', function() {
-            if ($(this).prop('checked') == true) {
-                $('.pay_online').removeClass('text-dark');
-              //  $('.pay_online').addClass('text-lightgrey');
-
-                $('.cash_on_delivery').addClass('text-dark');
-               // $('.cash_on_delivery').removeClass('text-lightgrey');
-            } else {
-                $('.pay_online').addClass('text-dark');
-              //  $('.pay_online').removeClass('text-lightgrey');
-
-                $('.cash_on_delivery').removeClass('text-dark');
-              //  $('.cash_on_delivery').addClass('text-lightgrey');
-            }
-        })
-    </script>
+    
 @endsection

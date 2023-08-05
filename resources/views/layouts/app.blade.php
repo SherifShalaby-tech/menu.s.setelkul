@@ -3,19 +3,19 @@
 
 <head>
     <meta charset="UTF-8">
-    
-   
-<meta name="description" content="This is an menu of restaurants linked to the cashier program as the requests reaches you on the program directly, Category: Foods">
+
+
+<meta name="description" content="{{ App\Models\System::getProperty('about_us_footer') }}">
 <meta name="google-site-verification" content="qxW5PqYjtpOQSI6WJoytZMUkKkuD7iU0bo5v8wR_uHg" />
 
 <meta name="robots" content="index, follow">
 <meta name="googlebot" content="translate">
-<meta name="google" content="sitelinkssearchbox">    
+<meta name="google" content="sitelinkssearchbox">
 
-    
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    
+
     <title>{{ App\Models\System::getProperty('site_title') }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,7 +30,7 @@
         @include('layouts.partials.main-header')
     @endif
     <main class="relative bg-cover bg-no-repeat bg-center"
-        style="background-image: url('@if(!empty(session('page_background_image'))){{ asset('uploads/' . session('page_background_image')) }}@else{{ asset('images/default-page-bg.png') }}@endif')">
+        style="background-attachment: fixed; background-image: url('@if(!empty(session('page_background_image'))){{ images_asset(asset('uploads/' . session('page_background_image'))) }}@else{{ images_asset(asset('images/default-page-bg.png')) }}@endif')">
         @yield('content')
     </main>
     @include('layouts.partials.footer')
@@ -67,8 +67,8 @@
         });
     </script>
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="https://unpkg.com/flowbite@1.3.4/dist/flowbite.js"></script>
-    <script src="https://unpkg.com/flowbite@1.3.4/dist/datepicker.js"></script>
+    <script src="{{ asset('js/flowbite.js') }}"></script>
+    <script src="{{ asset('js/datepicker.js') }}"></script>
     @yield('javascript')
 </body>
 

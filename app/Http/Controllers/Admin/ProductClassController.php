@@ -47,25 +47,26 @@ class ProductClassController extends Controller
         if (!auth()->user()->can('category.view')) {
             abort(403, __('lang.not_authorized'));
         }
-
         if (request()->ajax()) {
+            $product_classes = ProductClass::leftJoin("products","products.product_class_id","=","product_classes.id")
+            ->groupBy('product_classes.id')->orderBy('product_classes.sort')->orderBy('product_classes.created_at','desc');
 
-            $product_classes = ProductClass::orderBy('sort', 'asc');
 
-
-            $product_classes = $product_classes->select(
-                'product_classes.*',
+            $product_classes = $product_classes->selectRaw(
+                'product_classes.*,count("products.id") as product_count'
 
             );
-
             return DataTables::of($product_classes)
                 ->addColumn('image', function ($row) {
-                    $image = $row->getFirstMediaUrl('product_class');
+                    $image = images_asset($row->getFirstMediaUrl('product_class'));
                     if (!empty($image)) {
                         return '<img src="' . $image . '" height="50px" width="50px">';
                     } else {
-                        return '<img src="' . asset('/uploads/' . session('logo')) . '" height="50px" width="50px">';
+                        return '<img src="' . images_asset(asset('/uploads/' . session('logo'))) . '" height="50px" width="50px">';
                     }
+                })
+                ->addColumn('products_count', function ($row) {
+                    return $row->product_count;
                 })
                 ->editColumn('status', function ($row) {
                     if ($row->status == 1) {
@@ -279,16 +280,22 @@ class ProductClassController extends Controller
                             $media->delete();
                         }
                     }
-
+                    if(preg_match('/^data:image/', $request->cropImages[0]))
+                    {
+                    $class->clearMediaCollection('product_class');
                     $extention = explode(";",explode("/",$img)[1])[0];
                     $image = rand(1,1500)."_image.".$extention;
                     $filePath = public_path($image);
                     $fp = file_put_contents($filePath,base64_decode(explode(",",$img)[1]));
                     $class->addMedia($filePath)->toMediaCollection('product_class');
-                
+                    }
+                    // return $request->cropImages[0];
+                    
                 }
             } 
-
+            if(!isset($request->cropImages[0]) || strlen($request->cropImages[0])==0){
+                $class->clearMediaCollection('product_class');
+            }
 
 
 
@@ -359,5 +366,26 @@ class ProductClassController extends Controller
         $product_classes_dp = $this->commonUtil->createDropdownHtml($product_classes, __('lang.please_select'));
 
         return $product_classes_dp;
+    }
+
+    public function deleteProductClassImage($id)
+    {
+        // try {
+            // $class = ProductClass::find($id);
+            // $class->clearMediaCollection('product_class');
+            // return $class;
+            $output = [
+                'success' => true,
+                'msg' => __('lang.success')
+            ];
+        // } catch (\Exception $e) {
+        //     Log::emergency('File: ' . $e->getFile() . 'Line: ' . $e->getLine() . 'Message: ' . $e->getMessage());
+        //     $output = [
+        //         'success' => false,
+        //         'msg' => __('lang.something_went_wrong')
+        //     ];
+        // }
+
+        return $output;
     }
 }

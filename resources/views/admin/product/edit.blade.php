@@ -283,11 +283,35 @@
                             </div>
                         </div>
                         <div class="col-10 offset-1">
-                            <div class="preview-container"></div>
+                            <div class="preview-container">
+                                @if(!empty($product->getFirstMediaUrl('product')))
+                                    <div id="preview{{ $product->id }}" class="preview">
+                                          <img src="{{ !empty($product->getFirstMediaUrl('product')) ? $product->getFirstMediaUrl('product') : asset('uploads/' . session('logo')) }}"
+                                               id="img{{  $product->id }}"   alt="">
+                              
+                                        <div class="action_div"></div>
+                                      
+                                        <button type="button"
+                                            class="delete-btn"><i
+                                            style="font-size: 20px;"
+                                            id="deleteBtn{{ $product->id }}"
+                                            class="fas fa-trash"></i>
+                                    </button>
+                                        <button type="button"
+                                                data-toggle="modal"
+                                                id="cropBtn{{ $product->id }}"
+                                                data-target="#exampleModal"
+                                                class="crop-btn"><i
+                                                style="font-size: 20px;"
+                                                class="fas fa-crop"></i>
+                                        </button>
+                                    </div>
+                            @endif
+                            </div>
                         </div>
             </div>
 
-            <div class="col-md-12 mt-3">
+            {{-- <div class="col-md-12 mt-3">
                 <div class="row">
                     @if (!empty($product->getMedia('product')))
                         @foreach ($product->getMedia('product') as $image)
@@ -303,7 +327,7 @@
                         @endforeach
                     @endif
                 </div>
-            </div>
+            </div> --}}
 
 
             <div class="col-md-12">
@@ -322,56 +346,60 @@
                 <div class="col-md-4">
                     @include('admin.partial.translation_textarea', [
                         'attribute' => 'product_details',
-                        'translations' => $product->translations,
+                        'translations' => $product->details_translations,
                     ])
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-group">
-                    {!! Form::label('purchase_price', __('lang.cost') . ' *', []) !!}
-                    {!! Form::text('purchase_price', @num_format($product->purchase_price), ['class' => 'form-control', 'placeholder' => session('system_mode') == 'pos' || session('system_mode') == 'garments' || session('system_mode') == 'supermarket' ? __('lang.purchase_price') : __('lang.cost'), 'required']) !!}
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    {!! Form::label('sell_price', __('lang.sell_price') . ' *', []) !!}
-                    {!! Form::text('sell_price', @num_format($product->sell_price), ['class' => 'form-control', 'placeholder' => __('lang.sell_price'), 'required']) !!}
+                    {!! Form::label('purchase_price', __('lang.cost'), []) !!}
+                    {!! Form::text('purchase_price', @num_format($product->purchase_price), ['class' => 'form-control','id'=>'purchase_price', 'placeholder' => session('system_mode') == 'pos' || session('system_mode') == 'garments' || session('system_mode') == 'supermarket' ? __('lang.purchase_price') : __('lang.cost')]) !!}
                 </div>
             </div>
 
-            <div class="clearfix"></div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-group">
-                    {!! Form::label('discount_type', __('lang.discount_type'), []) !!}
-                    {!! Form::select('discount_type', ['fixed' => __('lang.fixed'), 'percentage' => __('lang.percentage')], $product->discount_type, ['class' => 'selectpicker form-control', 'style' => 'width: 80%', 'placeholder' => __('lang.please_select')]) !!}
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    {!! Form::label('discount', __('lang.discount'), []) !!}
-                    {!! Form::text('discount', @num_format($product->discount), ['class' => 'form-control', 'placeholder' => __('lang.discount')]) !!}
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    {!! Form::label('discount_start_date', __('lang.discount_start_date'), []) !!}
-                    {!! Form::text('discount_start_date', !empty($product->discount_start_date) ? @format_date($product->discount_start_date) : null, ['class' => 'form-control datepicker', 'placeholder' => __('lang.discount_start_date')]) !!}
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    {!! Form::label('discount_end_date', __('lang.discount_end_date'), []) !!}
-                    {!! Form::text('discount_end_date', !empty($product->discount_end_date) ? @format_date($product->discount_end_date) : null, ['class' => 'form-control datepicker', 'placeholder' => __('lang.discount_end_date')]) !!}
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-group">
-                    {!! Form::label('active', __('lang.status'), []) !!} <br>
-                    {!! Form::checkbox('active', 1, $product->active ? true : false, ['class']) !!}
+                    {!! Form::label('sell_price', __('lang.sell_price'), []) !!}
+                    {!! Form::text('sell_price', @num_format($product->sell_price), ['class' => 'form-control','id'=>'sell_price', 'placeholder' => __('lang.sell_price')]) !!}
                 </div>
             </div>
 
+                <div class="clearfix"></div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        {!! Form::label('discount_type', __('lang.discount_type'), []) !!}
+                        {!! Form::select('discount_type', ['fixed' => __('lang.fixed'), 'percentage' => __('lang.percentage')], $product->discount_type, ['class' => 'selectpicker form-control', 'style' => 'width: 80%', 'placeholder' => __('lang.please_select')]) !!}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        {!! Form::label('discount', __('lang.discount'), []) !!}
+                        {!! Form::text('discount', @num_format($product->discount), ['class' => 'form-control', 'placeholder' => __('lang.discount')]) !!}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        {!! Form::label('discount_start_date', __('lang.discount_start_date'), []) !!}
+                        {!! Form::text('discount_start_date', !empty($product->discount_start_date) ? @format_date($product->discount_start_date) : null, ['class' => 'form-control datepicker', 'placeholder' => __('lang.discount_start_date')]) !!}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        {!! Form::label('discount_end_date', __('lang.discount_end_date'), []) !!}
+                        {!! Form::text('discount_end_date', !empty($product->discount_end_date) ? @format_date($product->discount_end_date) : null, ['class' => 'form-control datepicker', 'placeholder' => __('lang.discount_end_date')]) !!}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {!! Form::label('sort', __('lang.sort') . ':*') !!}
+                    {!! Form::number('sort',$product->sort , ['class' => 'form-control', 'placeholder' => __('lang.sort'), 'required']) !!}
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        {!! Form::label('active', __('lang.status'), []) !!} <br>
+                        {!! Form::checkbox('active', 1, $product->active ? true : false, ['class']) !!}
+                    </div>
+                </div>
             <div class="col-md-12" style="margin-top: 10px">
                 <div class="i-checks">
                     <input id="this_product_have_variant" name="this_product_have_variant" type="checkbox"
@@ -392,7 +420,7 @@
                                         class="fa fa-plus"></i></button></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="variation_row">
                         @foreach ($product->variations as $item)
                             @include(
                                 'admin.product.partial.edit_variation_row',
@@ -448,14 +476,39 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.js"></script>
 
-
 <script>
-  const fileInput = document.querySelector('#file-input');
-    const previewContainer = document.querySelector('.preview-container');
-    const croppieModal = document.querySelector('#croppie-modal');
-    const croppieContainer = document.querySelector('#croppie-container');
-    const croppieCancelBtn = document.querySelector('#croppie-cancel-btn');
-    const croppieSubmitBtn = document.querySelector('#croppie-submit-btn');
+    @if($product)
+    
+    document.getElementById("deleteBtn{{ $product->id }}").addEventListener('click', () => {
+        swal({
+            title: '{{ __("lang.Are you sure?") }}',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            console.log(result)
+            if (result) {
+                swal(
+                    'Deleted!',
+                    '{{ __("lang.Your Image has been deleted.") }}',
+                    'success'
+                )
+                $("#preview{{ $product->id }}").remove();
+            }
+        });
+    });
+    
+    @endif
+</script>
+<script>
+  var fileInput = document.querySelector('#file-input');
+    var previewContainer = document.querySelector('.preview-container');
+    var croppieModal = document.querySelector('#croppie-modal');
+    var croppieContainer = document.querySelector('#croppie-container');
+    var croppieCancelBtn = document.querySelector('#croppie-cancel-btn');
+    var croppieSubmitBtn = document.querySelector('#croppie-submit-btn');
 
 
     fileInput.addEventListener('change', () => {
@@ -555,6 +608,20 @@
             });
         });
     }
+    // edit Case
+    @if($product)
+                document.getElementById("cropBtn{{ $product->id }}").addEventListener('click', () => {
+                    console.log(("#exampleModal"))
+                    setTimeout(() => {
+                        launchCropTool(document.getElementById("img{{ $product->id }}"));
+                    }, 500);
+                });
+                document.getElementById("deleteBtn{{ $product->id }}").addEventListener('click', () => {
+                    if (window.confirm('Are you sure you want to delete this image?')) {
+                        $("#preview{{ $product->id }}").remove();
+                    }
+                });
+        @endif
     function getImages() {
         setTimeout(() => {
             const container = document.querySelectorAll('.preview-container');

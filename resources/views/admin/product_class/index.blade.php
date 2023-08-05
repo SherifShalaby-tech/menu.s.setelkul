@@ -12,16 +12,30 @@
     data-href="{{action('Admin\ProductClassController@create')}}"><i class="fas fa-plus"></i>
     @lang('lang.add_category')</a>
 @endcan
+{{-- <style>
+    table.dataTable thead > tr > th {
+    /* padding-left: 30px !important; */
+    /* padding-right: initial !important; */
+}
+
+table.dataTable thead .sorting:after,
+table.dataTable thead .sorting_asc:after,
+table.dataTable thead .sorting_desc:after {
+    left: 8px !important;
+    right: auto !important;
+}
+</style> --}}
 <x-adminlte-card title="{{__('lang.categories')}}" theme="{{config('adminlte.right_sidebar_theme')}}"
     theme-mode="outline" icon="fas fa-file">
 
     <div class="table-responsive">
-        <table id="product_class_table" class="table" style="width: 100%;">
+        <table id="product_class_table" class="table display" style="width: 100%;">
             <thead>
                 <tr>
                     <th>@lang('lang.image')</th>
                     <th>@lang('lang.name')</th>
-                    <th>@lang('lang.description')</th>
+                    <th>@lang('lang.products_count')</th>
+                    {{-- <th>@lang('lang.description')</th> --}}
                     <th>@lang('lang.sort')</th>
                     <th>@lang('lang.status')</th>
 
@@ -46,33 +60,36 @@
             paging: true,
             info: false,
             bAutoWidth: false,
-            order: [],
             language: {
                 url: dt_lang_url,
             },
             lengthMenu: [
-                [10, 25, 50, 75, 100, 200, 500, -1],
-                [10, 25, 50, 75, 100, 200, 500, "All"],
+                [10, 25, 50, 75, 100, 200, -1],
+                [10, 25, 50, 75, 100, 200, "All"],
             ],
             dom: "lBfrtip",
             buttons: buttons,
             processing: true,
             serverSide: true,
-            aaSorting: [[2, 'asc']],
+            order: [],
              "ajax": {
                 "url": "/admin/category",
                 "data": function ( d ) {
                 }
             },
             columnDefs: [ {
-                "targets": [0, 3],
-                "orderable": false,
+                // "targets": [1, 3],
+                "orderable": true,
                 "searchable": false
             } ],
+            // "aoColumnDefs": [
+            //     { 'bSortable': true }
+            // ],
             columns: [
                 { data: 'image', name: 'image'  },
                 { data: 'name', name: 'name'  },
-                { data: 'description', name: 'description'  },
+                { data: 'products_count', name: 'products_count'},
+                // { data: 'description', name: 'description'  },
                 { data: 'sort', name: 'sort'  },
                 { data: 'status', name: 'status'  },
 

@@ -23,8 +23,8 @@ class CreateProductsTable extends Migration
             $table->string('multiple_units')->nullable();
             $table->boolean('is_service')->default(1);
             $table->text('product_details')->nullable();
-            $table->decimal('purchase_price', 15, 4);
-            $table->decimal('sell_price', 15, 4);
+            $table->decimal('purchase_price', 15, 4)->nullable();
+            $table->decimal('sell_price', 15, 4)->nullable();
             $table->string('discount_type')->nullable();
             $table->decimal('discount', 15, 4)->nullable();
             $table->string('discount_start_date')->nullable();

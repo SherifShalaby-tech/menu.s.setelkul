@@ -1,6 +1,7 @@
 @extends('layouts.app')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.4/tiny-slider.css">
 @section('content')
+<div style="display:none;">@lang('lang.categories')</div>
     <div class="container mx-auto">
         <div class="flex">
             <div class="flex-1">
@@ -28,7 +29,7 @@
                                     class="">
                                     <div class="flex-col mx-auto">
                                         <div class="">
-                                            <img src="{{ !empty($category->getFirstMediaUrl('product_class')) ? $category->getFirstMediaUrl('product_class') : asset('uploads/' . session('logo')) }}"
+                                            <img src="{{ !empty($category->getFirstMediaUrl('product_class')) ? images_asset($category->getFirstMediaUrl('product_class')) : images_asset(asset('uploads/' . session('logo'))) }}"
                                                 class="border-2 border-dark mx-auto w-full aspect-square rounded-lg"
                                                 alt="category-1">
                                         </div>

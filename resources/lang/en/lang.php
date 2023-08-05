@@ -257,4 +257,11 @@ return [
     'use_tags_info' => 'Use tags in text like {store_name} to display data automatically.',
 
     'language' => 'Language',
+    'default'=>'Default',
+    'products_count'=>'Products Count',
+    'dinnig_in_restaurant'=>'In The Restaurant ',
+    'table_no'=>'Table No',
+    'enter_restaurant_store'=>'Enter Restaurant Name',
+    'Are you sure?'=>'Are you sure?',
+    'Your Image has been deleted.'=>'Your Image has been deleted',
 ];

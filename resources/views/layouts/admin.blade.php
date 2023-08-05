@@ -1,5 +1,8 @@
 @extends('adminlte::page')
 @section('css')
+    {{-- <link rel="stylesheet" href="https://nightly.datatables.net/css/jquery.dataTables.min.css"> --}}
+    {{-- <link rel="stylesheet" href="https://nightly.datatables.net/colreorder/css/colReorder.dataTables.min.css"> --}}
+    <link rel="stylesheet" href="{{ asset('js/datatable/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/sweetalert2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/css/style.css') }}">
 @endsection
@@ -142,7 +145,7 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://fastly.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script src="{{ asset('js/accounting.min.js') }}"></script>
 
 @section('js')
@@ -160,13 +163,18 @@
             },
         });
     </script>
+    {{-- <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script> --}}
+    {{-- <script type="text/javascript" src="https://nightly.datatables.net/js/jquery.dataTables.min.js"></script> --}}
+    {{-- <script type="text/javascript" src="https://nightly.datatables.net/colreorder/js/dataTables.colReorder.min.js"></script> --}}
+
     <script type="text/javascript" src="{{ asset('js/datatable/pdfmake.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/datatable/vfs_fonts.js') }}"></script>
+    
     <script type="text/javascript" src="{{ asset('js/datatable/jquery.dataTables.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/datatable/dataTables.bootstrap4.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/datatable/dataTables.buttons.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/datatable/buttons.bootstrap4.min.js') }}">
-        ">
+        
     </script>
     <script type="text/javascript" src="{{ asset('js/datatable/buttons.colVis.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/datatable/buttons.html5.min.js') }}"></script>
@@ -179,6 +187,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <script src="{{ asset('admin/js/cropper.js') }}"></script>
     <script>
+        $(document).on('select2:open', () => {
+            document.querySelector('.select2-search__field').focus();
+        });
         $(document).on('click', '.delete_item', function(e) {
             e.preventDefault();
             swal({

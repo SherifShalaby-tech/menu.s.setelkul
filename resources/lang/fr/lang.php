@@ -248,4 +248,10 @@ return [
     'pay_and_close' => 'Payer et fermer',
     'dining_room' => 'Salle à manger',
     'dining_table' => 'Table à manger',
+    'products_count'=>'',
+    'dinnig_in_restaurant'=>'',
+    'table_no'=>'طاولة رقم',
+    'dinnig_in_restaurant'=>' ',
+    'table_no'=>'Table No',
+    'enter_restaurant_store'=>'',
 ];

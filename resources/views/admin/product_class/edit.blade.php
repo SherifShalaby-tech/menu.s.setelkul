@@ -278,26 +278,28 @@
                     </div>
                     <div class="col-10 offset-1">
                         <div class="preview-container">
-                            @if($product_class)
+                            @if(!empty($product_class->getFirstMediaUrl('product_class')))
                                     <div id="preview{{ $product_class->id }}" class="preview">
-                                          <img src="{{ !empty($product_class->getFirstMediaUrl('product_class')) ? $product_class->getFirstMediaUrl('product_class') : asset('uploads/' . session('logo')) }}"
+                                          <img src="{{ !empty($product_class->getFirstMediaUrl('product_class')) ? images_asset($product_class->getFirstMediaUrl('product_class')) : images_asset(asset('uploads/' . session('logo'))) }}"
                                                id="img{{  $product_class->id }}"   alt="">
                               
                                         <div class="action_div"></div>
-                                       {{-- <button type="button"
-                                                class="delete-btn"><i
-                                                style="font-size: 20px;"
-                                                id="deleteBtn{{ $product_class->id }}"
-                                                class="fas fa-trash"></i>
-                                        </button> 
+                                      
+                                        <button type="button"
+                                            class="delete-btn"><i
+                                            style="font-size: 20px;"
+                                            data-href="{{ action('Admin\ProductClassController@deleteProductClassImage', $product_class->id) }}"
+                                            id="deleteBtn{{ $product_class->id }}"
+                                            class="fas fa-trash"></i>
+                                    </button>
                                         <button type="button"
                                                 data-toggle="modal"
                                                 id="cropBtn{{ $product_class->id }}"
-                                                data-target="#imagesModal"
+                                                data-target="#exampleModal"
                                                 class="crop-btn"><i
                                                 style="font-size: 20px;"
                                                 class="fas fa-crop"></i>
-                                        </button> --}}
+                                        </button>
                                     </div>
                             @endif
 
@@ -360,6 +362,32 @@
 
 
 <script>
+@if($product_class)
+
+document.getElementById("deleteBtn{{ $product_class->id }}").addEventListener('click', () => {
+    swal({
+        title: '{{ __("lang.Are you sure?") }}',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        console.log(result)
+        if (result) {
+            swal(
+                'Deleted!',
+                '{{ __("lang.Your Image has been deleted.") }}',
+                'success'
+            )
+            $("#preview{{ $product_class->id }}").remove();
+        }
+    });
+});
+
+@endif
+</script>
+<script>
     $("#edit-data-btn").on("click",function(e){
 
             e.preventDefault();
@@ -369,12 +397,12 @@
             },500)
     });
 
-  const fileInput = document.querySelector('#file-input');
-    const previewContainer = document.querySelector('.preview-container');
-    const croppieModal = document.querySelector('#croppie-modal');
-    const croppieContainer = document.querySelector('#croppie-container');
-    const croppieCancelBtn = document.querySelector('#croppie-cancel-btn');
-    const croppieSubmitBtn = document.querySelector('#croppie-submit-btn');
+  var fileInput = document.querySelector('#file-input');
+    var previewContainer = document.querySelector('.preview-container');
+    var croppieModal = document.querySelector('#croppie-modal');
+    var croppieContainer = document.querySelector('#croppie-container');
+    var croppieCancelBtn = document.querySelector('#croppie-cancel-btn');
+    var croppieSubmitBtn = document.querySelector('#croppie-submit-btn');
 
 
     fileInput.addEventListener('change', () => {
@@ -395,7 +423,7 @@
                     preview.appendChild(img);
                     preview.appendChild(actions);
 
-                    const container = document.createElement('div');
+                    var container = document.createElement('div');
                     const deleteBtn = document.createElement('span');
                     deleteBtn.classList.add('delete-btn');
                     deleteBtn.innerHTML = '<i style="font-size: 20px;" class="fas fa-trash"></i>';
@@ -409,7 +437,7 @@
                     });
 
                     preview.appendChild(deleteBtn);
-                    const cropBtn = document.createElement('span');
+                    var cropBtn = document.createElement('span');
                     cropBtn.setAttribute("data-toggle", "modal")
                     cropBtn.setAttribute("data-target", "#exampleModal")
                     cropBtn.classList.add('crop-btn');
@@ -433,7 +461,7 @@
              
     function launchCropTool(img) {
         // Set up Croppie options
-        const croppieOptions = {
+        var croppieOptions = {
             viewport: {
                 width: 200,
                 height: 200,
@@ -447,7 +475,7 @@
         };
 
         // Create a new Croppie instance with the selected image and options
-        const croppie = new Croppie(croppieContainer, croppieOptions);
+        var croppie = new Croppie(croppieContainer, croppieOptions);
         croppie.bind({
             url: img.src,
             orientation: 1,
@@ -497,7 +525,7 @@
             $("#cropped_images").empty();
             for (let i = 0; i < container[0].children.length; i++) {
                 images.push(container[0].children[i].children[0].src)
-                var newInput = $("<input>").attr("type", "hidden").attr("name", "cropImages[]").val(container[0].children[i].children[0].src);
+                var newInput = $("<input>").attr("type", "text").attr("name", "cropImages[]").val(container[0].children[i].children[0].src);
                 $("#cropped_images").append(newInput);
             }
             return images

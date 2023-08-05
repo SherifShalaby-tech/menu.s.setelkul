@@ -5,7 +5,7 @@
              <div class="w-1/4 text-center md:block xs:hidden">
                
             </div>
-            <div class="w-1/2   md:block xs:hidden" style="color: #fff;">
+            <div class="w-1/2   md:block xs:w-full" style="color: #fff;">
                 <h4 class="stext-301 cl0 p-b-10">
                     
                   </h4><br> <br>
@@ -28,7 +28,7 @@
                       </span>  
                   </p>
             </div>
-            <div class="w-1/2 text-right">
+            <div class="w-1/2 text-right xs:w-full">
                 <div class="flex-col mt-6">
                     <div class="pr-4 pt-2 font-semibold text-lg text-white">@lang('lang.about_us')</div>
                     <div class="pr-4 pt-2 font-semibold sm:text-base xs:text-xs text-white">
@@ -36,24 +36,31 @@
                             {{ App\Models\System::getProperty('about_us_footer') }}
                         </a>
                     </div>
-                    <div class="pr-4 pt-2 mt-8">
-                        <a href="{{ action('AboutUsController@index') }}"
-                            class="bg-red text-white md:text-base xs:text-sm font-bold px-4 py-2 border-2 border-white rounded-lg">@lang('lang.show_more')
-                        </a>
-                    </div>
+                
                 </div>
             </div>
 
             <div class="w-1/4 text-left">
-                <img src="{{ asset('uploads/' . session('logo')) }}" alt="logo" class="mt-8 w-24 h-24">
+                <img src="{{ images_asset(asset('uploads/' . session('logo'))) }}" alt="logo" class="mt-8 w-24 h-24">
             </div>
 
+        </div>
+        <div class="flex flex-row">
+            <div class="w-3/4 text-right xs:w-full">
+                <div class="pr-2 pt-2 mt-8">
+                    <a href="{{ action('AboutUsController@index') }}"
+                        class="bg-red text-white md:text-base xs:text-sm font-bold px-4 py-2 border-2 border-white rounded-lg">@lang('lang.show_more')
+                    </a>
+                </div>
+            </div>
+            <div class="w-1/4 text-center md:block"> 
+            </div>
         </div>
     </div>
     <div class="flex w-full">
         <div class="flex-1 mt-10" style="padding-bottom: 5px;font-size: small;">
             <p class="text-white text-center">@lang('lang.footer_copyright')</p>
-             <p class="text-white text-center">Tel : 00201003836917 - 00905386531059 - 0097433231457</p>
+             <p class="text-white text-center">Tel :00905386531059 - 0097433231457</p>
         </div>
     </div>
 </div>

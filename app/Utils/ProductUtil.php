@@ -10,6 +10,7 @@ use App\Models\Customer;
 use App\Models\EarningOfPoint;
 use App\Models\Product;
 use App\Models\ProductClass;
+use App\Models\ProductSize;
 use App\Models\ProductStore;
 use App\Models\PurchaseOrderLine;
 use App\Models\PurchaseReturnLine;
@@ -27,7 +28,11 @@ use Illuminate\Support\Facades\DB;
 
 class ProductUtil extends Util
 {
-
+    protected $commonUtil;
+    public function __construct(Util $commonUtil)
+    {
+        $this->commonUtil = $commonUtil;
+    }
     /**
      * Generates product sku
      *
@@ -105,7 +110,7 @@ class ProductUtil extends Util
                 }
 
                 if (!empty($v['id']) || !empty($v['pos_model_id'])) {
-                    $v['default_purchase_price'] = (float)$v['default_purchase_price'];
+                    $v['default_purchase_price'] = isset($v['default_purchase_price'])? (float)$v['default_purchase_price']:0;
                     $v['default_sell_price'] = (float)$v['default_sell_price'];
                     if (!empty($v['pos_model_id'])) {
                         $variation = Variation::where('pos_model_id', $v['pos_model_id'])->first();
@@ -144,7 +149,7 @@ class ProductUtil extends Util
             $variation_data['sub_sku'] = $product->sku;
             $variation_data['size_id'] = !empty($product->multiple_sizes) ? $product->multiple_sizes[0] : null;
             $variation_data['is_dummy'] = 1;
-            $variation_data['default_purchase_price'] = $this->num_uf($product->purchase_price);
+            $variation_data['default_purchase_price'] = isset($product->purchase_price)?$this->num_uf($product->purchase_price):0;
             $variation_data['default_sell_price'] = $this->num_uf($product->sell_price);
             $variation = Variation::create($variation_data);
             $keey_variations[] = $variation->id;
@@ -158,6 +163,55 @@ class ProductUtil extends Util
         return true;
     }
 
+
+
+    public function createOrUpdateProductSizes($product, $sizes)
+    {
+        $key_sizes = [];
+        if (!empty($sizes)) {
+            foreach ($sizes as $s) {
+                $product_sizes = ProductSize::where('size_id',$s['size_id'])->where('product_id',$product->id)->first();
+
+                if (!empty($s['id']) && !empty($s['size_id'])) {
+                    if(!empty($product_sizes )){
+                    $product_sizes->size_id = $s['size_id'];
+                    $product_sizes->product_id = $product->id;
+                    $product_sizes->sell_price = !empty($s['sell_price']) ? $this->num_uf($s['sell_price']) : $this->num_uf($product_sizes->sell_price);
+                    $product_sizes->purchase_price = !empty($s['purchase_price']) ? $this->num_uf($s['purchase_price']) : $this->num_uf($product_sizes->purchase_price);
+                
+                    $product_sizes->update();
+
+                    $key_sizes[] = $product_sizes->id;
+                    }else{
+                    $size_data['product_id'] = $product->id;
+                    $size_data['size_id'] = $s['size_id'];
+                    $size_data['purchase_price'] = $s['purchase_price'];
+                    $size_data['sell_price'] = $s['sell_price'];
+                 
+                    $size = ProductSize::create($size_data);
+                    $key_sizes[] = $size->id;
+                    }
+
+                } else {
+            
+                    $size_data['product_id'] = $product->id;
+                    $size_data['size_id'] = $s['size_id'];
+                    $size_data['purchase_price'] = $s['purchase_price'];
+                    $size_data['sell_price'] = $s['sell_price'];
+                    $size = ProductSize::create($size_data);
+                    $key_sizes[] = $size->id;
+                }
+            }
+        }
+   
+
+        if (!empty($key_sizes)) {
+            //delete the size product removed by user
+            ProductSize::where('product_id', $product->id)->whereNotIn('id', $key_sizes)->delete();
+        }
+
+        return true;
+    }
     /**
      * Get all details for a product from its variation id
      *

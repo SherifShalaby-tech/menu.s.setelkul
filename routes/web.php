@@ -27,7 +27,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['Se
     Route::get('/cart/view', 'CartController@view');
     Route::get('/cart/clear', 'CartController@clearCart');
     Route::get('/cart/remove-product/{product_id}', 'CartController@removeProduct');
-    Route::get('/cart/add-to-cart/{product_id}', 'CartController@addToCart');
+    Route::get('/cart/add-to-cart/{product_id}/{size_id?}', 'CartController@addToCart');
     Route::get('/cart/add-to-cart-extra/{product_id}', 'CartController@addToCartExtra');
     Route::get('/cart/update-product-variation/{product_id}/{variation_id}', 'CartController@updateProductVariation');
     Route::get('/cart/update-product-quantity/{product_id}/{quantity}', 'CartController@updateProductQuantity');
@@ -48,8 +48,10 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
         Route::get('/dashboard', 'Admin\DashboardController@index')->name('dashboard');
         Route::get('/category/get-dropdown', 'Admin\ProductClassController@getDropdown');
         Route::resource('/category', Admin\ProductClassController::class)->name('index', 'categories.index');
+        Route::get('/category/delete-product-class-image/{id}', 'Admin\ProductClassController@deleteProductClassImage');
         Route::get('product/delete-product-image/{id}', 'Admin\ProductController@deleteProductImage');
         Route::get('product/get-variation-row', 'Admin\ProductController@getVariationRow');
+        Route::get('product/get-size-row', 'Admin\ProductController@getSizeRow');
         Route::resource('/product', Admin\ProductController::class)->name('index', 'product.index')->name('create', 'product.create');
         Route::post('user/check-password/{id}', 'Admin\UserController@checkPassword');
         Route::get('user/profile', 'Admin\UserController@getProfile');
