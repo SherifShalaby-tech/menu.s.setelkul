@@ -184,21 +184,21 @@ $locale_direction = LaravelLocalization::getCurrentLocaleDirection();
                       <div class="flex-col justify-center py-4">
                             <div class="flex @if ($locale_direction == 'rtl') flex-row-reverse @else flex-row @endif ">
                                 <div class="w-1/2 @if ($locale_direction == 'rtl') text-right @else text-left @endif">
-                                    <h3 class="text-lg font-semibold text-dark">{{ $item->name }}</h3>
+                                    <p class="font-semibold text-tiny text-dark">{{ $item->name }}</ح>
                                 </div>
                                 <div class="w-1/2 @if ($locale_direction == 'rtl') text-right @else text-left @endif">
-                                    <h3 class="text-lg font-semibold text-dark">{{$item->attributes->size?$item->attributes->size:'' }}</h3>
+                                    <p class="font-semibold text-tiny text-dark">{{$item->attributes->size?$item->attributes->size:'' }}</p>
                                 </div>
                                 <div class="md:w-1/3 xs:w-5/12">
                                     <div class="flex flex-row justify-center w-full qty_row">
                                         <button type="button"
-                                            class="h-8 px-2 text-lg text-center border-2 rounded-full w-14 minus border-dark text-dark">-</button>
+                                            class="w-8 h-8 px-2 text-lg text-center border-2 rounded-full minus border-dark text-dark">-</button>
                                         {{-- <input type="text" data-id="{{ $item->id }}" value="{{ $item->quantity }}"
                                             class="w-16 leading-none text-center bg-transparent border-transparent quantity text-dark line focus:border-transparent focus:ring-0 "> --}}
                                             <input type="text" data-id="{{ $item->id }}" value="{{ $item->attributes->quantity }}"
-                                            class="w-24 leading-none text-center bg-transparent border-transparent quantity text-dark line focus:border-transparent focus:ring-0 ">
+                                            class="w-8 leading-none text-center bg-transparent border-transparent quantity text-dark line focus:border-transparent focus:ring-0 ">
                                         <button type="button"
-                                            class="w-10 h-8 px-2 text-lg text-center border-2 rounded-full plus border-dark text-dark ">+</button>
+                                            class="w-8 h-8 px-2 text-lg text-center border-2 rounded-full plus border-dark text-dark ">+</button>
                                     </div>
                                 </div>
                                 <div
@@ -242,6 +242,7 @@ $locale_direction = LaravelLocalization::getCurrentLocaleDirection();
                                             {{ session('currency')['code'] }}</span>
                                         </div>
                                     </div>
+                                    <hr>
                                 @endif
                             @endforeach
                         </div>
