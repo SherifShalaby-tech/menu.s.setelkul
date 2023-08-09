@@ -59,7 +59,7 @@ class OrderController extends Controller
             $data['sales_note'] = $string;
             $data['store_id'] =env('ENABLE_POS_SYNC')?$request->store_id:10;
             $data['customer_name'] = $request->customer_name;
-            $data['phone_number'] = $request->phone_number;
+            $data['phone_number'] = 0;
             $data['address'] = !empty($request->address) ? $request->address : null;
             $data['order_type'] = !empty($request->order_type) ? 'order_later' : 'order_now';
             $data['month'] = $request->month;
@@ -174,7 +174,7 @@ class OrderController extends Controller
                 $text .= "%0D%0A" . __('lang.pay_online');
             }
             $text .= "%0D%0A" . __('lang.customer') . "%3A" . $order->customer_name;
-            $text .= "%0D%0A" . __('lang.phone_number') . "%3A" . $order->phone_number;
+            // $text .= "%0D%0A" . __('lang.phone_number') . "%3A" . $order->phone_number;
             $text .= "%0D%0A" . __('lang.note') . "%3A" . $order->sales_note;
 
             $whatsapp = System::getProperty('whatsapp');
