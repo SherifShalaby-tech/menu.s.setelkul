@@ -35,14 +35,14 @@ $locale_direction = LaravelLocalization::getCurrentLocaleDirection();
                         class="border-b border-dark rounded-lg w-full px-4 w-3/5 @if ($locale_direction == 'rtl') float-left @else float-right @endif "
                         value="">
                 </div>
-                <div class="flex flex-row py-2 flow-root">
+                {{-- <div class="flex flex-row py-2 flow-root">
                     <label
                         class="font-semibold text-base text-dark pr-2 pt-1 @if ($locale_direction == 'rtl') float-right @else float-left @endif"
                         for="phone_number">@lang('lang.phone_number')</label>
                     <input type="text" name="phone_number" required
                         class="border-b border-dark rounded-lg w-full px-4 w-3/5 @if ($locale_direction == 'rtl') float-left @else float-right @endif "
                         value="">
-                </div>
+                </div> --}}
                 <div class="flex flex-row py-2 flow-root">
                     <label
                         class="font-semibold text-base text-dark pr-2 pt-1 @if ($locale_direction == 'rtl') float-right @else float-left @endif"
