@@ -11,3 +11,10 @@ function images_asset($path= null)
     }
     return $subject;
 }
+function apiResponse($status,$message,$data=null){
+    return $response=[
+      'status'=>$status,
+      'message'=>$message,
+      'data'=>$data
+    ];
+  }
