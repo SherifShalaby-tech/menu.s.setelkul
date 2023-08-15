@@ -4,15 +4,15 @@
     @include('layouts.partials.product-header')
 
     <div class="container mx-auto mt-14">
-        <div class="flex flex-row flex-wrap h-96 min-h-full">
+        <div class="flex flex-row flex-wrap min-h-full h-96">
             <div class="flex-1 xs:w-full lg:w-1/2 px-16 @if ($product->getMedia('product')->count() == 0) md:block xs:hidden @endif">
 
                 <div class="flex flex-row items-center @if ($product->getMedia('product')->count() == 0) xs:hidden @endif">
-                    <div class="flex-3 w-20 block md:block xs:hidden ">
+                    <div class="block w-20 flex-3 md:block xs:hidden ">
                         <div class="owl-nav">
-                            <div class="prev-nav">
+                            <!-- <div class="prev-nav">
                                 <img src="{{ asset('images/slider-arrow-left.png') }}" alt="" class="m-auto">
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="flex-1 ">
@@ -23,11 +23,11 @@
                             @endforeach
                         </div>
                     </div>
-                    <div class="flex-3 w-20 block md:block xs:hidden  justify-center">
+                    <div class="justify-center block w-20 flex-3 md:block xs:hidden">
                         <div class="owl-nav">
-                            <div class="next-nav">
+                            <!-- <div class="next-nav">
                                 <img src="{{ asset('images/slider-arrow-right.png') }}" alt="" class="m-auto">
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
 
             </div>
             <div class="flex-1 xs:w-full lg:w-1/2">
-                <div class="flex flex-col bg-white opacity-70 px-16 py-8">
+                <div class="flex flex-col px-16 py-8 bg-white opacity-70">
                     <div class="flex-1">
                         <h1 class="text-2xl font-bold">{{ $product->name }}</h1>
                         <p class="py-2 text-gray-600">{!! $product->product_details !!}</p>
@@ -46,10 +46,10 @@
                                 <h2 class="text-xl font-bold">
                                     @if (!empty($product->discount_value) && $product->discount_value > 0)
                                         <span
-                                            class="strikethrough text-gray-600 mr-4">{{ @num_format($product->sell_price) }}
+                                            class="mr-4 text-gray-600 strikethrough">{{ @num_format($product->sell_price) }}
                                             {{ session('currency')['code'] }}
                                     @endif
-                                    </span> 
+                                    </span>
                                     @foreach($product->variations->where('name','!=','Default') as $size)
                                     <span class="sell_price">{{ @num_format($size->default_sell_price - $product->discount_value) }}</span>
                                     @break
@@ -89,16 +89,16 @@
                             <div class="flex-1">
                                 <div class="flex flex-row">
                                     <button
-                                        class="minus border-2 rounded-full text-lg text-center border-dark text-dark h-8 w-8">-</button>
+                                        class="w-8 h-8 text-lg text-center border-2 rounded-full minus border-dark text-dark">-</button>
                                     <input type="quantity" value="1"
-                                        class="quantity text-center focus:outline-none text-dark bg-transparent w-16">
+                                        class="w-16 text-center bg-transparent quantity focus:outline-none text-dark">
                                     <button
-                                        class="plus border-2 rounded-full text-lg text-center border-dark text-dark h-8 w-8">+</button>
+                                        class="w-8 h-8 text-lg text-center border-2 rounded-full plus border-dark text-dark">+</button>
                                 </div>
-                                
+
                                 <div class="flex">
                                     <span id="addToCart" style="cursor:pointer"
-                                        class="add_to_cart_btn bg-red text-white font-semibold rounded-lg px-4 py-2 mt-4 ">@lang('lang.add_to_cart')</span>
+                                        class="px-4 py-2 mt-4 font-semibold text-white rounded-lg add_to_cart_btn bg-red ">@lang('lang.add_to_cart')</span>
                                 </div>
                             </div>
                         </div>
@@ -178,7 +178,7 @@
                     }else{
                         swal.fire("@lang('lang.error')!", response.status.msg, "error");
                     }
-                    
+
                     $('.cart_items_page').load(document.URL +  ' .cart_items_page');
                     $('.cart_items').load(document.URL +  ' .cart_items');
                     $('.total').load(document.URL +  ' .total');

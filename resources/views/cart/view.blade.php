@@ -197,7 +197,7 @@ $locale_direction = LaravelLocalization::getCurrentLocaleDirection();
                                         {{-- <input type="text" data-id="{{ $item->id }}" value="{{ $item->quantity }}"
                                             class="w-16 leading-none text-center bg-transparent border-transparent quantity text-dark line focus:border-transparent focus:ring-0 "> --}}
                                             <input type="text" data-id="{{ $item->id }}" value="{{ $item->attributes->quantity }}"
-                                            class="w-8 leading-none text-center bg-transparent border-transparent quantity text-dark line focus:border-transparent focus:ring-0 ">
+                                            class="w-10 leading-none text-center bg-transparent border-transparent quantity text-dark line focus:border-transparent focus:ring-0 ">
                                         <button type="button"
                                             class="w-8 h-8 px-2 text-lg text-center border-2 rounded-full plus border-dark text-dark ">+</button>
                                     </div>
