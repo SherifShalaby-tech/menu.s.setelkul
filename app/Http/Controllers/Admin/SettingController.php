@@ -98,7 +98,7 @@ class SettingController extends Controller
                 ['key' => 'language'],
                 ['value' => $request->language, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
             );
-            $url= LaravelLocalization::getLocalizedURL($request->language);
+          
             System::updateOrCreate(
                 ['key' => 'currency'],
                 ['value' => $request->currency, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
@@ -161,8 +161,10 @@ class SettingController extends Controller
                         ['value' => $data['logo'], 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
                     );
                     $data['logo_url'] = asset('uploads/' . $data['logo']);
+                    if(!env('ENABLE_POS_SYNC')){
                     $this->commonUtil->addSyncDataWithPos('System', $logo_setting, $data, 'POST', 'setting');
                     unset($data['logo_url']);
+                    }
                 }
             }
             $data['home_background_image'] = null;
@@ -278,8 +280,9 @@ class SettingController extends Controller
                 'msg' => __('lang.something_went_wrong')
             ];
         }
-
-        return redirect($url)->with('status', $output);
+        
+        $url= LaravelLocalization::getLocalizedURL($request->language);
+        return redirect(!empty($url)?$url:'')->with('status', $output);
     }
 
     public function removeImage($type)
