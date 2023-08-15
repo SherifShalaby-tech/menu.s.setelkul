@@ -98,7 +98,7 @@ class SettingController extends Controller
                 ['key' => 'language'],
                 ['value' => $request->language, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
             );
-            $url= LaravelLocalization::getLocalizedURL($request->language);
+          
             System::updateOrCreate(
                 ['key' => 'currency'],
                 ['value' => $request->currency, 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
@@ -280,8 +280,9 @@ class SettingController extends Controller
                 'msg' => __('lang.something_went_wrong')
             ];
         }
-
-        return redirect($url)->with('status', $output);
+        
+        $url= LaravelLocalization::getLocalizedURL($request->language);
+        return redirect(!empty($url)?$url:'')->with('status', $output);
     }
 
     public function removeImage($type)
