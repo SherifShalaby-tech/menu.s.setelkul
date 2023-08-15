@@ -161,8 +161,10 @@ class SettingController extends Controller
                         ['value' => $data['logo'], 'date_and_time' => Carbon::now(), 'created_by' => Auth::user()->id]
                     );
                     $data['logo_url'] = asset('uploads/' . $data['logo']);
+                    if(!env('ENABLE_POS_SYNC')){
                     $this->commonUtil->addSyncDataWithPos('System', $logo_setting, $data, 'POST', 'setting');
                     unset($data['logo_url']);
+                    }
                 }
             }
             $data['home_background_image'] = null;

@@ -338,7 +338,11 @@
             <div class="col-md-2">
                 <div class="form-group">
                     {!! Form::label('active', __('lang.status'), []) !!} <br>
+                    @if(env('ENABLE_POS_SYNC'))
                     {!! Form::checkbox('menu_active', 1, true, ['class']) !!}
+                    @else
+                    {!! Form::checkbox('active', 1, true, ['class']) !!}
+                    @endif
                 </div>
             </div>
             <div class="col-md-12" style="margin-top: 10px">

@@ -237,7 +237,7 @@ class ProductController extends Controller
             $data = $request->except('_token', 'image');
             $data['sku'] = $this->productUtil->generateProductSku($data['name']);
             if(empty($request->variations)){
-                $data['purchase_price'] = $data['purchase_price'];
+                $data['purchase_price'] = !empty($data['purchase_price']) ? $data['purchase_price'] : 0;
                 $data['sell_price'] = $data['sell_price'];
             }else{
                 // foreach ($request->variations as $v) {
@@ -251,8 +251,11 @@ class ProductController extends Controller
             $data['discount_start_date'] = !empty($data['discount_start_date']) ? $this->commonUtil->uf_date($data['discount_start_date']) : null;
             $data['discount_end_date'] = !empty($data['discount_end_date']) ? $this->commonUtil->uf_date($data['discount_end_date']) : null;
             $data['created_by'] = auth()->user()->id;
-            $data['active'] = !empty($data['active']) ? 1 : 0;
-            $data['menu_active'] = !empty($data['menu_active']) ? 1 : 0;
+            if(env('ENABLE_POS_SYNC')){
+                $data['menu_active'] = !empty($data['menu_active']) ? 1 : 0;
+            }else{
+                $data['active'] = !empty($data['active']) ? 1 : 0;
+            }
             if(env('ENABLE_POS_SYNC')){
                 $data['barcode_type'] = !empty($data['barcode_type']) ? $data['barcode_type'] : 'C128';
             }
@@ -265,7 +268,7 @@ class ProductController extends Controller
 
             $this->productUtil->createOrUpdateVariations($product, $request->variations);
   
-
+            if(!env('ENABLE_POS_SYNC')){
             if ($request->has('image')) {
                 if (!empty($request->input('image'))) {
                     if(preg_match('/^data:image/', $request->input('image')))
@@ -277,6 +280,7 @@ class ProductController extends Controller
                         $product->addMedia($filePath)->toMediaCollection('product');
                     }
                 }
+            }
             }
 
 
@@ -373,8 +377,11 @@ class ProductController extends Controller
             $data['discount_type'] = $data['discount_type'];
             $data['discount_start_date'] = !empty($data['discount_start_date']) ? $this->commonUtil->uf_date($data['discount_start_date']) : null;
             $data['discount_end_date'] = !empty($data['discount_end_date']) ? $this->commonUtil->uf_date($data['discount_end_date']) : null;
-            // $data['active'] = !empty($data['active']) ? 1 : 0;
-            $data['menu_active'] = !empty($data['menu_active']) ? 1 : 0;
+            if(env('ENABLE_POS_SYNC')){
+                $data['menu_active'] = !empty($data['menu_active']) ? 1 : 0;
+            }else{
+                $data['active'] = !empty($data['active']) ? 1 : 0;
+            }
             $data['created_by'] = auth()->user()->id;
             $data['type'] = !empty($request->this_product_have_variant) ? 'variable' : 'single';
             $data['translations'] = !empty($data['translations']) ? $data['translations'] : [];
@@ -392,21 +399,23 @@ class ProductController extends Controller
                     $product->addMediaFromDisk($request->input('uploaded_image_name'), 'temp')->toMediaCollection('product');
                 }
             } */
-            if ($request->has('image')) {
-                if (!empty($request->input('image'))) {
-                    if(preg_match('/^data:image/', $request->input('image')))
-                    {
-                    $product->clearMediaCollection('product');
-                    $extention = explode(";",explode("/",$request->image)[1])[0];
-                    $image = rand(1,1500)."_image.".$extention;
-                    $filePath = public_path($image);
-                    $fp = file_put_contents($filePath,base64_decode(explode(",",$request->image)[1]));
-                    $product->addMedia($filePath)->toMediaCollection('product');
+            if(!env('ENABLE_POS_SYNC')){
+                if ($request->has('image')) {
+                    if (!empty($request->input('image'))) {
+                        if(preg_match('/^data:image/', $request->input('image')))
+                        {
+                        $product->clearMediaCollection('product');
+                        $extention = explode(";",explode("/",$request->image)[1])[0];
+                        $image = rand(1,1500)."_image.".$extention;
+                        $filePath = public_path($image);
+                        $fp = file_put_contents($filePath,base64_decode(explode(",",$request->image)[1]));
+                        $product->addMedia($filePath)->toMediaCollection('product');
+                        }
                     }
                 }
-            }
-            if(!$request->has('image') || strlen($request->input('image'))==0){
-                $product->clearMediaCollection('product');
+                if(!$request->has('image') || strlen($request->input('image'))==0){
+                    $product->clearMediaCollection('product');
+                }
             }
 
 
