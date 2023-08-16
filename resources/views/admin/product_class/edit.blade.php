@@ -525,7 +525,7 @@ document.getElementById("deleteBtn{{ $product_class->id }}").addEventListener('c
             $("#cropped_images").empty();
             for (let i = 0; i < container[0].children.length; i++) {
                 images.push(container[0].children[i].children[0].src)
-                var newInput = $("<input>").attr("type", "text").attr("name", "cropImages[]").val(container[0].children[i].children[0].src);
+                var newInput = $("<input>").attr("type", "hidden").attr("name", "cropImages[]").val(container[0].children[i].children[0].src);
                 $("#cropped_images").append(newInput);
             }
             return images
