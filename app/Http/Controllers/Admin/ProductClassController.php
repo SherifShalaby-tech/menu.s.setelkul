@@ -47,9 +47,14 @@ class ProductClassController extends Controller
         if (!auth()->user()->can('category.view')) {
             abort(403, __('lang.not_authorized'));
         }
+        // ,'product_classes.name','product_classes.description','product_classes.sort','product_classes.status',
+            // 'product_classes.translations','product_classes.created_at','product_classes.updated_at'
         if (request()->ajax()) {
             $product_classes = ProductClass::leftJoin("products","products.product_class_id","=","product_classes.id")
-            ->groupBy('product_classes.id')->orderBy('product_classes.sort')->orderBy('product_classes.created_at','desc');
+            ->groupBy('product_classes.id'
+             ,'product_classes.name','product_classes.description','product_classes.sort','product_classes.status',
+            'product_classes.translations','product_classes.created_at','product_classes.updated_at'
+            )->orderBy('product_classes.sort')->orderBy('product_classes.created_at','desc');
 
 
             $product_classes = $product_classes->selectRaw(
@@ -180,7 +185,7 @@ class ProductClassController extends Controller
                             $filePath = public_path($image);
                             $fp = file_put_contents($filePath,base64_decode(explode(",",$request->image)[1]));
                             $class->addMedia($filePath)->toMediaCollection('product_class');
-                
+
         
                     // $class->addMediaFromDisk($request->input('uploaded_image_name'), 'temp')->toMediaCollection('product_class');
                 }
@@ -269,7 +274,7 @@ class ProductClassController extends Controller
             }*/
 
      
-
+            if(!env('ENABLE_POS_SYNC')){
             if ($request->cropImages && count($request->cropImages) > 0) {
                 foreach ($this->getCroppedImages($request->cropImages) as $img) {
                     if ($class->media()->count() > 0) {
@@ -296,11 +301,11 @@ class ProductClassController extends Controller
             if(!isset($request->cropImages[0]) || strlen($request->cropImages[0])==0){
                 $class->clearMediaCollection('product_class');
             }
+            }
 
-
-
+            if(!env('ENABLE_POS_SYNC')){
             $this->commonUtil->addSyncDataWithPos('ProductClass', $class, $data, 'PUT', 'product-class');
-
+            }
             $output = [
                 'success' => true,
                 'msg' => __('lang.success')
@@ -342,8 +347,9 @@ class ProductClassController extends Controller
         try {
 
             $class = ProductClass::find($id);
-
+            if(!env('ENABLE_POS_SYNC')){
             $this->commonUtil->addSyncDataWithPos('ProductClass', $class, null, 'DELETE', 'product-class');
+            }
             $class->delete();
             $output = [
                 'success' => true,
