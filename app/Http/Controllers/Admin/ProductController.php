@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Yajra\DataTables\Facades\DataTables;
-
+use Illuminate\Support\Facades\App;
 class ProductController extends Controller
 {
     /**
@@ -189,7 +189,15 @@ class ProductController extends Controller
         }
 
 
-        $categories = ProductClass::orderBy('name', 'asc')->pluck('name', 'id');
+        $locale = App::getLocale();
+        $categories = ProductClass::orderBy('name', 'asc')
+        ->get();
+        $categories = $categories->map(function ($category) use ($locale) {
+            return [
+                'id' => $category->id,
+                'name' => $category->translations->name->$locale ?? $category->name
+            ];
+        })->pluck('name', 'id');
         return view('admin.product.index')->with(compact(
             'categories',
         ));
@@ -207,7 +215,15 @@ class ProductController extends Controller
             abort(403, __('lang.not_authorized'));
         }
 
-        $categories = ProductClass::orderBy('name', 'asc')->pluck('name', 'id');
+        $locale = App::getLocale();
+        $categories = ProductClass::orderBy('name', 'asc')
+        ->get();
+        $categories = $categories->map(function ($category) use ($locale) {
+            return [
+                'id' => $category->id,
+                'name' => $category->translations->name->$locale ?? $category->name
+            ];
+        })->pluck('name', 'id');
         $sizes = Size::orderBy('created_at', 'desc')->pluck('name', 'id');
 
         return view('admin.product.create')->with(compact(
@@ -312,7 +328,15 @@ class ProductController extends Controller
         }
 
         $product = Product::find($id);
-        $categories = ProductClass::orderBy('name', 'asc')->pluck('name', 'id');
+        $locale = App::getLocale();
+        $categories = ProductClass::orderBy('name', 'asc')
+        ->get();
+        $categories = $categories->map(function ($category) use ($locale) {
+            return [
+                'id' => $category->id,
+                'name' => $category->translations->name->$locale ?? $category->name
+            ];
+        })->pluck('name', 'id');
         $sizes = Size::orderBy('created_at', 'desc')->pluck('name', 'id');
 
         return view('admin.product.edit')->with(compact(
