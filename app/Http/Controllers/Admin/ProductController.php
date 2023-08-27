@@ -260,6 +260,7 @@ class ProductController extends Controller
             $data['created_by'] = auth()->user()->id;
             $data['active'] = !empty($data['active']) ? 1 : 0;
             $data['type'] = !empty($request->this_product_have_variant) ? 'variable' : 'single';
+            $data['name'] = isset($request->name) ?$request->name : ' ';
             $data['translations'] = !empty($data['translations']) ? $data['translations'] : [];
             $data['details_translations'] = !empty($data['details_translations']) ? $data['details_translations'] : [];
             $data['sort'] = !empty($data['sort']) ? $data['sort'] : 1;
@@ -387,6 +388,7 @@ class ProductController extends Controller
             $data['active'] = !empty($data['active']) ? 1 : 0;
             $data['created_by'] = auth()->user()->id;
             $data['type'] = !empty($request->this_product_have_variant) ? 'variable' : 'single';
+            $data['name'] = isset($request->name) ?$request->name : ' ';
             $data['translations'] = !empty($data['translations']) ? $data['translations'] : [];
             $data['details_translations'] = !empty($data['details_translations']) ? $data['details_translations'] : [];
             $data['sort'] = !empty($data['sort']) ? $data['sort'] :1;
@@ -415,9 +417,9 @@ class ProductController extends Controller
                     }
                 }
             }
-            if(!$request->has('image') || strlen($request->input('image'))==0){
-                $product->clearMediaCollection('product');
-            }
+            // if(!$request->has('image') || strlen($request->input('image'))==0){
+            //     $product->clearMediaCollection('product');
+            // }
 
 
 
