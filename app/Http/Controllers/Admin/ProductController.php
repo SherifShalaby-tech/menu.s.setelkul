@@ -58,6 +58,7 @@ class ProductController extends Controller
             ->where(function($query){
                 if(env('ENABLE_POS_SYNC')){
                     $query->where('is_raw_material', 0);
+                    $query->whereNull('deleted_at');
                 }
             });
             if (!empty(request()->product_class_id)) {
