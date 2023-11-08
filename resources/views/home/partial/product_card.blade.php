@@ -14,7 +14,7 @@ if($product->variations->where('name','!=','Default')->count()>0){
     @endforeach
     {{-- {{$product->getFirstMediaUrl('product')}} --}}
     <div class="w-full  shadow-lg pb-full rounded-xl bg-center bg-no-repeat bg-cover relative border-2 border-dark product_card"
-        style="background-image: url('{{ !empty($product->getFirstMediaUrl('product'))? images_asset($product->getFirstMediaUrl('product')): images_asset(asset('uploads/' . session('logo'))) }}')">
+        style="background-image: url('{{ !empty($product->getFirstMediaUrl('product'))? images_asset($product->getFirstMediaUrl('product')): images_asset() }}')">
 
         <div class="flex  w-full text-center">
             <div class="absolute bottom-0 mx-auto w-full">

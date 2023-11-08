@@ -41,7 +41,7 @@ class EventServiceProvider extends ServiceProvider
                 'label_color' => 'success',
             ]);
 
-            config(['adminlte.logo_img' => images_asset(asset('/uploads/' . session('logo')))]);
+            config(['adminlte.logo_img' => images_asset()]);
             config(['adminlte.logo' => System::getProperty('site_title')]);
         });
     }

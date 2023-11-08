@@ -286,7 +286,7 @@
                             <div class="preview-container">
                                 @if(!empty($product->getFirstMediaUrl('product')))
                                     <div id="preview{{ $product->id }}" class="preview">
-                                          <img src="{{ !empty($product->getFirstMediaUrl('product')) ? $product->getFirstMediaUrl('product') : asset('uploads/' . session('logo')) }}"
+                                          <img src="{{ !empty($product->getFirstMediaUrl('product')) ? $product->getFirstMediaUrl('product') : images_asset() }}"
                                                id="img{{  $product->id }}"   alt="">
                               
                                         <div class="action_div"></div>

@@ -1,7 +1,7 @@
 <a href="{{ action('ProductController@show', $offer['product_id']) }}" class="text-center w-full">
     <div class="flex-col h-78 mx-auto rounded-tl-lg rounded-tr-lg border-2 border-lightblue bg-white">
         <div class="w-full xl:h-48 lg:h-30 md:h-20 sm:h-20 xs:h-16 rounded-tl-lg rounded-tr-lg">
-            <img src="{{ !empty($offer['image']) ? $offer['image'] : images_asset(asset('uploads/' . session('logo'))) }}"
+            <img src="{{ !empty($offer['image']) ? $offer['image'] : images_asset() }}"
                 class="mx-auto xl:h-48 lg:h-30 md:h-20 sm:h-20 xs:h-16 rounded-tr-lg rounded-tl-lg w-full" alt="offer">
         </div>
         <div class="h-10 w-full mx-auto text-center px-4 sm:px-1">

@@ -46,7 +46,7 @@
                         class="pci-my-new-checkbox pci_product_checkbox">
                     </div>
                     <div class="col-md-5">
-                        <img src="@if(!empty($product->getFirstMediaUrl('product'))){{images_asset($product->getFirstMediaUrl('product'))}}@else{{images_asset(asset('/uploads/'.session('logo')))}}@endif"
+                        <img src="@if(!empty($product->getFirstMediaUrl('product'))){{images_asset($product->getFirstMediaUrl('product'))}}@else{{images_asset()}}@endif"
                             alt="photo" width="50" height="50">
                         <a href="">{{$product->name}}</a>
                     </div>

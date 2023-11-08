@@ -72,7 +72,7 @@ class User extends Authenticatable implements HasMedia
 
     public function adminlte_image()
     {
-        return !empty($this->getFirstMediaUrl('profile')) ? $this->getFirstMediaUrl('profile') : images_asset(asset('/uploads/' . session('logo')));
+        return !empty($this->getFirstMediaUrl('profile')) ? $this->getFirstMediaUrl('profile') : images_asset();
     }
 
     public function adminlte_desc()

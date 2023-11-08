@@ -18,7 +18,7 @@
                     <div class="flex-1 ">
                         <div class="product-slider">
                             @foreach ($product->getMedia('product') as $image)
-                                <img src="@if (!empty($image->getUrl())) {{ $image->getUrl() }}@else{{ images_asset(asset('uploads/' . session('logo'))) }} @endif"
+                                <img src="@if (!empty($image->getUrl())) {{ $image->getUrl() }}@else{{ images_asset() }} @endif"
                                     class="aspect-square" alt="" style="">
                             @endforeach
                         </div>

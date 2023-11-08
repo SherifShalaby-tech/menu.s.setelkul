@@ -62,7 +62,7 @@ class ProductClassController extends Controller
                     if (!empty($image)) {
                         return '<img src="' . $image . '" height="50px" width="50px">';
                     } else {
-                        return '<img src="' . images_asset(asset('/uploads/' . session('logo'))) . '" height="50px" width="50px">';
+                        return '<img src="' . images_asset() . '" height="50px" width="50px">';
                     }
                 })
                 ->addColumn('products_count', function ($row) {
