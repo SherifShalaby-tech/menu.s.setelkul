@@ -108,7 +108,8 @@ class OrderController extends Controller
             Cart::where('user_id', $user_id)->delete();
 
             DB::commit();
-            if(env('ENABLE_POS_SYNC') && !empty($request->table_no)){
+            if(env('ENABLE_POS_SYNC')){
+
                 $options = array(
                     'cluster' =>  env('PUSHER_APP_CLUSTER'),
                     'useTLS' => true
@@ -121,7 +122,7 @@ class OrderController extends Controller
                     env('PUSHER_APP_ID'),
                     $options
                 );
-        
+                if(!empty($request->table_no)){
                 $table=DiningTable::find($order->table_no);
                 $data = [
                     'order_id'=>$order->id,
@@ -129,6 +130,13 @@ class OrderController extends Controller
                     'room_no'=>$table->dining_room_id,
                     'orders_count'=>$order->order_details()->count()
                 ];
+                }else{
+                    $data = [
+                        'order_id'=>$order->id,
+                        'table_no'=>'not exist',
+                        'orders_count'=>$order->order_details()->count()
+                    ];
+                }
                 $pusher->trigger('order-channel', 'new-order', $data);
             }
             //send email for order
